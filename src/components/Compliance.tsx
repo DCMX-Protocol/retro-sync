@@ -16,10 +16,11 @@ const Compliance = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Global <span className="text-gradient-primary">Rights Compliance</span>
+            Trusted by the{" "}
+            <span className="text-gradient-primary">Global Music Industry</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Automated CWR 2.1/2.2 generation and submission to collecting societies in every major territory.
+            We work with 50+ collecting societies so your rights are registered everywhere that matters.
           </p>
         </motion.div>
 
@@ -52,9 +53,9 @@ const Compliance = () => {
           transition={{ delay: 0.3 }}
         >
           {[
-            { label: "DMCA §512", desc: "Notice-and-takedown with counter-notice workflow" },
-            { label: "EU Art. 17", desc: "Copyright Directive compliance built in" },
-            { label: "MMA §115", desc: "Mechanical licensing via The MLC" },
+            { label: "DMCA Protected", desc: "Automated takedown & counter-notice workflow" },
+            { label: "GDPR Compliant", desc: "Full data privacy controls and export" },
+            { label: "KYC Verified", desc: "Know-your-customer for secure payouts" },
           ].map((item) => (
             <div key={item.label} className="glass rounded-xl p-5 text-center">
               <div className="text-accent font-bold font-mono mb-2">{item.label}</div>

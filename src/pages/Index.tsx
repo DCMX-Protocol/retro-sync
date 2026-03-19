@@ -1,7 +1,8 @@
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import Features from "@/components/Features";
-import Architecture from "@/components/Architecture";
+import HowItWorks from "@/components/HowItWorks";
+import Pricing from "@/components/Pricing";
 import Compliance from "@/components/Compliance";
 import Footer from "@/components/Footer";
 
@@ -11,7 +12,8 @@ const Index = () => {
       <Navbar />
       <Hero />
       <div id="features"><Features /></div>
-      <div id="architecture"><Architecture /></div>
+      <div id="how-it-works"><HowItWorks /></div>
+      <div id="pricing"><Pricing /></div>
       <div id="compliance"><Compliance /></div>
       <Footer />
     </div>
