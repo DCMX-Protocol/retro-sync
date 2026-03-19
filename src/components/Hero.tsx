@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { ArrowRight, Play } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -17,9 +18,9 @@ const Hero = () => {
           transition={{ duration: 0.8, ease: "easeOut" }}
         >
           <div className="inline-flex items-center gap-2 glass rounded-full px-4 py-1.5 mb-8">
-            <span className="w-2 h-2 rounded-full bg-primary animate-pulse-glow" />
+            <span className="w-2 h-2 rounded-full bg-primary animate-pulse" />
             <span className="text-sm text-muted-foreground font-mono tracking-wide">
-              Enterprise Music Infrastructure
+              Now accepting early access signups
             </span>
           </div>
         </motion.div>
@@ -30,7 +31,9 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.15 }}
         >
-          <span className="text-gradient-primary">Retrosync</span>
+          Your Music.
+          <br />
+          <span className="text-gradient-primary">Your Royalties.</span>
         </motion.h1>
 
         <motion.p
@@ -39,8 +42,8 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
         >
-          Decentralized music distribution with zero-knowledge royalty verification, 
-          DDEX compliance, and blockchain-backed provenance — all in one platform.
+          Upload your tracks, distribute globally, and receive transparent royalty payments — 
+          all verified on-chain with zero hidden fees.
         </motion.p>
 
         <motion.div
@@ -49,11 +52,11 @@ const Hero = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.45 }}
         >
-          <button className="px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold hover:brightness-110 transition-all glow-primary">
-            Get Started
+          <button className="px-8 py-3.5 rounded-lg bg-primary text-primary-foreground font-semibold hover:brightness-110 transition-all glow-primary flex items-center gap-2">
+            Start Distributing <ArrowRight className="w-4 h-4" />
           </button>
-          <button className="px-8 py-3.5 rounded-lg glass text-foreground font-semibold hover:bg-secondary transition-all">
-            View Documentation
+          <button className="px-8 py-3.5 rounded-lg glass text-foreground font-semibold hover:bg-secondary transition-all flex items-center gap-2">
+            <Play className="w-4 h-4" /> Watch Demo
           </button>
         </motion.div>
 
@@ -65,10 +68,10 @@ const Hero = () => {
           transition={{ duration: 1, delay: 0.7 }}
         >
           {[
-            { value: "ZK", label: "Groth16 Proofs" },
-            { value: "DDEX", label: "ERN 4.1 Compliant" },
-            { value: "BTFS", label: "Decentralized Storage" },
-            { value: "BTTC", label: "On-Chain Royalties" },
+            { value: "50+", label: "Collecting Societies" },
+            { value: "0%", label: "Hidden Fees" },
+            { value: "24h", label: "Avg. Distribution" },
+            { value: "100%", label: "Transparent Splits" },
           ].map((stat) => (
             <div key={stat.label} className="text-center">
               <div className="text-2xl font-bold text-primary font-mono">{stat.value}</div>

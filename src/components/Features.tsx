@@ -1,36 +1,36 @@
 import { motion } from "framer-motion";
-import { Shield, Music, Zap, Globe, Lock, BarChart3 } from "lucide-react";
+import { Shield, Music, Zap, Globe, BarChart3, Wallet } from "lucide-react";
 
 const features = [
   {
-    icon: Shield,
-    title: "Zero-Knowledge Royalties",
-    description: "Groth16/BN254 proofs verify royalty splits on-chain without exposing individual artist addresses or payment details.",
+    icon: Wallet,
+    title: "Transparent Royalties",
+    description: "Every royalty payment is cryptographically verified on-chain. See exactly who gets paid, how much, and when — no black boxes.",
   },
   {
     icon: Music,
-    title: "DDEX ERN 4.1",
-    description: "Automated rights registration with full DDEX compliance. CWR generation for 15+ collecting societies worldwide.",
+    title: "Global Distribution",
+    description: "Submit your catalog to 50+ collecting societies worldwide with automated DDEX-compliant rights registration.",
   },
   {
     icon: Zap,
-    title: "Master Pattern Protocol",
-    description: "Mod-9 supersingular prime classification assigns rarity tiers — Common, Rare, and Legendary — to every track.",
+    title: "Track Rarity Classification",
+    description: "Our Master Pattern algorithm analyzes every track and assigns a rarity tier — Common, Rare, or Legendary — driving collector interest.",
   },
   {
     icon: Globe,
-    title: "Decentralized Storage",
-    description: "BTFS-powered content distribution with Internet Archive and BBS mirroring for permanent, censorship-resistant access.",
+    title: "Permanent Storage",
+    description: "Your masters are stored on decentralized infrastructure with archival mirroring. Your music can never be deleted or lost.",
   },
   {
-    icon: Lock,
-    title: "Zero Trust Security",
-    description: "SPIFFE/SPIRE identity framework with mTLS, OPA policy enforcement, and Ledger hardware signing for all transactions.",
+    icon: Shield,
+    title: "Rights Protection",
+    description: "Built-in DMCA takedown workflow, EU Article 17 compliance, and automated mechanical licensing through The MLC.",
   },
   {
     icon: BarChart3,
-    title: "Six Sigma Analytics",
-    description: "SPC control charts and process capability analysis ensure distribution quality meets ISO 9001 and GMP standards.",
+    title: "Real-Time Analytics",
+    description: "Track your streams, royalty accruals, and distribution performance across every territory in real time.",
   },
 ];
 
@@ -46,10 +46,11 @@ const Features = () => {
           transition={{ duration: 0.6 }}
         >
           <h2 className="text-3xl sm:text-4xl font-bold mb-4">
-            Enterprise-Grade <span className="text-gradient-primary">Music Infrastructure</span>
+            Everything You Need to{" "}
+            <span className="text-gradient-primary">Own Your Music</span>
           </h2>
           <p className="text-muted-foreground max-w-xl mx-auto">
-            Every component built with formal verification, LangSec parsing, and cryptographic guarantees.
+            From upload to payout — a complete platform built for independent artists and labels.
           </p>
         </motion.div>
 
