@@ -1,0 +1,3258 @@
+bash: ./setup_enterprise.sh: No such file or directory
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% |  85.0   B/s |  52.0   B |  00m01s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 176.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% |  99.0   B/s |  52.0   B |  00m01s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 171.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Updating crates.io index
+     Locking 247 packages to latest compatible versions
+      Adding Inflector v0.11.4
+      Adding adler2 v2.0.1
+      Adding aes v0.8.4
+      Adding arrayvec v0.7.6
+      Adding ascii-canvas v3.0.0
+      Adding async_io_stream v0.3.3
+      Adding auto_impl v1.3.0
+      Adding base16ct v0.2.0
+      Adding base64 v0.13.1
+      Adding base64 v0.21.7
+      Adding base64ct v1.8.3
+      Adding bech32 v0.9.1
+      Adding bit-set v0.5.3
+      Adding bit-vec v0.6.3
+      Adding bitflags v1.3.2
+      Adding bitvec v1.0.1
+      Adding bs58 v0.5.1
+      Adding byte-slice-cast v1.2.3
+      Adding bzip2 v0.4.4
+      Adding bzip2-sys v0.1.13+1.0.8
+      Adding camino v1.2.2
+      Adding cargo-platform v0.1.9
+      Adding cargo_metadata v0.18.1
+      Adding cipher v0.4.4
+      Adding coins-bip32 v0.8.7
+      Adding coins-bip39 v0.8.7
+      Adding coins-core v0.8.7
+      Adding coins-ledger v0.10.1
+      Adding const-hex v1.18.1
+      Adding const-oid v0.9.6
+      Adding const_format v0.2.35
+      Adding const_format_proc_macros v0.2.34
+      Adding constant_time_eq v0.1.5
+      Adding crc32fast v1.5.0
+      Adding crunchy v0.2.4
+      Adding crypto-bigint v0.5.5
+      Adding ctr v0.9.2
+      Adding data-encoding v2.10.0
+      Adding der v0.7.10
+      Adding deranged v0.5.8
+      Adding derive_more v1.0.0
+      Adding derive_more-impl v1.0.0
+      Adding dirs v5.0.1
+      Adding dirs-next v2.0.0
+      Adding dirs-sys v0.4.1
+      Adding dirs-sys-next v0.1.2
+      Adding dunce v1.0.5
+      Adding ecdsa v0.16.9
+      Adding elliptic-curve v0.13.8
+      Adding ena v0.14.4
+      Adding enr v0.10.0
+      Adding eth-keystore v0.5.0
+      Adding ethabi v18.0.0
+      Adding ethbloom v0.13.0
+      Adding ethereum-types v0.14.1
+      Adding ethers v2.0.14
+      Adding ethers-addressbook v2.0.14
+      Adding ethers-contract v2.0.14
+      Adding ethers-contract-abigen v2.0.14
+      Adding ethers-contract-derive v2.0.14
+      Adding ethers-core v2.0.14
+      Adding ethers-etherscan v2.0.14
+      Adding ethers-middleware v2.0.14
+      Adding ethers-providers v2.0.14
+      Adding ethers-signers v2.0.14
+      Adding ethers-solc v2.0.14
+      Adding eyre v0.6.12
+      Adding ff v0.13.1
+      Adding fixed-hash v0.8.0
+      Adding fixedbitset v0.4.2
+      Adding flate2 v1.1.9
+      Adding fs2 v0.4.3
+      Adding funty v2.0.0
+      Adding futures v0.3.32
+      Adding futures-executor v0.3.32
+      Adding futures-io v0.3.32
+      Adding futures-locks v0.7.1
+      Adding futures-macro v0.3.32
+      Adding futures-timer v3.0.3
+      Adding fxhash v0.2.1
+      Adding getrandom v0.3.4
+      Adding glob v0.3.3
+      Adding gloo-timers v0.2.6
+      Adding group v0.13.0
+      Adding h2 v0.3.27
+      Adding hashers v1.0.1
+      Adding hermit-abi v0.5.2
+      Adding hidapi-rusb v1.3.3
+      Adding hmac v0.12.1
+      Adding home v0.5.12
+      Adding http v0.2.12
+      Adding http-body v0.4.6
+      Adding hyper v0.14.32
+      Adding hyper-rustls v0.24.2
+      Adding impl-codec v0.6.0
+      Adding impl-rlp v0.3.0
+      Adding impl-serde v0.4.0
+      Adding impl-trait-for-tuples v0.2.3
+      Adding indenter v0.3.4
+      Adding indextree v4.7.4
+      Adding indextree-macros v0.1.3
+      Adding inout v0.1.4
+      Adding instant v0.1.13
+      Adding itertools v0.11.0
+      Adding itertools v0.14.0
+      Adding jobserver v0.1.34
+      Adding jsonwebtoken v8.3.0
+      Adding k256 v0.13.4
+      Adding keccak v0.1.6
+      Adding lalrpop v0.20.2
+      Adding lalrpop-util v0.20.2
+      Adding libredox v0.1.14
+      Adding libusb1-sys v0.7.0
+      Adding md-5 v0.10.6
+      Adding memoffset v0.7.1
+      Adding miniz_oxide v0.8.9
+      Adding new_debug_unreachable v1.0.6
+      Adding next-gen v0.1.1
+      Adding next-gen-proc_macros v0.1.1
+      Adding nix v0.26.4
+      Adding num-conv v0.2.0
+      Adding num_cpus v1.17.0
+      Adding num_enum v0.7.6
+      Adding num_enum_derive v0.7.6
+      Adding open-fastrlp v0.1.4
+      Adding open-fastrlp-derive v0.1.1
+      Adding option-ext v0.2.0
+      Adding parity-scale-codec v3.7.5
+      Adding parity-scale-codec-derive v3.7.5
+      Adding password-hash v0.4.2
+      Adding path-slash v0.2.1
+      Adding pbkdf2 v0.11.0
+      Adding pbkdf2 v0.12.2
+      Adding pem v1.1.1
+      Adding petgraph v0.6.5
+      Adding pharos v0.5.3
+      Adding pin-project v1.1.11
+      Adding pin-project-internal v1.1.11
+      Adding pkcs8 v0.10.2
+      Adding powerfmt v0.2.0
+      Adding precomputed-hash v0.1.1
+      Adding primitive-types v0.12.2
+      Adding proc-macro-crate v3.5.0
+      Adding proptest v1.10.0
+      Adding quick-xml v0.36.2 (available: v0.39.2)
+      Adding r-efi v5.3.0
+      Adding radium v0.7.0
+      Adding rand v0.9.2
+      Adding rand_chacha v0.9.0
+      Adding rand_core v0.9.5
+      Adding rand_xorshift v0.4.0
+      Adding redox_users v0.4.6
+      Adding regex v1.12.3
+      Adding reqwest v0.11.27
+      Adding rfc6979 v0.4.0
+      Adding ring v0.16.20
+      Adding ripemd v0.1.3
+      Adding rlp v0.5.2
+      Adding rlp-derive v0.1.0
+      Adding rusb v0.9.4
+      Adding rustc-hex v2.1.0
+      Adding rustls v0.21.12
+      Adding rustls-pemfile v1.0.4
+      Adding rustls-webpki v0.101.7
+      Adding salsa20 v0.10.2
+      Adding same-file v1.0.6
+      Adding scale-info v2.11.6
+      Adding scale-info-derive v2.11.6
+      Adding scrypt v0.10.0
+      Adding sct v0.7.1
+      Adding sec1 v0.7.3
+      Adding send_wrapper v0.4.0
+      Adding send_wrapper v0.6.0
+      Adding serde_spanned v0.6.9
+      Adding sha1 v0.10.6
+      Adding sha3 v0.10.8
+      Adding signature v2.2.0
+      Adding simd-adler32 v0.3.8
+      Adding simple_asn1 v0.6.4
+      Adding socket2 v0.5.10
+      Adding solang-parser v0.3.3 (available: v0.3.5)
+      Adding spin v0.5.2
+      Adding spki v0.7.3
+      Adding static_assertions v1.1.0
+      Adding string_cache v0.8.9
+      Adding strum v0.26.3
+      Adding strum v0.27.2
+      Adding strum_macros v0.26.4
+      Adding strum_macros v0.27.2
+      Adding svm-rs v0.3.5
+      Adding sync_wrapper v0.1.2
+      Adding system-configuration v0.5.1
+      Adding system-configuration-sys v0.5.0
+      Adding tap v1.0.1
+      Adding term v0.7.0
+      Adding thiserror v1.0.69
+      Adding thiserror v2.0.18
+      Adding thiserror-impl v1.0.69
+      Adding thiserror-impl v2.0.18
+      Adding time v0.3.47
+      Adding time-core v0.1.8
+      Adding time-macros v0.2.27
+      Adding tiny-keccak v2.0.2
+      Adding tinyvec v1.11.0
+      Adding tinyvec_macros v0.1.1
+      Adding tokio-rustls v0.24.1
+      Adding tokio-tungstenite v0.20.1
+      Adding toml v0.8.23
+      Adding toml_datetime v0.6.11
+      Adding toml_datetime v1.0.0+spec-1.1.0
+      Adding toml_edit v0.22.27
+      Adding toml_edit v0.25.4+spec-1.1.0
+      Adding toml_parser v1.0.9+spec-1.1.0
+      Adding toml_write v0.1.2
+      Adding tracing-futures v0.2.5
+      Adding tungstenite v0.20.1
+      Adding uint v0.9.5
+      Adding unarray v0.1.4
+      Adding untrusted v0.7.1
+      Adding unwind_safe v0.1.0
+      Adding utf-8 v0.7.6
+      Adding uuid v0.8.2
+      Adding vecmap-rs v0.2.4
+      Adding walkdir v2.5.0
+      Adding webpki-roots v0.25.4
+      Adding winapi-util v0.1.11
+      Adding windows-sys v0.48.0
+      Adding windows-targets v0.48.5
+      Adding windows_aarch64_gnullvm v0.48.5
+      Adding windows_aarch64_msvc v0.48.5
+      Adding windows_i686_gnu v0.48.5
+      Adding windows_i686_msvc v0.48.5
+      Adding windows_x86_64_gnu v0.48.5
+      Adding windows_x86_64_gnullvm v0.48.5
+      Adding windows_x86_64_msvc v0.48.5
+      Adding winnow v0.7.15
+      Adding winreg v0.50.0
+      Adding ws_stream_wasm v0.7.5
+      Adding wyz v0.5.1
+      Adding xhtmlchardet v2.2.0
+      Adding xmlparser v0.13.6
+      Adding xot v0.20.0 (available: v0.31.2)
+      Adding yansi v0.5.1
+      Adding zip v0.6.6
+      Adding zstd v0.11.2+zstd.1.5.2
+      Adding zstd-safe v5.0.2+zstd.1.5.2
+      Adding zstd-sys v2.0.16+zstd.1.5.7
+ Downloading crates ...
+  Downloaded arrayvec v0.7.6
+  Downloaded base16ct v0.2.0
+  Downloaded bit-set v0.5.3
+  Downloaded bech32 v0.9.1
+  Downloaded byte-slice-cast v1.2.3
+  Downloaded Inflector v0.11.4
+  Downloaded ascii-canvas v3.0.0
+  Downloaded base64ct v1.8.3
+  Downloaded num_cpus v1.17.0
+  Downloaded glob v0.3.3
+  Downloaded camino v1.2.2
+  Downloaded bumpalo v3.20.2
+  Downloaded password-hash v0.4.2
+  Downloaded new_debug_unreachable v1.0.6
+  Downloaded open-fastrlp v0.1.4
+  Downloaded ethers-contract v2.0.14
+  Downloaded futures-macro v0.3.32
+  Downloaded strum v0.26.3
+  Downloaded spin v0.5.2
+  Downloaded memoffset v0.7.1
+  Downloaded itertools v0.11.0
+  Downloaded wasm-bindgen-shared v0.2.114
+  Downloaded untrusted v0.7.1
+  Downloaded svm-rs v0.3.5
+  Downloaded toml_datetime v1.0.0+spec-1.1.0
+  Downloaded yansi v0.5.1
+  Downloaded uuid v0.8.2
+  Downloaded wasm-bindgen v0.2.114
+  Downloaded simple_asn1 v0.6.4
+  Downloaded vecmap-rs v0.2.4
+  Downloaded toml_parser v1.0.9+spec-1.1.0
+  Downloaded wasm-bindgen-macro-support v0.2.114
+  Downloaded toml_edit v0.22.27
+  Downloaded socket2 v0.5.10
+  Downloaded regex v1.12.3
+  Downloaded time v0.3.47
+  Downloaded quick-xml v0.36.2
+  Downloaded rustls v0.21.12
+  Downloaded rand v0.9.2
+  Downloaded winnow v0.7.15
+  Downloaded rustix v1.1.4
+  Downloaded webpki-roots v0.25.4
+  Downloaded der v0.7.10
+  Downloaded toml_edit v0.25.4+spec-1.1.0
+  Downloaded itertools v0.14.0
+  Downloaded reqwest v0.11.27
+  Downloaded lalrpop v0.20.2
+  Downloaded petgraph v0.6.5
+  Downloaded ethers-solc v2.0.14
+  Downloaded const_format v0.2.35
+  Downloaded sha3 v0.10.8
+  Downloaded js-sys v0.3.91
+  Downloaded ethers-core v2.0.14
+  Downloaded rustls-webpki v0.101.7
+  Downloaded libusb1-sys v0.7.0
+  Downloaded h2 v0.3.27
+  Downloaded linux-raw-sys v0.12.1
+  Downloaded next-gen v0.1.1
+  Downloaded coins-ledger v0.10.1
+  Downloaded proptest v1.10.0
+  Downloaded nix v0.26.4
+  Downloaded tungstenite v0.20.1
+  Downloaded tempfile v3.26.0
+  Downloaded prettyplease v0.2.37
+  Downloaded toml v0.8.23
+  Downloaded tokio-rustls v0.24.1
+  Downloaded tinyvec v1.11.0
+  Downloaded thiserror v2.0.18
+  Downloaded term v0.7.0
+  Downloaded rusb v0.9.4
+  Downloaded rand_core v0.9.5
+  Downloaded uint v0.9.5
+  Downloaded tiny-keccak v2.0.2
+  Downloaded string_cache v0.8.9
+  Downloaded static_assertions v1.1.0
+  Downloaded scale-info v2.11.6
+  Downloaded rustls-pemfile v1.0.4
+  Downloaded xmlparser v0.13.6
+  Downloaded tokio-tungstenite v0.20.1
+  Downloaded sync_wrapper v0.1.2
+  Downloaded ripemd v0.1.3
+  Downloaded time-core v0.1.8
+  Downloaded sct v0.7.1
+  Downloaded scale-info-derive v2.11.6
+  Downloaded rlp-derive v0.1.0
+  Downloaded hashers v1.0.1
+  Downloaded solang-parser v0.3.3
+  Downloaded time-macros v0.2.27
+  Downloaded strum_macros v0.27.2
+  Downloaded strum_macros v0.26.4
+  Downloaded strum v0.27.2
+  Downloaded signature v2.2.0
+  Downloaded serde_spanned v0.6.9
+  Downloaded scrypt v0.10.0
+  Downloaded rlp v0.5.2
+  Downloaded pin-project v1.1.11
+  Downloaded wasm-bindgen-macro v0.2.114
+  Downloaded unicode-xid v0.2.6
+  Downloaded unarray v0.1.4
+  Downloaded xhtmlchardet v2.2.0
+  Downloaded next-gen-proc_macros v0.1.1
+  Downloaded xot v0.20.0
+  Downloaded unwind_safe v0.1.0
+  Downloaded ring v0.16.20
+  Downloaded tracing-futures v0.2.5
+  Downloaded toml_write v0.1.2
+  Downloaded toml_datetime v0.6.11
+  Downloaded thiserror-impl v2.0.18
+  Downloaded send_wrapper v0.4.0
+  Downloaded sec1 v0.7.3
+  Downloaded rustc-hex v2.1.0
+  Downloaded k256 v0.13.4
+  Downloaded hyper v0.14.32
+  Downloaded hidapi-rusb v1.3.3
+  Downloaded eyre v0.6.12
+  Downloaded http v0.2.12
+  Downloaded getrandom v0.3.4
+  Downloaded ethers-providers v2.0.14
+  Downloaded ena v0.14.4
+  Downloaded derive_more v1.0.0
+  Downloaded instant v0.1.13
+  Downloaded impl-serde v0.4.0
+  Downloaded fs2 v0.4.3
+  Downloaded fixedbitset v0.4.2
+  Downloaded fixed-hash v0.8.0
+  Downloaded ff v0.13.1
+  Downloaded ethers-etherscan v2.0.14
+  Downloaded ethers-contract-derive v2.0.14
+  Downloaded dirs-sys-next v0.1.2
+  Downloaded dirs-sys v0.4.1
+  Downloaded dirs-next v2.0.0
+  Downloaded derive_more-impl v1.0.0
+  Downloaded crypto-bigint v0.5.5
+  Downloaded const-hex v1.18.1
+  Downloaded coins-bip39 v0.8.7
+  Downloaded coins-bip32 v0.8.7
+  Downloaded cargo_metadata v0.18.1
+  Downloaded salsa20 v0.10.2
+  Downloaded rfc6979 v0.4.0
+  Downloaded rand_xorshift v0.4.0
+  Downloaded proc-macro-crate v3.5.0
+  Downloaded pkcs8 v0.10.2
+  Downloaded pin-project-internal v1.1.11
+  Downloaded pem v1.1.1
+  Downloaded parity-scale-codec v3.7.5
+  Downloaded num_enum_derive v0.7.6
+  Downloaded num_enum v0.7.6
+  Downloaded jobserver v0.1.34
+  Downloaded indextree-macros v0.1.3
+  Downloaded indenter v0.3.4
+  Downloaded impl-codec v0.6.0
+  Downloaded http-body v0.4.6
+  Downloaded gloo-timers v0.2.6
+  Downloaded fastrand v2.3.0
+  Downloaded ethers-middleware v2.0.14
+  Downloaded ethers-contract-abigen v2.0.14
+  Downloaded ethers-addressbook v2.0.14
+  Downloaded ethabi v18.0.0
+  Downloaded elliptic-curve v0.13.8
+  Downloaded ecdsa v0.16.9
+  Downloaded spki v0.7.3
+  Downloaded primitive-types v0.12.2
+  Downloaded pbkdf2 v0.11.0
+  Downloaded path-slash v0.2.1
+  Downloaded parity-scale-codec-derive v3.7.5
+  Downloaded open-fastrlp-derive v0.1.1
+  Downloaded md-5 v0.10.6
+  Downloaded lalrpop-util v0.20.2
+  Downloaded keccak v0.1.6
+  Downloaded jsonwebtoken v8.3.0
+  Downloaded indextree v4.7.4
+  Downloaded impl-trait-for-tuples v0.2.3
+  Downloaded hyper-rustls v0.24.2
+  Downloaded home v0.5.12
+  Downloaded group v0.13.0
+  Downloaded getrandom v0.4.2
+  Downloaded futures-timer v3.0.3
+  Downloaded futures-locks v0.7.1
+  Downloaded enr v0.10.0
+  Downloaded ethereum-types v0.14.1
+  Downloaded ethbloom v0.13.0
+  Downloaded eth-keystore v0.5.0
+  Downloaded data-encoding v2.10.0
+  Downloaded crunchy v0.2.4
+  Downloaded const-oid v0.9.6
+  Downloaded deranged v0.5.8
+  Downloaded ctr v0.9.2
+  Downloaded const_format_proc_macros v0.2.34
+  Downloaded futures-executor v0.3.32
+  Downloaded ethers v2.0.14
+  Downloaded ethers-signers v2.0.14
+  Downloaded coins-core v0.8.7
+  Downloaded num-conv v0.2.0
+  Downloaded impl-rlp v0.3.0
+  Downloaded futures-io v0.3.32
+  Downloaded dirs v5.0.1
+  Downloaded base64 v0.21.7
+  Downloaded base64 v0.13.1
+  Downloaded auto_impl v1.3.0
+  Downloaded bs58 v0.5.1
+  Downloaded bit-vec v0.6.3
+   Compiling proc-macro2 v1.0.106
+   Compiling serde_core v1.0.228
+   Compiling quote v1.0.45
+   Compiling serde v1.0.228
+   Compiling libc v0.2.183
+   Compiling generic-array v0.14.7
+   Compiling syn v2.0.117
+    Checking const-oid v0.9.6
+    Checking subtle v2.6.1
+   Compiling syn v1.0.109
+    Checking getrandom v0.2.17
+    Checking rand_core v0.6.4
+   Compiling winnow v0.7.15
+   Compiling hashbrown v0.16.1
+   Compiling equivalent v1.0.2
+   Compiling indexmap v2.13.0
+   Compiling cfg-if v1.0.4
+   Compiling toml_parser v1.0.9+spec-1.1.0
+    Checking ppv-lite86 v0.2.21
+   Compiling toml_datetime v1.0.0+spec-1.1.0
+   Compiling toml_edit v0.25.4+spec-1.1.0
+   Compiling serde_derive v1.0.228
+   Compiling zeroize_derive v1.4.3
+    Checking rand_chacha v0.3.1
+    Checking rand v0.8.5
+    Checking zeroize v1.8.2
+   Compiling proc-macro-crate v3.5.0
+   Compiling tracing-attributes v0.1.31
+    Checking crypto-common v0.1.7
+    Checking block-buffer v0.10.4
+    Checking digest v0.10.7
+   Compiling unicode-xid v0.2.6
+   Compiling const_format_proc_macros v0.2.34
+   Compiling parity-scale-codec v3.7.5
+   Compiling crunchy v0.2.4
+   Compiling parity-scale-codec-derive v3.7.5
+   Compiling impl-trait-for-tuples v0.2.3
+    Checking tracing v0.1.44
+   Compiling rlp-derive v0.1.0
+    Checking bytes v1.11.1
+   Compiling derive_more-impl v1.0.0
+   Compiling thiserror v1.0.69
+    Checking parking_lot_core v0.9.12
+   Compiling thiserror-impl v1.0.69
+   Compiling synstructure v0.13.2
+    Checking errno v0.3.14
+   Compiling serde_json v1.0.149
+    Checking signal-hook-registry v1.4.8
+    Checking parking_lot v0.12.5
+   Compiling scale-info-derive v2.11.6
+   Compiling tokio-macros v2.6.1
+    Checking mio v1.1.1
+    Checking socket2 v0.6.3
+   Compiling zerofrom-derive v0.1.6
+    Checking tokio v1.50.0
+   Compiling zerocopy v0.8.42
+   Compiling tiny-keccak v2.0.2
+   Compiling yoke-derive v0.8.1
+    Checking zerofrom v0.1.6
+    Checking sha2 v0.10.9
+    Checking futures-task v0.3.32
+    Checking yoke v0.8.1
+   Compiling futures-macro v0.3.32
+   Compiling typenum v1.19.0
+    Checking hex v0.4.3
+    Checking futures-util v0.3.32
+   Compiling zerovec-derive v0.11.2
+   Compiling heck v0.5.0
+    Checking zerovec v0.11.5
+   Compiling displaydoc v0.2.5
+    Checking bitflags v2.11.0
+    Checking hmac v0.12.1
+    Checking der v0.7.10
+    Checking unicode-ident v1.0.24
+    Checking rustc-hex v2.1.0
+    Checking const_format v0.2.35
+    Checking arrayvec v0.7.6
+   Compiling getrandom v0.4.2
+   Compiling rustix v1.1.4
+    Checking byte-slice-cast v1.2.3
+   Compiling camino v1.2.2
+    Checking tinystr v0.8.2
+    Checking spki v0.7.3
+    Checking rlp v0.5.2
+    Checking ff v0.13.1
+   Compiling ring v0.17.14
+    Checking static_assertions v1.1.0
+    Checking base16ct v0.2.0
+    Checking keccak v0.1.6
+    Checking icu_locale_core v2.1.1
+    Checking sha3 v0.10.8
+    Checking sec1 v0.7.3
+    Checking group v0.13.0
+    Checking pkcs8 v0.10.2
+    Checking potential_utf v0.1.4
+    Checking zerotrie v0.2.3
+    Checking tokio-util v0.7.18
+    Checking derive_more v1.0.0
+    Checking aho-corasick v1.1.4
+    Checking crypto-bigint v0.5.5
+    Checking regex-syntax v0.8.10
+    Checking icu_provider v2.1.1
+    Checking elliptic-curve v0.13.8
+    Checking scale-info v2.11.6
+    Checking icu_collections v2.1.1
+    Checking fixed-hash v0.8.0
+    Checking impl-codec v0.6.0
+    Checking impl-rlp v0.3.0
+    Checking rfc6979 v0.4.0
+   Compiling strum_macros v0.26.4
+   Compiling open-fastrlp-derive v0.1.1
+    Checking impl-serde v0.4.0
+    Checking regex-automata v0.4.14
+    Checking signature v2.2.0
+   Compiling num_enum_derive v0.7.6
+   Compiling auto_impl v1.3.0
+   Compiling wasm-bindgen-shared v0.2.114
+    Checking untrusted v0.9.0
+    Checking ecdsa v0.16.9
+    Checking uint v0.9.5
+    Checking base64 v0.21.7
+   Compiling getrandom v0.3.4
+   Compiling memchr v2.8.0
+   Compiling byteorder v1.5.0
+    Checking ethbloom v0.13.0
+    Checking primitive-types v0.12.2
+    Checking icu_normalizer v2.1.1
+    Checking icu_properties v2.1.2
+    Checking ark-std v0.4.0
+    Checking k256 v0.13.4
+    Checking http v0.2.12
+    Checking http v1.4.0
+   Compiling ark-serialize-derive v0.4.2
+   Compiling ahash v0.8.12
+   Compiling rustls v0.21.12
+    Checking ark-serialize v0.4.2
+    Checking idna_adapter v1.2.1
+    Checking ethereum-types v0.14.1
+    Checking sct v0.7.1
+    Checking rustls-webpki v0.101.7
+   Compiling ark-ff-macros v0.4.2
+    Checking regex v1.12.3
+   Compiling thiserror-impl v2.0.18
+   Compiling derivative v2.2.0
+   Compiling ark-ff-asm v0.4.2
+    Checking linux-raw-sys v0.12.1
+    Checking chrono v0.4.44
+    Checking idna v1.1.0
+    Checking ark-ff v0.4.2
+    Checking cargo-platform v0.1.9
+    Checking semver v1.0.27
+   Compiling bumpalo v3.20.2
+    Checking fastrand v2.3.0
+    Checking tempfile v3.26.0
+   Compiling wasm-bindgen-macro-support v0.2.114
+    Checking cargo_metadata v0.18.1
+    Checking url v2.5.8
+    Checking ethabi v18.0.0
+    Checking open-fastrlp v0.1.4
+    Checking http-body v1.0.1
+    Checking strum v0.26.3
+    Checking num_enum v0.7.6
+   Compiling libusb1-sys v0.7.0
+    Checking const-hex v1.18.1
+   Compiling zmij v1.0.21
+    Checking inout v0.1.4
+   Compiling wasm-bindgen v0.2.114
+   Compiling prettyplease v0.2.37
+   Compiling once_cell v1.21.3
+   Compiling eyre v0.6.12
+   Compiling cpufeatures v0.2.17
+   Compiling itoa v1.0.17
+    Checking ethers-core v2.0.14
+    Checking serde_urlencoded v0.7.1
+    Checking cipher v0.4.4
+   Compiling wasm-bindgen-macro v0.2.114
+    Checking tokio-rustls v0.24.1
+    Checking hashbrown v0.13.2
+    Checking http-body v0.4.6
+    Checking h2 v0.3.27
+   Compiling async-trait v0.1.89
+    Checking socket2 v0.5.10
+   Compiling num-conv v0.2.0
+   Compiling thiserror v2.0.18
+   Compiling time-core v0.1.8
+    Checking powerfmt v0.2.0
+    Checking deranged v0.5.8
+   Compiling time-macros v0.2.27
+    Checking ark-poly v0.4.2
+    Checking hyper v0.14.32
+   Compiling phf_generator v0.11.3
+   Compiling serde_spanned v0.6.9
+   Compiling toml_datetime v0.6.11
+   Compiling memoffset v0.7.1
+   Compiling ring v0.16.20
+    Checking webpki-roots v0.25.4
+   Compiling rusb v0.9.4
+   Compiling toml_write v0.1.2
+   Compiling radium v0.7.0
+   Compiling toml_edit v0.22.27
+    Checking time v0.3.47
+    Checking hyper-rustls v0.24.2
+    Checking ark-relations v0.4.0
+    Checking ark-ec v0.4.2
+    Checking js-sys v0.3.91
+   Compiling phf_macros v0.11.3
+    Checking rustls-pemfile v1.0.4
+   Compiling hidapi-rusb v1.3.3
+    Checking bs58 v0.5.1
+    Checking sha1 v0.10.6
+    Checking ripemd v0.1.3
+   Compiling pin-project-internal v1.1.11
+   Compiling lazy_static v1.5.0
+    Checking base64 v0.13.1
+    Checking untrusted v0.7.1
+    Checking bech32 v0.9.1
+   Compiling indenter v0.3.4
+    Checking data-encoding v2.10.0
+    Checking utf-8 v0.7.6
+    Checking sync_wrapper v0.1.2
+   Compiling same-file v1.0.6
+    Checking spin v0.5.2
+    Checking tap v1.0.1
+    Checking pin-project v1.1.11
+    Checking wyz v0.5.1
+   Compiling walkdir v2.5.0
+    Checking tungstenite v0.20.1
+    Checking reqwest v0.11.27
+    Checking coins-core v0.8.7
+    Checking pem v1.1.1
+    Checking h2 v0.4.13
+   Compiling Inflector v0.11.4
+    Checking gloo-timers v0.2.6
+   Compiling phf v0.11.3
+    Checking simple_asn1 v0.6.4
+   Compiling toml v0.8.23
+    Checking openssl-sys v0.9.111
+    Checking salsa20 v0.10.2
+    Checking http-body-util v0.1.3
+    Checking fxhash v0.2.1
+    Checking pbkdf2 v0.11.0
+   Compiling openssl-macros v0.1.1
+    Checking bitflags v1.3.2
+    Checking send_wrapper v0.4.0
+   Compiling dunce v1.0.5
+    Checking funty v2.0.0
+    Checking openssl v0.10.75
+    Checking futures-timer v3.0.3
+    Checking bitvec v1.0.1
+    Checking nix v0.26.4
+   Compiling ethers-contract-abigen v2.0.14
+    Checking scrypt v0.10.0
+    Checking hashers v1.0.1
+    Checking hyper v1.8.1
+    Checking jsonwebtoken v8.3.0
+   Compiling doxygen-rs v0.4.2
+    Checking coins-bip32 v0.8.7
+    Checking tokio-tungstenite v0.20.1
+    Checking tracing-futures v0.2.5
+    Checking ark-snark v0.4.0
+    Checking aes v0.8.4
+    Checking ctr v0.9.2
+    Checking enr v0.10.0
+    Checking pbkdf2 v0.12.2
+   Compiling strum_macros v0.27.2
+    Checking uuid v0.8.2
+    Checking blake2 v0.10.6
+    Checking instant v0.1.13
+   Compiling either v1.15.0
+   Compiling itertools v0.14.0
+   Compiling ethers-contract-derive v2.0.14
+    Checking native-tls v0.2.18
+    Checking hyper-util v0.1.20
+    Checking ark-crypto-primitives v0.4.0
+   Compiling strum v0.27.2
+    Checking ethers-providers v2.0.14
+    Checking eth-keystore v0.5.0
+    Checking coins-bip39 v0.8.7
+   Compiling lmdb-master-sys v0.2.5
+    Checking coins-ledger v0.10.1
+    Checking tower v0.5.3
+    Checking futures-executor v0.3.32
+    Checking ethers-signers v2.0.14
+   Compiling indextree-macros v0.1.3
+    Checking ark-groth16 v0.4.0
+    Checking tokio-native-tls v0.3.1
+    Checking ethers-etherscan v2.0.14
+    Checking ark-bn254 v0.4.0
+    Checking ark-r1cs-std v0.4.0
+    Checking futures-locks v0.7.1
+    Checking bincode v1.3.3
+   Compiling next-gen-proc_macros v0.1.1
+    Checking unwind_safe v0.1.0
+    Checking tower-http v0.6.8
+    Checking next-gen v0.1.1
+    Checking multer v3.1.0
+    Checking heed-types v0.20.1
+    Checking hyper-tls v0.6.0
+    Checking indextree v4.7.4
+    Checking ethers-contract v2.0.14
+    Checking axum-core v0.4.5
+    Checking ethers-addressbook v2.0.14
+    Checking matchers v0.2.0
+    Checking tracing-serde v0.2.0
+    Checking rustls-pki-types v1.14.0
+    Checking serde_path_to_error v0.1.20
+    Checking page_size v0.6.0
+    Checking vecmap-rs v0.2.4
+    Checking xmlparser v0.13.6
+    Checking xhtmlchardet v2.2.0
+    Checking xot v0.20.0
+    Checking axum v0.7.9
+    Checking tracing-subscriber v0.3.22
+    Checking heed v0.20.5
+    Checking reqwest v0.12.28
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+warning: build failed, waiting for other jobs to finish...
+Unable to resolve imports:
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 161.82ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 105.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking ethers-middleware v2.0.14
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking tower-http v0.5.2
+error[E0435]: attempt to use a non-constant value in a constant
+  --> zk_circuits/src/royalty_split.rs:71:59
+   |
+71 |                 ark_relations::ns!(cs, &format!("bps_{}", i)),
+   |                                                           ^ non-constant value
+   |
+help: consider using `let` instead of `static`
+  --> /home/kaleris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-0.1.44/src/macros.rs:58:13
+   |
+58 -             static __CALLSITE: $crate::callsite::DefaultCallsite = $crate::callsite2! {
+58 +             let __CALLSITE: $crate::callsite::DefaultCallsite = $crate::callsite2! {
+   |
+
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+warning: unused variable: `i`
+  --> zk_circuits/src/royalty_split.rs:69:14
+   |
+69 |         for (i, artist) in self.witness.artists.iter().enumerate() {
+   |              ^ help: if this is intentional, prefix it with an underscore: `_i`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0435, E0599.
+For more information about an error, try `rustc --explain E0435`.
+warning: `zk_circuits` (lib) generated 2 warnings
+error: could not compile `zk_circuits` (lib) due to 3 previous errors; 2 warnings emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Unable to resolve imports:
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 5.29ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 179.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking ethers v2.0.14
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking tower v0.4.13
+error[E0435]: attempt to use a non-constant value in a constant
+  --> zk_circuits/src/royalty_split.rs:71:59
+   |
+71 |                 ark_relations::ns!(cs, &format!("bps_{}", i)),
+   |                                                           ^ non-constant value
+   |
+help: consider using `let` instead of `static`
+  --> /home/kaleris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-0.1.44/src/macros.rs:58:13
+   |
+58 -             static __CALLSITE: $crate::callsite::DefaultCallsite = $crate::callsite2! {
+58 +             let __CALLSITE: $crate::callsite::DefaultCallsite = $crate::callsite2! {
+   |
+
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+    Checking quick-xml v0.36.2
+    Checking ceremony v0.1.0 (/home/kaleris/retrosync/tools/ceremony)
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0435]: attempt to use a non-constant value in a constant
+  --> tools/ceremony/src/main.rs:85:59
+   |
+85 |                 ark_relations::ns!(cs, &format!("bps_{}", i)),
+   |                                                           ^ non-constant value
+   |
+help: consider using `let` instead of `static`
+  --> /home/kaleris/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/tracing-0.1.44/src/macros.rs:58:13
+   |
+58 -             static __CALLSITE: $crate::callsite::DefaultCallsite = $crate::callsite2! {
+58 +             let __CALLSITE: $crate::callsite::DefaultCallsite = $crate::callsite2! {
+   |
+
+warning: unused import: `ark_ff::Field`
+  --> tools/ceremony/src/main.rs:59:13
+   |
+59 |         use ark_ff::Field;
+   |             ^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+warning: unused variable: `i`
+  --> zk_circuits/src/royalty_split.rs:69:14
+   |
+69 |         for (i, artist) in self.witness.artists.iter().enumerate() {
+   |              ^ help: if this is intentional, prefix it with an underscore: `_i`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0435, E0599.
+For more information about an error, try `rustc --explain E0435`.
+warning: `zk_circuits` (lib) generated 2 warnings
+error: could not compile `zk_circuits` (lib) due to 3 previous errors; 2 warnings emitted
+warning: build failed, waiting for other jobs to finish...
+warning: unused import: `BigInteger`
+  --> tools/ceremony/src/main.rs:20:14
+   |
+20 | use ark_ff::{BigInteger, PrimeField};
+   |              ^^^^^^^^^^
+
+warning: unused variable: `i`
+  --> tools/ceremony/src/main.rs:83:14
+   |
+83 |         for (i, w) in self.witnesses.iter().enumerate() {
+   |              ^ help: if this is intentional, prefix it with an underscore: `_i`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused variable: `pk`
+   --> tools/ceremony/src/main.rs:156:10
+    |
+156 |     let (pk, vk) = Groth16::<Bn254>::circuit_specific_setup(circuit, &m...
+    |          ^^ help: if this is intentional, prefix it with an underscore: `_pk`
+
+For more information about this error, try `rustc --explain E0435`.
+warning: `ceremony` (bin "ceremony") generated 4 warnings
+error: could not compile `ceremony` (bin "ceremony") due to 1 previous error; 4 warnings emitted
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Unable to resolve imports:
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 5.32ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 113.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking ceremony v0.1.0 (/home/kaleris/retrosync/tools/ceremony)
+    Checking font_check v0.1.0 (/home/kaleris/retrosync/tools/font_check)
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+    Checking spc v0.1.0 (/home/kaleris/retrosync/six_sigma/spc)
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+    Checking frontend v0.1.0 (/home/kaleris/retrosync/frontend)
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+For more information about this error, try `rustc --explain E0599`.
+warning: field `n_artists` is never read
+  --> tools/ceremony/src/main.rs:42:5
+   |
+41 | struct CeremonyCircuit {
+   |        --------------- field in this struct
+42 |     n_artists: usize,
+   |     ^^^^^^^^^
+   |
+   = note: `CeremonyCircuit` has a derived impl for the trait `Clone`, but this is intentionally ignored during dead code analysis
+   = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: `zk_circuits` (lib) generated 1 warning
+error: could not compile `zk_circuits` (lib) due to 2 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+warning: `ceremony` (bin "ceremony") generated 1 warning
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Unable to resolve imports:
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 5.35ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 180.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking ceremony v0.1.0 (/home/kaleris/retrosync/tools/ceremony)
+    Checking font_check v0.1.0 (/home/kaleris/retrosync/tools/font_check)
+    Checking spc v0.1.0 (/home/kaleris/retrosync/six_sigma/spc)
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `zk_circuits` (lib) generated 1 warning
+error: could not compile `zk_circuits` (lib) due to 2 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Unable to resolve imports:
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 5.40ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 122.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking ceremony v0.1.0 (/home/kaleris/retrosync/tools/ceremony)
+    Checking font_check v0.1.0 (/home/kaleris/retrosync/tools/font_check)
+    Checking spc v0.1.0 (/home/kaleris/retrosync/six_sigma/spc)
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `zk_circuits` (lib) generated 1 warning
+error: could not compile `zk_circuits` (lib) due to 2 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Unable to resolve imports:
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 5.74ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% | 179.0   B/s |  52.0   B |  00m00s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking ceremony v0.1.0 (/home/kaleris/retrosync/tools/ceremony)
+    Checking font_check v0.1.0 (/home/kaleris/retrosync/tools/font_check)
+    Checking spc v0.1.0 (/home/kaleris/retrosync/six_sigma/spc)
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `zk_circuits` (lib) generated 1 warning
+error: could not compile `zk_circuits` (lib) due to 2 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Unable to resolve imports:
+      "forge-std/Script.sol" in "/home/kaleris/retrosync/contracts/script/Deploy.s.sol"
+      "forge-std/Test.sol" in "/home/kaleris/retrosync/contracts/test/RoyaltyDistributor.fuzz.t.sol"
+with remappings:
+      
+Compiling 6 files with Solc 0.8.33
+Solc 0.8.33 finished in 5.44ms
+Error: Compiler run failed:
+Error (6275): Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Script.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> script/Deploy.s.sol:4:1:
+  |
+4 | import "forge-std/Script.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Error (6275): Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ParserError: Source "forge-std/Test.sol" not found: File not found. Searched the following locations: "/home/kaleris/retrosync/contracts".
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:1:
+  |
+4 | import "forge-std/Test.sol";
+  | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Updating and loading repositories:
+ RPM Fusion for Fedora 43 - Nonfree - S 100% |   4.6 KiB/s |   5.9 KiB |  00m01s
+ RPM Fusion for Fedora 43 - Nonfree - N 100% |   8.8 KiB/s |   6.1 KiB |  00m01s
+ RPM Fusion for Fedora 43 - Free - Upda 100% |   6.8 KiB/s |   3.2 KiB |  00m00s
+ Copr repo for PyCharm owned by phracek 100% |   9.1 KiB/s |   2.1 KiB |  00m00s
+ google-chrome                          100% |   5.7 KiB/s |   1.3 KiB |  00m00s
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% |  80.0   B/s |  52.0   B |  00m01s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Checking shared v0.1.0 (/home/kaleris/retrosync/shared)
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+    Checking ceremony v0.1.0 (/home/kaleris/retrosync/tools/ceremony)
+    Checking font_check v0.1.0 (/home/kaleris/retrosync/tools/font_check)
+    Checking spc v0.1.0 (/home/kaleris/retrosync/six_sigma/spc)
+warning: unused import: `UniformRand`
+  --> zk_circuits/src/royalty_split.rs:17:34
+   |
+17 | use ark_std::{rand::SeedableRng, UniformRand, Zero};
+   |                                  ^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+error[E0432]: unresolved import `crate::types::Bowi`
+  --> shared/src/parsers.rs:11:29
+   |
+11 | use crate::types::{BtfsCid, Bowi, EvmAddress, Isrc, ParseError, RoyaltyS...
+   |                             ^^^^ no `Bowi` in `types`
+
+error[E0425]: cannot find type `Bowi` in this scope
+  --> shared/src/identifiers.rs:75:46
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                              ^^^^ not found in this scope
+   |
+help: you might be missing a type parameter
+   |
+75 | pub fn recognize_bowi<Bowi>(input: &str) -> Result<Bowi, ParseError> {
+   |                      ++++++
+
+error[E0425]: cannot find type `ParseError` in this scope
+  --> shared/src/identifiers.rs:75:52
+   |
+75 | pub fn recognize_bowi(input: &str) -> Result<Bowi, ParseError> {
+   |                                                    ^^^^^^^^^^ not found in this scope
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+error[E0433]: failed to resolve: use of undeclared type `ParseError`
+  --> shared/src/identifiers.rs:81:13
+   |
+81 |         Err(ParseError::InvalidBowi(input.to_string()))
+   |             ^^^^^^^^^^ use of undeclared type `ParseError`
+   |
+help: consider importing one of these items
+   |
+ 2 + use crate::types::ParseError;
+   |
+ 2 + use std::string::ParseError;
+   |
+ 2 + use nom::error::ParseError;
+   |
+ 2 + use nom::lib::std::string::ParseError;
+   |
+
+warning: unused imports: `alpha1`, `alphanumeric1`, `char`, `combinator::all_consuming`, `digit1`, and `take_while1`
+ --> shared/src/parsers.rs:5:44
+  |
+5 |     bytes::complete::{tag, take_while_m_n, take_while1},
+  |                                            ^^^^^^^^^^^
+6 |     character::complete::{char, digit1, alpha1, alphanumeric1},
+  |                           ^^^^  ^^^^^^  ^^^^^^  ^^^^^^^^^^^^^
+7 |     combinator::all_consuming,
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `RarityTier`
+ --> shared/src/alphabet.rs:8:63
+  |
+8 | use crate::master_pattern::{digit_root, band_from_digit_root, RarityTier};
+  |                                                               ^^^^^^^^^^
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:92:35
+   |
+92 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:105:23
+    |
+105 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+105 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+For more information about this error, try `rustc --explain E0599`.
+warning: `zk_circuits` (lib) generated 1 warning
+error: could not compile `zk_circuits` (lib) due to 2 previous errors; 1 warning emitted
+warning: build failed, waiting for other jobs to finish...
+error[E0425]: cannot find function, tuple struct or tuple variant `Bowi` in this scope
+  --> shared/src/identifiers.rs:79:12
+   |
+79 |         Ok(Bowi(format!("bowi:{}", uuid.to_lowercase())))
+   |            ^^^^ not found in this scope
+
+warning: unused variable: `track_band`
+  --> shared/src/alphabet.rs:75:43
+   |
+75 | ..._resonance(text: &str, track_band: u8) -> AlphabetAnalysis {
+   |                           ^^^^^^^^^^ help: if this is intentional, prefix it with an underscore: `_track_band`
+   |
+   = note: `#[warn(unused_variables)]` (part of `#[warn(unused)]`) on by default
+
+Some errors have detailed explanations: E0425, E0432, E0433.
+For more information about an error, try `rustc --explain E0425`.
+warning: `shared` (lib) generated 3 warnings
+error: could not compile `shared` (lib) due to 5 previous errors; 3 warnings emitted
+Warning: Found unknown `legacy` config for profile `default` defined in foundry.toml.
+Compiling 8 files with Solc 0.8.33
+Solc 0.8.33 finished in 470.26ms
+Error: Compiler run failed:
+Error (9582): Member "bandHash" not found or not visible after argument-dependent lookup in struct MasterPattern.Fingerprint memory.
+   --> src/RoyaltyDistributor.sol:171:53:
+    |
+171 |         emit Distributed(cid, totalBtt, band, tier, fp.bandHash);
+    |                                                     ^^^^^^^^^^^
+Updating and loading repositories:
+Repositories loaded.
+Package "gcc-15.2.1-7.fc43.x86_64" is already installed.
+Package "gcc-c++-15.2.1-7.fc43.x86_64" is already installed.
+Package "make-1:4.4.1-11.fc43.x86_64" is already installed.
+Package "cmake-3.31.10-3.fc43.x86_64" is already installed.
+Package "pkgconf-pkg-config-2.3.0-3.fc43.x86_64" is already installed.
+Package "openssl-devel-1:3.5.4-2.fc43.x86_64" is already installed.
+Package "gmp-devel-1:6.3.0-4.fc43.x86_64" is already installed.
+Package "perl-4:5.42.0-521.fc43.x86_64" is already installed.
+Package "clang-21.1.8-4.fc43.x86_64" is already installed.
+Package "llvm-21.1.8-4.fc43.x86_64" is already installed.
+Package "lld-21.1.8-4.fc43.x86_64" is already installed.
+Package "bpftool-7.6.0-1.fc43.x86_64" is already installed.
+Package "protobuf-compiler-3.19.6-18.fc43.x86_64" is already installed.
+Package "protobuf-devel-3.19.6-18.fc43.x86_64" is already installed.
+Package "sqlite-devel-3.50.2-2.fc43.x86_64" is already installed.
+Package "lmdb-devel-0.9.34-1.fc43.x86_64" is already installed.
+Package "nodejs-1:22.22.0-2.fc43.x86_64" is already installed.
+Package "nodejs-npm-1:10.9.4-1.22.22.0.2.fc43.x86_64" is already installed.
+
+Nothing to do.
+ https://copr.fedorainfracloud.org/api_ 100% |  96.0   B/s |  52.0   B |  00m01s
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+>>> Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smalls
+Failed to download files
+ Librepo error: Status code: 404 for https://copr.fedorainfracloud.org/api_3/rpmrepo/@smallstep/step-cli/fedora-43/ (IP: 2600:1f18:8ee:ae00:9d1f:4737:93ce:6db)
+Updating and loading repositories:
+Repositories loaded.
+Failed to resolve the transaction:
+No match for argument: step-cli
+You can try to add to command line:
+  --skip-unavailable to skip unavailable packages
+    Updating crates.io index
+     Ignored package `trunk v0.21.14` is already installed, use --force to override
+    Updating crates.io index
+     Locking 19 packages to latest compatible versions
+      Adding curve25519-dalek v4.1.3
+      Adding curve25519-dalek-derive v0.1.1
+      Adding ed25519 v2.2.3
+      Adding ed25519-dalek v2.2.0
+      Adding fiat-crypto v0.2.9
+      Adding indextree v4.7.4
+      Adding indextree-macros v0.1.3
+      Adding itertools v0.14.0
+      Adding next-gen v0.1.1
+      Adding next-gen-proc_macros v0.1.1
+      Adding prost v0.12.6 (available: v0.14.3)
+      Adding prost-derive v0.12.6
+      Adding strum v0.27.2
+      Adding strum_macros v0.27.2
+      Adding unwind_safe v0.1.0
+      Adding vecmap-rs v0.2.4
+      Adding xhtmlchardet v2.2.0
+      Adding xmlparser v0.13.6
+      Adding xot v0.20.0 (available: v0.31.2)
+ Downloading crates ...
+  Downloaded prost v0.12.6
+  Downloaded curve25519-dalek-derive v0.1.1
+  Downloaded prost-derive v0.12.6
+  Downloaded ed25519-dalek v2.2.0
+  Downloaded ed25519 v2.2.3
+  Downloaded curve25519-dalek v4.1.3
+   Compiling proc-macro2 v1.0.106
+   Compiling quote v1.0.45
+   Compiling unicode-ident v1.0.24
+   Compiling serde_core v1.0.228
+    Checking cfg-if v1.0.4
+   Compiling serde v1.0.228
+   Compiling libc v0.2.183
+   Compiling version_check v0.9.5
+   Compiling typenum v1.19.0
+   Compiling syn v2.0.117
+   Compiling generic-array v0.14.7
+    Checking once_cell v1.21.4
+   Compiling zerocopy v0.8.47
+    Checking getrandom v0.2.17
+    Checking subtle v2.6.1
+    Checking const-oid v0.9.6
+   Compiling syn v1.0.109
+   Compiling rustversion v1.0.22
+    Checking itoa v1.0.18
+   Compiling find-msvc-tools v0.1.9
+   Compiling shlex v1.3.0
+   Compiling cc v1.2.57
+    Checking rand_core v0.6.4
+   Compiling autocfg v1.5.0
+    Checking pin-project-lite v0.2.17
+    Checking log v0.4.29
+   Compiling equivalent v1.0.2
+   Compiling hashbrown v0.16.1
+   Compiling indexmap v2.13.0
+   Compiling serde_derive v1.0.228
+   Compiling zeroize_derive v1.4.3
+    Checking tracing-core v0.1.36
+   Compiling winnow v1.0.0
+    Checking ppv-lite86 v0.2.21
+    Checking zeroize v1.8.2
+   Compiling toml_datetime v1.0.1+spec-1.1.0
+    Checking rand_chacha v0.3.1
+    Checking rand v0.8.5
+    Checking crypto-common v0.1.7
+    Checking block-buffer v0.10.4
+   Compiling toml_parser v1.0.10+spec-1.1.0
+    Checking digest v0.10.7
+   Compiling tracing-attributes v0.1.31
+   Compiling toml_edit v0.25.5+spec-1.1.0
+   Compiling zmij v1.0.21
+    Checking bytes v1.11.1
+   Compiling proc-macro-crate v3.5.0
+    Checking tracing v0.1.44
+    Checking smallvec v1.15.1
+    Checking memchr v2.8.0
+   Compiling unicode-xid v0.2.6
+    Checking futures-core v0.3.32
+   Compiling const_format_proc_macros v0.2.34
+    Checking cpufeatures v0.2.17
+   Compiling num-traits v0.2.19
+   Compiling parity-scale-codec v3.7.5
+   Compiling crunchy v0.2.4
+   Compiling parity-scale-codec-derive v3.7.5
+   Compiling impl-trait-for-tuples v0.2.3
+   Compiling rlp-derive v0.1.0
+   Compiling parking_lot_core v0.9.12
+   Compiling derive_more-impl v1.0.0
+    Checking scopeguard v1.2.0
+   Compiling thiserror v1.0.69
+    Checking lock_api v0.4.14
+   Compiling thiserror-impl v1.0.69
+   Compiling synstructure v0.13.2
+    Checking errno v0.3.14
+   Compiling serde_json v1.0.149
+    Checking signal-hook-registry v1.4.8
+    Checking parking_lot v0.12.5
+   Compiling scale-info-derive v2.11.6
+   Compiling tokio-macros v2.6.1
+    Checking socket2 v0.6.3
+    Checking mio v1.1.1
+    Checking futures-sink v0.3.32
+   Compiling zerofrom-derive v0.1.6
+    Checking tokio v1.50.0
+    Checking sha2 v0.10.9
+    Checking byteorder v1.5.0
+    Checking slab v0.4.12
+   Compiling tiny-keccak v2.0.2
+    Checking zerofrom v0.1.6
+   Compiling yoke-derive v0.8.1
+    Checking stable_deref_trait v1.2.1
+    Checking futures-task v0.3.32
+   Compiling pkg-config v0.3.32
+    Checking yoke v0.8.1
+   Compiling futures-macro v0.3.32
+    Checking hex v0.4.3
+   Compiling crossbeam-utils v0.8.21
+    Checking futures-util v0.3.32
+   Compiling zerovec-derive v0.11.2
+   Compiling heck v0.5.0
+    Checking zerovec v0.11.5
+    Checking num-integer v0.1.46
+   Compiling displaydoc v0.2.5
+    Checking bitflags v2.11.0
+    Checking fnv v1.0.7
+    Checking num-bigint v0.4.6
+    Checking hmac v0.12.1
+    Checking der v0.7.10
+    Checking rustc-hex v2.1.0
+   Compiling httparse v1.10.1
+    Checking const_format v0.2.35
+   Compiling getrandom v0.4.2
+   Compiling rustix v1.1.4
+    Checking byte-slice-cast v1.2.3
+    Checking arrayvec v0.7.6
+   Compiling camino v1.2.2
+    Checking tower-service v0.3.3
+    Checking spki v0.7.3
+    Checking rlp v0.5.2
+    Checking tinystr v0.8.2
+    Checking futures-channel v0.3.32
+    Checking signature v2.2.0
+   Compiling ring v0.17.14
+    Checking ff v0.13.1
+   Compiling wasm-bindgen-shared v0.2.114
+    Checking static_assertions v1.1.0
+    Checking writeable v0.6.2
+    Checking litemap v0.8.1
+    Checking keccak v0.1.6
+    Checking base16ct v0.2.0
+    Checking group v0.13.0
+    Checking sha3 v0.10.8
+    Checking icu_locale_core v2.1.1
+    Checking sec1 v0.7.3
+    Checking pkcs8 v0.10.2
+    Checking zerotrie v0.2.3
+    Checking potential_utf v0.1.4
+    Checking crossbeam-epoch v0.9.18
+    Checking tokio-util v0.7.18
+    Checking derive_more v1.0.0
+    Checking aho-corasick v1.1.4
+    Checking crypto-bigint v0.5.5
+   Compiling rayon-core v1.13.0
+   Compiling icu_normalizer_data v2.1.1
+    Checking regex-syntax v0.8.10
+   Compiling icu_properties_data v2.1.2
+    Checking percent-encoding v2.3.2
+    Checking crossbeam-deque v0.8.6
+    Checking scale-info v2.11.6
+    Checking elliptic-curve v0.13.8
+    Checking icu_provider v2.1.1
+    Checking icu_collections v2.1.1
+    Checking fixed-hash v0.8.0
+    Checking impl-codec v0.6.0
+    Checking impl-rlp v0.3.0
+    Checking rfc6979 v0.4.0
+   Compiling strum_macros v0.26.4
+   Compiling open-fastrlp-derive v0.1.1
+    Checking regex-automata v0.4.14
+   Compiling num_enum_derive v0.7.6
+    Checking impl-serde v0.4.0
+   Compiling auto_impl v1.3.0
+    Checking untrusted v0.9.0
+    Checking either v1.15.0
+    Checking try-lock v0.2.5
+    Checking want v0.3.1
+    Checking ecdsa v0.16.9
+    Checking uint v0.9.5
+    Checking httpdate v1.0.3
+    Checking base64 v0.21.7
+    Checking ethbloom v0.13.0
+    Checking primitive-types v0.12.2
+    Checking icu_properties v2.1.2
+    Checking icu_normalizer v2.1.1
+    Checking rayon v1.11.0
+    Checking k256 v0.13.4
+    Checking form_urlencoded v1.2.2
+    Checking http v0.2.12
+   Compiling semver v1.0.27
+   Compiling rustls v0.21.12
+   Compiling bumpalo v3.20.2
+   Compiling paste v1.0.15
+   Compiling getrandom v0.3.4
+   Compiling wasm-bindgen-macro-support v0.2.114
+    Checking ark-std v0.4.0
+    Checking idna_adapter v1.2.1
+    Checking ethereum-types v0.14.1
+    Checking rustls-webpki v0.101.7
+    Checking sct v0.7.1
+    Checking regex v1.12.3
+    Checking http v1.4.0
+   Compiling ark-serialize-derive v0.4.2
+   Compiling thiserror-impl v2.0.18
+   Compiling wasm-bindgen v0.2.114
+   Compiling ahash v0.8.12
+    Checking utf8_iter v1.0.4
+    Checking linux-raw-sys v0.12.1
+    Checking mime v0.3.17
+    Checking iana-time-zone v0.1.65
+    Checking chrono v0.4.44
+   Compiling wasm-bindgen-macro v0.2.114
+    Checking idna v1.1.0
+    Checking ark-serialize v0.4.2
+   Compiling ark-ff-macros v0.4.2
+    Checking itertools v0.10.5
+    Checking cargo-platform v0.1.9
+   Compiling ark-ff-asm v0.4.2
+   Compiling derivative v2.2.0
+    Checking encoding_rs v0.8.35
+    Checking ipnet v2.12.0
+    Checking pin-utils v0.1.0
+    Checking fastrand v2.3.0
+    Checking tempfile v3.27.0
+    Checking cargo_metadata v0.18.1
+    Checking ark-ff v0.4.2
+    Checking url v2.5.8
+    Checking ethabi v18.0.0
+    Checking open-fastrlp v0.1.4
+    Checking strum v0.26.3
+    Checking num_enum v0.7.6
+   Compiling libusb1-sys v0.7.0
+    Checking const-hex v1.18.1
+    Checking inout v0.1.4
+    Checking ryu v1.0.23
+   Compiling prettyplease v0.2.37
+   Compiling eyre v0.6.12
+   Compiling vcpkg v0.2.15
+    Checking ethers-core v2.0.14
+    Checking serde_urlencoded v0.7.1
+    Checking cipher v0.4.4
+   Compiling openssl-sys v0.9.112
+    Checking js-sys v0.3.91
+    Checking tokio-rustls v0.24.1
+    Checking http-body v1.0.1
+    Checking h2 v0.3.27
+    Checking http-body v0.4.6
+   Compiling async-trait v0.1.89
+    Checking socket2 v0.5.10
+    Checking powerfmt v0.2.0
+   Compiling thiserror v2.0.18
+   Compiling time-core v0.1.8
+   Compiling num-conv v0.2.0
+   Compiling siphasher v1.0.2
+   Compiling anyhow v1.0.102
+   Compiling phf_shared v0.11.3
+   Compiling time-macros v0.2.27
+    Checking hyper v0.14.32
+    Checking deranged v0.5.8
+    Checking hashbrown v0.13.2
+   Compiling toml_datetime v0.6.11
+   Compiling serde_spanned v0.6.9
+   Compiling ring v0.16.20
+   Compiling memoffset v0.7.1
+   Compiling toml_write v0.1.2
+   Compiling winnow v0.7.15
+    Checking lazy_static v1.5.0
+   Compiling radium v0.7.0
+    Checking webpki-roots v0.25.4
+   Compiling rusb v0.9.4
+    Checking time v0.3.47
+    Checking hyper-rustls v0.24.2
+   Compiling toml_edit v0.22.27
+    Checking ark-poly v0.4.2
+   Compiling phf_generator v0.11.3
+    Checking rustls-pemfile v1.0.4
+   Compiling hidapi-rusb v1.3.3
+    Checking bs58 v0.5.1
+    Checking sha1 v0.10.6
+    Checking ripemd v0.1.3
+    Checking tracing-subscriber v0.2.25
+   Compiling pin-project-internal v1.1.11
+    Checking tower-layer v0.3.3
+    Checking bech32 v0.9.1
+    Checking data-encoding v2.10.0
+   Compiling same-file v1.0.6
+    Checking untrusted v0.7.1
+    Checking base64 v0.13.1
+    Checking sync_wrapper v0.1.2
+    Checking utf-8 v0.7.6
+    Checking spin v0.5.2
+   Compiling indenter v0.3.4
+    Checking tap v1.0.1
+    Checking wyz v0.5.1
+    Checking pin-project v1.1.11
+    Checking pem v1.1.1
+    Checking tungstenite v0.20.1
+    Checking reqwest v0.11.27
+   Compiling walkdir v2.5.0
+    Checking coins-core v0.8.7
+   Compiling Inflector v0.11.4
+    Checking ark-relations v0.4.0
+   Compiling toml v0.8.23
+   Compiling phf_macros v0.11.3
+    Checking simple_asn1 v0.6.4
+    Checking ark-ec v0.4.2
+    Checking gloo-timers v0.2.6
+    Checking salsa20 v0.10.2
+    Checking fxhash v0.2.1
+    Checking pbkdf2 v0.11.0
+    Checking send_wrapper v0.4.0
+    Checking atomic-waker v1.1.2
+   Compiling dunce v1.0.5
+    Checking funty v2.0.0
+    Checking foreign-types-shared v0.1.1
+   Compiling openssl v0.10.76
+    Checking bitflags v1.3.2
+    Checking nix v0.26.4
+    Checking foreign-types v0.3.2
+    Checking bitvec v1.0.1
+    Checking h2 v0.4.13
+   Compiling ethers-contract-abigen v2.0.14
+    Checking futures-timer v3.0.3
+    Checking scrypt v0.10.0
+    Checking hashers v1.0.1
+   Compiling phf v0.11.3
+    Checking jsonwebtoken v8.3.0
+    Checking coins-bip32 v0.8.7
+    Checking tokio-tungstenite v0.20.1
+    Checking tracing-futures v0.2.5
+    Checking http-body-util v0.1.3
+    Checking aes v0.8.4
+    Checking ctr v0.9.2
+    Checking enr v0.10.0
+    Checking pbkdf2 v0.12.2
+    Checking sync_wrapper v1.0.2
+    Checking uuid v0.8.2
+   Compiling openssl-macros v0.1.1
+    Checking instant v0.1.13
+    Checking base64 v0.22.1
+   Compiling native-tls v0.2.18
+    Checking ethers-providers v2.0.14
+    Checking eth-keystore v0.5.0
+   Compiling ethers-contract-derive v2.0.14
+    Checking coins-bip39 v0.8.7
+    Checking coins-ledger v0.10.1
+   Compiling doxygen-rs v0.4.2
+    Checking hyper v1.8.1
+    Checking ark-snark v0.4.0
+   Compiling rustc_version v0.4.1
+    Checking futures-executor v0.3.32
+   Compiling strum_macros v0.27.2
+    Checking blake2 v0.10.6
+    Checking openssl-probe v0.2.1
+   Compiling unicase v2.9.0
+    Checking ark-crypto-primitives v0.4.0
+   Compiling mime_guess v2.0.5
+    Checking hyper-util v0.1.20
+    Checking ethers-signers v2.0.14
+   Compiling curve25519-dalek v4.1.3
+   Compiling lmdb-master-sys v0.2.5
+    Checking tower v0.5.3
+    Checking ethers-etherscan v2.0.14
+   Compiling itertools v0.14.0
+   Compiling strum v0.27.2
+    Checking ethers-contract v2.0.14
+    Checking futures-locks v0.7.1
+   Compiling multer v3.1.0
+    Checking tokio-native-tls v0.3.1
+   Compiling indextree-macros v0.1.3
+    Checking ark-groth16 v0.4.0
+    Checking ark-bn254 v0.4.0
+    Checking ark-r1cs-std v0.4.0
+   Compiling itertools v0.11.0
+    Checking ethers-addressbook v2.0.14
+    Checking crossbeam-queue v0.3.12
+    Checking bincode v1.3.3
+   Compiling next-gen-proc_macros v0.1.1
+   Compiling curve25519-dalek-derive v0.1.1
+    Checking spin v0.9.8
+    Checking unwind_safe v0.1.0
+    Checking minimal-lexical v0.2.1
+    Checking heed-traits v0.20.0
+    Checking iri-string v0.7.10
+    Checking nom v7.1.3
+    Checking tower-http v0.6.8
+    Checking heed-types v0.20.1
+    Checking ethers-middleware v2.0.14
+    Checking next-gen v0.1.1
+   Compiling prost-derive v0.12.6
+    Checking synchronoise v1.0.1
+    Checking indextree v4.7.4
+    Checking hyper-tls v0.6.0
+    Checking axum-core v0.4.5
+    Checking sharded-slab v0.1.7
+    Checking matchers v0.2.0
+    Checking ed25519 v2.2.3
+    Checking tracing-serde v0.2.0
+    Checking rustls-pki-types v1.14.0
+    Checking tracing-log v0.2.0
+    Checking serde_path_to_error v0.1.20
+    Checking page_size v0.6.0
+    Checking thread_local v1.1.9
+    Checking nu-ansi-term v0.50.3
+    Checking xmlparser v0.13.6
+    Checking matchit v0.7.3
+    Checking vecmap-rs v0.2.4
+    Checking xhtmlchardet v2.2.0
+    Checking axum v0.7.9
+    Checking xot v0.20.0
+    Checking ethers v2.0.14
+    Checking tracing-subscriber v0.3.23
+    Checking heed v0.20.5
+    Checking zk_circuits v0.1.0 (/home/kaleris/retrosync/zk_circuits)
+error[E0432]: unresolved import `ark_snark`
+  --> zk_circuits/src/royalty_split.rs:17:5
+   |
+17 | use ark_snark::SNARK;
+   |     ^^^^^^^^^ use of unresolved module or unlinked crate `ark_snark`
+   |
+   = help: if you wanted to use a crate named `ark_snark`, use `cargo add ark_snark` to add it to your `Cargo.toml`
+
+error[E0599]: no function or associated item named `prove` found for struct `Groth16<E, QAP>` in the current scope
+  --> zk_circuits/src/royalty_split.rs:93:35
+   |
+93 |     let proof = Groth16::<Bn254>::prove(pk, circuit, &mut rng)
+   |                                   ^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+   |
+   = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `prove` is implemented but not in scope; perhaps you want to import it
+   |
+13 + use ark_snark::SNARK;
+   |
+
+error[E0599]: no function or associated item named `verify` found for struct `Groth16<E, QAP>` in the current scope
+   --> zk_circuits/src/royalty_split.rs:106:23
+    |
+106 |     Groth16::<Bn254>::verify(vk, &public_inputs, proof).unwrap_or(false)
+    |                       ^^^^^^ function or associated item not found in `Groth16<ark_ec::models::bn::Bn<ark_bn254::Config>>`
+    |
+    = help: items from traits can only be used if the trait is in scope
+help: trait `SNARK` which provides `verify` is implemented but not in scope; perhaps you want to import it
+    |
+ 13 + use ark_snark::SNARK;
+    |
+help: there is an associated function `verify_proof` with a similar name
+    |
+106 |     Groth16::<Bn254>::verify_proof(vk, &public_inputs, proof).unwrap_or(false)
+    |                             ++++++
+
+Some errors have detailed explanations: E0432, E0599.
+For more information about an error, try `rustc --explain E0432`.
+error: could not compile `zk_circuits` (lib) due to 3 previous errors
+warning: build failed, waiting for other jobs to finish...
+Compiling 26 files with Solc 0.8.33
+Solc 0.8.33 finished in 1.49s
+Compiler run successful with warnings:
+Warning (2072): Unused local variable.
+   --> src/RoyaltyDistributor.sol:167:9:
+    |
+167 |         MasterPattern.Fingerprint memory _fp = MasterPattern.fingerprint(cid, bytes32(totalBtt));
+    |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+note[screaming-snake-case-const]: constants should use SCREAMING_SNAKE_CASE
+ --> src/MockBTT.sol:8:29
+  |
+8 |     string  public constant name     = "BitTorrent";
+  |                             ^^^^ help: consider using: `NAME`
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-const
+
+warning[unsafe-typecast]: typecasts that can truncate values should be checked
+  --> src/MasterPattern.sol:16:19
+   |
+16 |         uint8 r = uint8(n % 9);
+   |                   ^^^^^^^^^^^^
+   |
+   = note: consider disabling this lint if you're certain the cast is safe
+           
+           // casting to 'uint8' is safe because [explain why]
+           // forge-lint: disable-next-line(unsafe-typecast)
+           
+           
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-typecast
+
+warning[unsafe-typecast]: typecasts that can truncate values should be checked
+  --> src/MasterPattern.sol:36:16
+   |
+36 |         return uint8(hash % 256);
+   |                ^^^^^^^^^^^^^^^^^
+   |
+   = note: consider disabling this lint if you're certain the cast is safe
+           
+           // casting to 'uint8' is safe because [explain why]
+           // forge-lint: disable-next-line(unsafe-typecast)
+           
+           
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unsafe-typecast
+
+note[asm-keccak256]: use of inefficient hashing mechanism; consider using inline assembly
+  --> src/MasterPattern.sol:52:28
+   |
+52 |         bytes32 combined = keccak256(abi.encodePacked(isrcHash, audioHash));
+   |                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#asm-keccak256
+
+note[screaming-snake-case-const]: constants should use SCREAMING_SNAKE_CASE
+ --> src/MockBTT.sol:9:29
+  |
+9 |     string  public constant symbol   = "BTT";
+  |                             ^^^^^^ help: consider using: `SYMBOL`
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-const
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> src/RoyaltyDistributor.sol:4:8
+  |
+4 | import "./ZKVerifier.sol";
+  |        ^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> src/RoyaltyDistributor.sol:5:8
+  |
+5 | import "./MasterPattern.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[screaming-snake-case-const]: constants should use SCREAMING_SNAKE_CASE
+  --> src/MockBTT.sol:10:29
+   |
+10 |     uint8   public constant decimals = 18;
+   |                             ^^^^^^^^ help: consider using: `DECIMALS`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-const
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/RoyaltyDistributor.sol:50:38
+   |
+50 |     IERC20          public immutable btt;       // BTT ERC-20 token
+   |                                      ^^^ help: consider using: `BTT`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/RoyaltyDistributor.sol:51:38
+   |
+51 |     ZKVerifier      public immutable verifier;  // Groth16 verifier
+   |                                      ^^^^^^^^ help: consider using: `VERIFIER`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/RoyaltyDistributor.sol:52:38
+   |
+52 |     address         public immutable admin;
+   |                                      ^^^^^ help: consider using: `ADMIN`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> test/RoyaltyDistributor.fuzz.t.sol:4:8
+  |
+4 | import "forge-std/Test.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[screaming-snake-case-immutable]: immutables should use SCREAMING_SNAKE_CASE
+  --> src/ZKVerifier.sol:38:30
+   |
+38 |     address public immutable admin;
+   |                              ^^^^^ help: consider using: `ADMIN`
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#screaming-snake-case-immutable
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> test/RoyaltyDistributor.fuzz.t.sol:5:8
+  |
+5 | import "../src/MockBTT.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> script/Deploy.s.sol:4:8
+  |
+4 | import "forge-std/Script.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unwrapped-modifier-logic]: wrap modifier logic to reduce code size
+  --> src/RoyaltyDistributor.sol:56:5
+   |
+56 | /     modifier nonReentrant() {
+57 | |         require(!locked, "RoyaltyDistributor: reentrant call");
+58 | |         locked = true;
+59 | |         _;
+60 | |         locked = false;
+61 | |     }
+   | |_____^
+   |
+help: wrap modifier logic to reduce code size
+   |
+56 ~     modifier nonReentrant() {
+57 +         _nonReentrantBefore();
+58 +         _;
+59 +         _nonReentrantAfter();
+60 +     }
+61 + 
+62 +     function _nonReentrantBefore() internal {
+63 +         require(!locked, "RoyaltyDistributor: reentrant call");
+64 +         locked = true;
+65 +     }
+66 + 
+67 +     function _nonReentrantAfter() internal {
+68 +         locked = false;
+69 +     }
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unwrapped-modifier-logic
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> test/RoyaltyDistributor.fuzz.t.sol:6:8
+  |
+6 | import "../src/ZKVerifier.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> test/RoyaltyDistributor.fuzz.t.sol:7:8
+  |
+7 | import "../src/RoyaltyDistributor.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unwrapped-modifier-logic]: wrap modifier logic to reduce code size
+  --> src/RoyaltyDistributor.sol:99:5
+   |
+99 |     modifier notPaused() { require(!paused, "RoyaltyDistributor: paused"); _; }
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+help: wrap modifier logic to reduce code size
+   |
+99 ~     modifier notPaused() {
+100+     _notPaused();
+101+     _;
+102+     }
+103+ 
+104+     function _notPaused() internal {
+105+     require(!paused, "RoyaltyDistributor: paused");
+106+     }
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unwrapped-modifier-logic
+
+note[unwrapped-modifier-logic]: wrap modifier logic to reduce code size
+  --> src/ZKVerifier.sol:42:5
+   |
+42 | /     modifier onlyAdmin() {
+43 | |         require(msg.sender == admin, "ZKVerifier: only admin");
+44 | |         _;
+45 | |     }
+   | |_____^
+   |
+help: wrap modifier logic to reduce code size
+   |
+42 ~     modifier onlyAdmin() {
+43 +         _onlyAdmin();
+44 +         _;
+45 +     }
+46 + 
+47 +     function _onlyAdmin() internal {
+48 +         require(msg.sender == admin, "ZKVerifier: only admin");
+49 +     }
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#unwrapped-modifier-logic
+
+warning[erc20-unchecked-transfer]: ERC20 'transfer' and 'transferFrom' calls should check the return value
+  --> test/RoyaltyDistributor.fuzz.t.sol:18:9
+   |
+18 |         btt.transfer(address(dist), 500_000_000 * 1e18);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#erc20-unchecked-transfer
+
+warning[erc20-unchecked-transfer]: ERC20 'transfer' and 'transferFrom' calls should check the return value
+  --> test/RoyaltyDistributor.fuzz.t.sol:65:9
+   |
+65 |         btt.transfer(to, amount);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#erc20-unchecked-transfer
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> script/Deploy.s.sol:5:8
+  |
+5 | import "../src/MockBTT.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> script/Deploy.s.sol:6:8
+  |
+6 | import "../src/ZKVerifier.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+note[unwrapped-modifier-logic]: wrap modifier logic to reduce code size
+   --> src/RoyaltyDistributor.sol:100:5
+    |
+100 |     modifier onlyAdmin()  { require(msg.sender == admin, "not admin"); _; }
+    |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    |
+help: wrap modifier logic to reduce code size
+    |
+100 ~     modifier onlyAdmin() {
+101 + _onlyAdmin();
+102 + _;
+103 + }
+104 + 
+105 + function _onlyAdmin() internal {
+106 + require(msg.sender == admin, "not admin");
+107 + }
+    |
+    = help: https://book.getfoundry.sh/reference/forge/forge-lint#unwrapped-modifier-logic
+
+note[unaliased-plain-import]: use named imports '{A, B}' or alias 'import ".." as X'
+ --> script/Deploy.s.sol:7:8
+  |
+7 | import "../src/RoyaltyDistributor.sol";
+  |        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: https://book.getfoundry.sh/reference/forge/forge-lint#unaliased-plain-import
+
+warning[erc20-unchecked-transfer]: ERC20 'transfer' and 'transferFrom' calls should check the return value
+  --> script/Deploy.s.sol:48:9
+   |
+48 |         btt.transfer(address(dist), 100_000_000 * 1e18);
+   |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = help: https://book.getfoundry.sh/reference/forge/forge-lint#erc20-unchecked-transfer
+

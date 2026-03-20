@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Logs
 logs
 *.log
@@ -22,3 +23,23 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+=======
+# Build artifacts
+target/
+dist/
+out/
+
+# Config
+.env.local
+*.key
+*.pem
+pki/
+
+# Databases
+*.db
+*.lmdb/
+
+# Foundry
+cache/
+broadcast/
+>>>>>>> 61e9a1a (Initial commit: frontend with wasm-bindgen, BTFS daemon, and project structure)

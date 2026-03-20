@@ -1,0 +1,3 @@
+[tools]
+wasm-bindgen = "0.2.114"
+wasm-bindgen-path = "/home/kaleris/.cargo/bin/wasm-bindgen"
