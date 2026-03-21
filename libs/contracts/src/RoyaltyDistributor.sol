@@ -124,19 +124,49 @@ contract RoyaltyDistributor {
     }
     mapping(bytes32 => CashoutRequest) public cashoutRequests;
 
+    // ── Node reputation tiers (based on performance) ────────────────────
+    enum NodeTier {
+        UNRANKED,      // 0: New nodes, no rewards yet
+        BRONZE,        // 1: 99.0% uptime, 10% fee bonus
+        SILVER,        // 2: 99.5% uptime, 20% fee bonus
+        GOLD,          // 3: 99.9% uptime, 35% fee bonus
+        PLATINUM       // 4: 99.95% uptime, 50% fee bonus
+    }
+
     // ── Host node reputation ───────────────────────────────────────────
     struct HostReputation {
-        uint256 totalFeesEarned;    // 2.5% fee share earned
-        uint256 streamsHosted;
+        NodeTier tier;                   // Current reputation tier
+        uint256 totalFeesEarned;         // Total from streams + seeding
+        uint256 seedingRewardsEarned;    // BitTorrent seeding rewards
+        uint256 streamsHosted;           // Number of streams hosted
+        uint256 filesSeeded;             // Number of unique files seeded
+        uint256 uptimePercentage;        // Uptime % (BP: 10000 = 100%)
         uint256 lastReward;
+        uint256 tierPromotionTime;       // When tier was last updated
     }
     mapping(address => HostReputation) public hostReputation;
+
+    // ── BitTorrent Seeding Rewards ──────────────────────────────────────
+    struct SeedingSession {
+        bytes32   trackCid;          // Content CID being seeded
+        address   seeder;            // Node seeding the file
+        uint256   bytesSeeded;       // Total bytes uploaded by seeder
+        uint256   seedStartTime;
+        uint256   seedEndTime;
+        uint256   rewardPerDay;      // BTT/day reward for this seeding
+        bool      rewarded;          // Has this session been paid?
+    }
+    mapping(bytes32 => SeedingSession) public seedingSessions;
+    bytes32[] public seedingHistory;
+    mapping(address => bytes32[]) public nodeSeeds; // Node → seed sessions
+    mapping(bytes32 => address[]) public trackSeeders; // Track → seeding nodes
 
     // ── Artist opt-in for crypto payouts ───────────────────────────────
     mapping(address => bool) public artistOptInCrypto; // true = artist accepts crypto payouts
     
     // ── Platform cashout tracking ───────────────────────────────────────
     uint256 public platformFeesAccumulated; // Platform share from cashout fees
+    uint256 public seedingRewardsPool; // Accumulates % of streaming revenue for seeding
 
     // ── Events ────────────────────────────────────────────────────────
     event Distributed(
@@ -181,6 +211,24 @@ contract RoyaltyDistributor {
         address indexed hostNode,
         uint256 amount,
         uint256 totalEarned
+    );
+    event SeedingSessionStarted(
+        bytes32 indexed seedingId,
+        bytes32 indexed trackCid,
+        address indexed seeder,
+        uint256 rewardPerDay
+    );
+    event SeedingSessionRewarded(
+        bytes32 indexed seedingId,
+        address indexed seeder,
+        uint256 totalReward,
+        uint256 daysSeed
+    );
+    event NodeTierPromoted(
+        address indexed node,
+        NodeTier oldTier,
+        NodeTier newTier,
+        uint256 uptime
     );
 
     // ── Emergency pause (for exploit response) ─────────────────────────
@@ -511,6 +559,132 @@ contract RoyaltyDistributor {
         emit CashoutExecuted(cashoutId, co.recipient, co.netAmount, co.networkFee);
     }
 
+    /// @notice Start a BitTorrent seeding session.
+    /// @dev Called when a P2P node commits to seeding a track for a period.
+    /// @param seedingId Unique seeding session ID
+    /// @param trackCid BTFS CID of track being seeded
+    /// @param seedDays Number of days to seed
+    /// @param bytesSeeded Total bytes this node will upload
+    function startSeedingSession(
+        bytes32 seedingId,
+        bytes32 trackCid,
+        uint256 seedDays,
+        uint256 bytesSeeded
+    ) external notPaused {
+        require(seedDays > 0 && seedDays <= 365, "seed days must be 1-365");
+        require(bytesSeeded > 0, "zero bytes");
+        require(seedingSessions[seedingId].seeder == address(0), "seeding already recorded");
+
+        // Base reward: 10 BTT per day, scaled by node tier
+        uint256 baseReward = 10 * 1e18; // 10 BTT
+        uint256 tierMultiplier = _getTierRewardMultiplier(msg.sender);
+        uint256 rewardPerDay = (baseReward * tierMultiplier) / 10000; // Adjust for tier
+
+        // Record seeding session
+        seedingSessions[seedingId] = SeedingSession({
+            trackCid: trackCid,
+            seeder: msg.sender,
+            bytesSeeded: bytesSeeded,
+            seedStartTime: block.timestamp,
+            seedEndTime: block.timestamp + (seedDays * 1 days),
+            rewardPerDay: rewardPerDay,
+            rewarded: false
+        });
+
+        seedingHistory.push(seedingId);
+        nodeSeeds[msg.sender].push(seedingId);
+        trackSeeders[trackCid].push(msg.sender);
+
+        emit SeedingSessionStarted(seedingId, trackCid, msg.sender, rewardPerDay);
+    }
+
+    /// @notice Claim seeding rewards after session completes.
+    /// @param seedingId The seeding session ID
+    function claimSeedingReward(bytes32 seedingId) external notPaused nonReentrant {
+        SeedingSession storage session = seedingSessions[seedingId];
+        require(session.seeder == msg.sender, "not seeder");
+        require(!session.rewarded, "already rewarded");
+        require(block.timestamp >= session.seedEndTime, "seeding period not complete");
+
+        session.rewarded = true;
+
+        // Calculate reward: rewardPerDay × days seeded
+        uint256 daysSeed = (session.seedEndTime - session.seedStartTime) / 1 days;
+        uint256 totalReward = session.rewardPerDay * daysSeed;
+
+        // Transfer from seeding rewards pool
+        require(seedingRewardsPool >= totalReward, "insufficient seeding pool");
+        seedingRewardsPool -= totalReward;
+
+        // Update host reputation
+        hostReputation[msg.sender].seedingRewardsEarned += totalReward;
+        hostReputation[msg.sender].filesSeeded += 1;
+        hostReputation[msg.sender].totalFeesEarned += totalReward;
+
+        // Transfer rewards to node
+        require(btt.transfer(msg.sender, totalReward), "reward transfer failed");
+
+        // Check for tier promotion
+        _checkTierPromotion(msg.sender);
+
+        emit SeedingSessionRewarded(seedingId, msg.sender, totalReward, daysSeed);
+    }
+
+    /// @notice Promote a node's tier based on uptime performance.
+    /// @dev Called by oracle or admin after verifying uptime metrics.
+    function promoteNodeTier(address node, NodeTier newTier, uint256 uptimePercentage) external onlyAdmin {
+        require(uptimePercentage <= 10000, "invalid uptime %");
+        HostReputation storage rep = hostReputation[node];
+        NodeTier oldTier = rep.tier;
+
+        rep.tier = newTier;
+        rep.uptimePercentage = uptimePercentage;
+        rep.tierPromotionTime = block.timestamp;
+
+        emit NodeTierPromoted(node, oldTier, newTier, uptimePercentage);
+    }
+
+    /// @notice Internal: Check if node qualifies for tier promotion.
+    function _checkTierPromotion(address node) internal {
+        HostReputation storage rep = hostReputation[node];
+        uint256 uptime = rep.uptimePercentage;
+
+        // Promotion thresholds (uptime in BP)
+        if (uptime >= 9995 && rep.tier < NodeTier.PLATINUM) {
+            rep.tier = NodeTier.PLATINUM;
+            emit NodeTierPromoted(node, NodeTier.GOLD, NodeTier.PLATINUM, uptime);
+        } else if (uptime >= 9990 && rep.tier < NodeTier.GOLD) {
+            rep.tier = NodeTier.GOLD;
+            emit NodeTierPromoted(node, NodeTier.SILVER, NodeTier.GOLD, uptime);
+        } else if (uptime >= 9950 && rep.tier < NodeTier.SILVER) {
+            rep.tier = NodeTier.SILVER;
+            emit NodeTierPromoted(node, NodeTier.BRONZE, NodeTier.SILVER, uptime);
+        } else if (uptime >= 9900 && rep.tier < NodeTier.BRONZE) {
+            rep.tier = NodeTier.BRONZE;
+            emit NodeTierPromoted(node, NodeTier.UNRANKED, NodeTier.BRONZE, uptime);
+        }
+    }
+
+    /// @notice Internal: Get reward multiplier based on node tier.
+    /// @return Multiplier in basis points (10000 = 1x)
+    function _getTierRewardMultiplier(address node) internal view returns (uint256) {
+        NodeTier tier = hostReputation[node].tier;
+        if (tier == NodeTier.PLATINUM) return 15000; // 1.5x
+        if (tier == NodeTier.GOLD) return 13500;     // 1.35x
+        if (tier == NodeTier.SILVER) return 12000;   // 1.2x
+        if (tier == NodeTier.BRONZE) return 11000;   // 1.1x
+        return 10000; // 1.0x for UNRANKED
+    }
+
+    /// @notice Allocate platform streaming fees to seeding rewards pool.
+    /// @dev Called periodically to fund seeding rewards from platform fees.
+    /// @param amount Amount to transfer to seeding pool
+    function allocateToSeedingPool(uint256 amount) external onlyAdmin {
+        require(amount <= platformFeesAccumulated, "insufficient platform fees");
+        platformFeesAccumulated -= amount;
+        seedingRewardsPool += amount;
+    }
+
     /// @notice Get artist earnings and withdrawal history.
     function getArtistEarnings(address artist) external view returns (ArtistEarnings memory) {
         return artistEarnings[artist];
@@ -544,6 +718,26 @@ contract RoyaltyDistributor {
     /// @notice Get accumulated platform fees.
     function getPlatformFees() external view returns (uint256) {
         return platformFeesAccumulated;
+    }
+
+    /// @notice Query seeding session details.
+    function getSeedingSession(bytes32 seedingId) external view returns (SeedingSession memory) {
+        return seedingSessions[seedingId];
+    }
+
+    /// @notice Get all seeding sessions for a node.
+    function getNodeSeeds(address node) external view returns (bytes32[] memory) {
+        return nodeSeeds[node];
+    }
+
+    /// @notice Get all seeders of a track.
+    function getTrackSeeders(bytes32 trackCid) external view returns (address[] memory) {
+        return trackSeeders[trackCid];
+    }
+
+    /// @notice Get current seeding pool balance.
+    function getSeedingPoolBalance() external view returns (uint256) {
+        return seedingRewardsPool;
     }
 
     /// @notice Admin: withdraw accumulated platform fees.
