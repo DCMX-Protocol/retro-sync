@@ -25,6 +25,12 @@ jobs:
       - name: Build
         run: npm run build
 
+      - name: Debug - List Current Directory
+        run: ls -la
+
+      - name: Debug - List Dist Directory
+        run: ls -la apps/web-client/dist
+
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
