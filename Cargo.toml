@@ -73,3 +73,6 @@ web-sys      = { version = "0.3", features = [
     "FormData","DragEvent","DataTransfer","FileReader",
 ] }
 gloo         = { version = "0.11", features = ["net"] }
+
+[patch.crates-io]
+ethers-providers = { path = "vendor/ethers-providers" }

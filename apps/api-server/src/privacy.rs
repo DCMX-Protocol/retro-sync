@@ -64,7 +64,7 @@ impl PrivacyStore {
 
     /// Append a consent record; key = user_id (list of consents per user).
     pub fn record_consent(&self, r: ConsentRecord) {
-        if let Err(e) = self.consent_db.append(&r.user_id, r) {
+        if let Err(e) = self.consent_db.append(&r.user_id.clone(), r) {
             tracing::error!(err=%e, "Consent persist error");
         }
     }
