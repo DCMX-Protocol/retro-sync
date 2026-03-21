@@ -49,3 +49,6 @@ __pycache__/
 # Nix
 result
 result-*
+
+# Generated CBOR shards (erdfa-publish output — build artifacts)
+shards/

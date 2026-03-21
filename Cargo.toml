@@ -3,7 +3,6 @@ resolver = "2"
 members  = [
     "apps/api-server",
     "apps/wasm-frontend",
-    "apps/rust-sandbox",
     "libs/shared",
     "libs/zk-circuits",
     "tools/font_check",
