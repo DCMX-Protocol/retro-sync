@@ -92,20 +92,37 @@ contract RoyaltyDistributor {
     }
     mapping(bytes32 => IPISplit) public trackIPISplits; // trackCid => split info
 
-    // ── Streaming transaction records (P2P fee model) ──────────────────
+    // ── Artist earnings accumulator (100% of streams, paid on cashout) ──
+    struct ArtistEarnings {
+        uint256 totalEarned;        // 100% of all stream royalties accumulated
+        uint256 totalWithdrawn;     // Amount already cashed out
+        uint256 lastWithdrawal;
+    }
+    mapping(address => ArtistEarnings) public artistEarnings; // For non-split artists
+
+    // ── Streaming transaction records (for audit trail) ─────────────────
     struct StreamingTransaction {
         bytes32   trackCid;         // Content CID being streamed
         address   listener;         // User who triggered the stream
-        address[] hostNodes;        // P2P nodes that seeded/hosted
-        uint256   streamValue;      // User pays this value in BTT
-        uint256   networkFee;       // 2.5% of streamValue (to hosts + platform)
-        uint256   artistRoyalty;    // Remaining amount after fee (split by IPI)
+        address[] hostNodes;        // P2P nodes that provided the stream
+        address[] royaltyRecipients; // IPI split addresses (or single artist)
+        uint16[]  royaltyPercentages; // IPI split percentages
+        uint256   streamValue;      // Amount credited to artist(s)
         uint256   timestamp;
-        bool      feeProcessed;     // 2.5% fee distributed to hosts
-        bool      royaltyProcessed; // Artist royalty distributed to splits
     }
     mapping(bytes32 => StreamingTransaction) public streamingTransactions;
     bytes32[] public transactionHistory;
+
+    // ── Cashout pending (2.5% fee charged on withdrawal) ──────────────
+    struct CashoutRequest {
+        address recipient;
+        uint256 amount;             // Amount requested (before fee)
+        uint256 networkFee;         // 2.5% fee calculated
+        uint256 netAmount;          // Amount after fee (to be paid)
+        uint256 timestamp;
+        bool executed;
+    }
+    mapping(bytes32 => CashoutRequest) public cashoutRequests;
 
     // ── Host node reputation ───────────────────────────────────────────
     struct HostReputation {
@@ -118,8 +135,8 @@ contract RoyaltyDistributor {
     // ── Artist opt-in for crypto payouts ───────────────────────────────
     mapping(address => bool) public artistOptInCrypto; // true = artist accepts crypto payouts
     
-    // ── Platform fee accumulator (portion of 2.5% not given to hosts) ────
-    uint256 public platformFeeAccumulated;
+    // ── Platform cashout tracking ───────────────────────────────────────
+    uint256 public platformFeesAccumulated; // Platform share from cashout fees
 
     // ── Events ────────────────────────────────────────────────────────
     event Distributed(
@@ -138,8 +155,8 @@ contract RoyaltyDistributor {
         bytes32 indexed trackCid,
         address indexed listener,
         uint256 streamValue,
-        uint256 networkFee,
-        uint256 artistRoyalty
+        address[] royaltyRecipients,
+        uint256[] royaltyPercentages
     );
     event IPISplitRegistered(
         bytes32 indexed trackCid,
@@ -147,25 +164,24 @@ contract RoyaltyDistributor {
         uint16[] splitPercentages,
         bytes32 ipiReference
     );
-    event NetworkFeeDistributed(
-        bytes32 indexed txId,
-        uint256 totalFee,
-        uint256 hostNodesShare,
-        uint256 platformShare
+    event CashoutRequested(
+        bytes32 indexed cashoutId,
+        address indexed artist,
+        uint256 amount,
+        uint256 networkFee,
+        uint256 netAmount
+    );
+    event CashoutExecuted(
+        bytes32 indexed cashoutId,
+        address indexed artist,
+        uint256 netAmount,
+        uint256 networkFeeDistributed
     );
     event HostRewardPaid(
         address indexed hostNode,
         uint256 amount,
         uint256 totalEarned
     );
-    event ArtistRoyaltyDistributed(
-        bytes32 indexed txId,
-        bytes32 indexed trackCid,
-        uint256 totalRoyalty,
-        address[] recipients,
-        uint256[] amounts
-    );
-    event ArtistOptedIntoCrypto(address indexed artist, bool status);
 
     // ── Emergency pause (for exploit response) ─────────────────────────
     bool public paused;
@@ -338,13 +354,12 @@ contract RoyaltyDistributor {
     }
 
     /// @notice Record a P2P streaming transaction.
-    /// @dev User pays streamValue in BTT. 2.5% is networkFee (to hosts + platform).
-    ///      Remaining (97.5%) is artistRoyalty, split among songwriters/publishers by IPI.
+    /// @dev Artists earn 100% of stream value immediately. 2.5% fee only on cashout.
     /// @param txId Unique transaction ID
     /// @param trackCid BTFS CID of the track being streamed
     /// @param listener User address who listened
     /// @param hostNodes P2P nodes that provided the stream
-    /// @param streamValue Total BTT user pays
+    /// @param streamValue 100% credited to artist(s), no fee deducted at stream time
     function recordStreamingTransaction(
         bytes32 txId,
         bytes32 trackCid,
@@ -359,48 +374,93 @@ contract RoyaltyDistributor {
         require(streamingTransactions[txId].timestamp == 0, "txId already recorded");
         require(trackIPISplits[trackCid].splitAddresses.length > 0, "IPI splits not registered");
 
-        // Calculate 2.5% network fee and remaining artist royalty
-        uint256 networkFee = (streamValue * TRANSACTION_FEE_BPS) / BASIS_POINTS;
-        uint256 artistRoyalty = streamValue - networkFee;
-
-        // Record the transaction
+        IPISplit storage split = trackIPISplits[trackCid];
+        
+        // Record the transaction (artists earn 100% at stream time)
         streamingTransactions[txId] = StreamingTransaction({
             trackCid: trackCid,
             listener: listener,
             hostNodes: hostNodes,
+            royaltyRecipients: split.splitAddresses,
+            royaltyPercentages: split.splitPercentages,
             streamValue: streamValue,
-            networkFee: networkFee,
-            artistRoyalty: artistRoyalty,
-            timestamp: block.timestamp,
-            feeProcessed: false,
-            royaltyProcessed: false
+            timestamp: block.timestamp
         });
         transactionHistory.push(txId);
 
+        // Accumulate earnings for each split recipient
+        uint256 accumulated;
+        for (uint i = 0; i < split.splitAddresses.length; i++) {
+            address recipient = split.splitAddresses[i];
+            uint256 amount = (streamValue * split.splitPercentages[i]) / BASIS_POINTS;
+            artistEarnings[recipient].totalEarned += amount;
+            accumulated += amount;
+        }
+
+        // Dust to admin
+        uint256 dust = streamValue - accumulated;
+        if (dust > 0) {
+            artistEarnings[admin].totalEarned += dust;
+        }
+
         emit StreamingTransactionRecorded(
-            txId, trackCid, listener, streamValue, networkFee, artistRoyalty
+            txId, trackCid, listener, streamValue, split.splitAddresses, split.splitPercentages
         );
     }
 
-    /// @notice Distribute the 2.5% network fee to hosting nodes and platform.
-    /// @dev 90% of fee to hosts (split equally), 10% to platform.
-    /// @param txId The streaming transaction ID
-    function distributeNetworkFee(bytes32 txId) external notPaused nonReentrant {
-        StreamingTransaction storage tx = streamingTransactions[txId];
-        require(tx.timestamp > 0, "transaction not found");
-        require(!tx.feeProcessed, "fee already processed");
-        require(tx.networkFee > 0, "zero network fee");
+    /// @notice Request a cashout. 2.5% fee deducted, goes to P2P hosts and platform.
+    /// @param cashoutId Unique cashout request ID
+    /// @param amount Amount to cash out (before 2.5% fee)
+    function requestCashout(bytes32 cashoutId, uint256 amount) external notPaused {
+        require(amount > 0, "zero amount");
+        require(artistEarnings[msg.sender].totalEarned >= amount, "insufficient earnings");
+        require(cashoutRequests[cashoutId].timestamp == 0, "cashout already recorded");
 
-        tx.feeProcessed = true;
+        // Calculate 2.5% fee
+        uint256 networkFee = (amount * TRANSACTION_FEE_BPS) / BASIS_POINTS;
+        uint256 netAmount = amount - networkFee;
 
-        // Split 2.5% fee: 90% to hosts, 10% to platform
-        uint256 hostNodesShare = (tx.networkFee * 9000) / BASIS_POINTS; // 90%
-        uint256 platformShare = tx.networkFee - hostNodesShare;           // 10%
+        // Record the cashout request
+        cashoutRequests[cashoutId] = CashoutRequest({
+            recipient: msg.sender,
+            amount: amount,
+            networkFee: networkFee,
+            netAmount: netAmount,
+            timestamp: block.timestamp,
+            executed: false
+        });
 
-        // Distribute to host nodes equally
-        uint256 feePerHost = hostNodesShare / tx.hostNodes.length;
-        for (uint i = 0; i < tx.hostNodes.length; i++) {
-            address host = tx.hostNodes[i];
+        emit CashoutRequested(cashoutId, msg.sender, amount, networkFee, netAmount);
+    }
+
+    /// @notice Execute a cashout and distribute 2.5% fee to hosts and platform.
+    /// @dev 90% of fee to hosts (equally), 10% to platform operations.
+    /// @param cashoutId The cashout request ID
+    /// @param hostNodes P2P nodes that hosted/seeded the content
+    function executeCashout(bytes32 cashoutId, address[] calldata hostNodes) external notPaused nonReentrant {
+        CashoutRequest storage co = cashoutRequests[cashoutId];
+        require(co.timestamp > 0, "cashout not found");
+        require(!co.executed, "cashout already executed");
+        require(hostNodes.length > 0, "at least one host required");
+
+        co.executed = true;
+
+        // Deduct from artist earnings
+        artistEarnings[co.recipient].totalEarned -= co.amount;
+        artistEarnings[co.recipient].totalWithdrawn += co.netAmount;
+        artistEarnings[co.recipient].lastWithdrawal = block.timestamp;
+
+        // Pay artist the net amount (after 2.5% fee)
+        require(btt.transfer(co.recipient, co.netAmount), "artist payment failed");
+
+        // Distribute 2.5% fee: 90% to hosts, 10% to platform
+        uint256 hostNodesShare = (co.networkFee * 9000) / BASIS_POINTS; // 90%
+        uint256 platformShare = co.networkFee - hostNodesShare;         // 10%
+
+        // Pay hosting nodes equally
+        uint256 feePerHost = hostNodesShare / hostNodes.length;
+        for (uint i = 0; i < hostNodes.length; i++) {
+            address host = hostNodes[i];
             require(host != address(0), "zero host address");
 
             if (feePerHost > 0) {
@@ -414,63 +474,16 @@ contract RoyaltyDistributor {
             }
         }
 
-        // Accumulate platform share (dust + 10%)
-        uint256 dust = hostNodesShare - (feePerHost * tx.hostNodes.length);
-        platformFeeAccumulated += platformShare + dust;
+        // Accumulate platform share
+        uint256 dust = hostNodesShare - (feePerHost * hostNodes.length);
+        platformFeesAccumulated += platformShare + dust;
 
-        emit NetworkFeeDistributed(txId, tx.networkFee, hostNodesShare, platformShare);
+        emit CashoutExecuted(cashoutId, co.recipient, co.netAmount, co.networkFee);
     }
 
-    /// @notice Distribute artist royalty according to IPI splits.
-    /// @dev 97.5% of stream goes to songwriters/publishers per their split agreement.
-    /// @param txId The streaming transaction ID
-    function distributeArtistRoyalty(bytes32 txId) external notPaused nonReentrant {
-        StreamingTransaction storage tx = streamingTransactions[txId];
-        require(tx.timestamp > 0, "transaction not found");
-        require(!tx.royaltyProcessed, "royalty already processed");
-        require(tx.artistRoyalty > 0, "zero artist royalty");
-
-        tx.royaltyProcessed = true;
-
-        IPISplit storage split = trackIPISplits[tx.trackCid];
-        require(split.splitAddresses.length > 0, "IPI splits not found");
-
-        uint256[] memory amounts = new uint256[](split.splitAddresses.length);
-        uint256 distributed;
-
-        // Distribute royalty according to IPI split percentages
-        for (uint i = 0; i < split.splitAddresses.length; i++) {
-            address recipient = split.splitAddresses[i];
-            uint256 amount = (tx.artistRoyalty * split.splitPercentages[i]) / BASIS_POINTS;
-            amounts[i] = amount;
-            distributed += amount;
-
-            if (amount > 0 && artistOptInCrypto[recipient]) {
-                require(btt.transfer(recipient, amount), "royalty payment failed");
-            }
-            // If not opted in, royalty accumulates in contract for fiat settlement
-        }
-
-        // Dust to admin
-        uint256 dust = tx.artistRoyalty - distributed;
-        if (dust > 0) {
-            require(btt.transfer(admin, dust), "dust transfer failed");
-        }
-
-        emit ArtistRoyaltyDistributed(
-            txId, tx.trackCid, tx.artistRoyalty, split.splitAddresses, amounts
-        );
-    }
-
-    /// @notice Allow an artist/songwriter to opt in to direct crypto payouts.
-    function setArtistCryptoOptIn(bool optIn) external {
-        artistOptInCrypto[msg.sender] = optIn;
-        emit ArtistOptedIntoCrypto(msg.sender, optIn);
-    }
-
-    /// @notice Query host node reputation stats.
-    function getHostReputation(address hostNode) external view returns (HostReputation memory) {
-        return hostReputation[hostNode];
+    /// @notice Get artist earnings and withdrawal history.
+    function getArtistEarnings(address artist) external view returns (ArtistEarnings memory) {
+        return artistEarnings[artist];
     }
 
     /// @notice Get streaming transaction record.
@@ -483,20 +496,30 @@ contract RoyaltyDistributor {
         return trackIPISplits[trackCid];
     }
 
+    /// @notice Get cashout request details.
+    function getCashoutRequest(bytes32 cashoutId) external view returns (CashoutRequest memory) {
+        return cashoutRequests[cashoutId];
+    }
+
     /// @notice Get total streaming transactions recorded.
     function getTransactionCount() external view returns (uint256) {
         return transactionHistory.length;
     }
 
-    /// @notice Get accumulated platform fees (10% of network fees).
+    /// @notice Query host node reputation stats.
+    function getHostReputation(address hostNode) external view returns (HostReputation memory) {
+        return hostReputation[hostNode];
+    }
+
+    /// @notice Get accumulated platform fees.
     function getPlatformFees() external view returns (uint256) {
-        return platformFeeAccumulated;
+        return platformFeesAccumulated;
     }
 
     /// @notice Admin: withdraw accumulated platform fees.
     function withdrawPlatformFees(uint256 amount) external onlyAdmin {
-        require(amount <= platformFeeAccumulated, "insufficient platform fees");
-        platformFeeAccumulated -= amount;
+        require(amount <= platformFeesAccumulated, "insufficient platform fees");
+        platformFeesAccumulated -= amount;
         require(btt.transfer(admin, amount), "transfer failed");
     }
 
