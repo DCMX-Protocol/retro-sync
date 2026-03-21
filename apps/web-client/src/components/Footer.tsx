@@ -30,10 +30,10 @@ const Footer = () => {
           <div>
             <h4 className="font-black text-[10px] uppercase tracking-[0.3em] text-zinc-400 mb-6">Endpoints</h4>
             <ul className="space-y-4 text-sm text-zinc-600">
-              <li><a href="/#features" className="hover:text-primary transition-colors italic">> capabilities.sys</a></li>
-              <li><a href="/#pricing" className="hover:text-primary transition-colors italic">> economics.cfg</a></li>
-              <li><a href="/marketplace" className="hover:text-primary transition-colors italic">> exchange.exe</a></li>
-              <li><a href="/upload" className="hover:text-primary transition-colors italic">> secure_upload.bin</a></li>
+              <li><a href="/#features" className="hover:text-primary transition-colors italic">&gt; capabilities.sys</a></li>
+              <li><a href="/#pricing" className="hover:text-primary transition-colors italic">&gt; economics.cfg</a></li>
+              <li><a href="/marketplace" className="hover:text-primary transition-colors italic">&gt; exchange.exe</a></li>
+              <li><a href="/upload" className="hover:text-primary transition-colors italic">&gt; secure_upload.bin</a></li>
             </ul>
           </div>
 

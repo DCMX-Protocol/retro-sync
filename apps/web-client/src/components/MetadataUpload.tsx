@@ -47,8 +47,8 @@ const MetadataUpload = () => {
         </div>
         <h2 className="text-2xl font-black italic uppercase mb-2 text-white italic tracking-tighter">Access Denied</h2>
         <p className="text-zinc-500 font-mono text-sm max-w-sm mb-8 leading-tight">
-          > Error: Wallet_Not_Connected<br />
-          > Action: Connect a valid TronLink or Coinbase wallet to access the upload portal.
+          &gt; Error: Wallet_Not_Connected<br />
+          &gt; Action: Connect a valid TronLink or Coinbase wallet to access the upload portal.
         </p>
       </div>
     );
@@ -66,9 +66,9 @@ const MetadataUpload = () => {
         </div>
         <h2 className="text-2xl font-black italic uppercase mb-2 text-white tracking-tighter">Transmission Successful</h2>
         <p className="text-zinc-400 font-mono text-sm max-w-sm mb-8 leading-tight">
-          > Metadata registered on ledger.<br />
-          > ID: <span className="text-primary">{wallet.address}</span><br />
-          > All records are now immutable.
+          &gt; Metadata registered on ledger.<br />
+          &gt; ID: <span className="text-primary">{wallet.address}</span><br />
+          &gt; All records are now immutable.
         </p>
         <button 
           onClick={() => setIsSuccess(false)}

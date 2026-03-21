@@ -42,10 +42,10 @@ const Hero = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          > Retrosync: A sovereign music distribution protocol.<br />
-          > No names. No middleman. No fees.<br />
-          > Encrypted storage. Instant settlement.<br />
-          > The code is the only authority.
+          &gt; Retrosync: A sovereign music distribution protocol.<br />
+          &gt; No names. No middleman. No fees.<br />
+          &gt; Encrypted storage. Instant settlement.<br />
+          &gt; The code is the only authority.
         </motion.p>
 
         <motion.div
