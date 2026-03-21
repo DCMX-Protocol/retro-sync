@@ -25,10 +25,10 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Debug - List Current Directory
-        run: ls -la
+      - name: Create 404.html for SPA routing
+        run: cp apps/web-client/dist/index.html apps/web-client/dist/404.html
 
-      - name: Debug - List Dist Directory
+      - name: List dist contents
         run: ls -la apps/web-client/dist
 
       - name: Upload artifact
