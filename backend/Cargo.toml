@@ -30,3 +30,4 @@ ethers-signers   = { version = "2", features = ["ledger"] }
 ethers-contract  = { version = "2" }
 quick-xml    = { workspace = true }
 xot          = { workspace = true }
+xrust        = { path = "../nix/xrust" }
