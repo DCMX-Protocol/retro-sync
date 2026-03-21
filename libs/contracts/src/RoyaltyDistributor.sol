@@ -100,6 +100,43 @@ contract RoyaltyDistributor {
     }
     mapping(address => ArtistEarnings) public artistEarnings; // For non-split artists
 
+    // ── DDEX Distribution: External Streaming (Spotify, Apple Music, etc.) ──
+    struct DDEXTrackMetadata {
+        bytes32   trackCid;              // Local BTFS CID
+        string    isrc;                  // International Standard Recording Code
+        string    title;
+        string    artist;
+        uint256   releaseDate;
+        bytes32   externalId;            // Distributor's track ID (Spotify URI, etc.)
+        bool      distributionSubmitted;
+    }
+    mapping(bytes32 => DDEXTrackMetadata) public ddexMetadata;
+
+    struct ExternalStreamEarnings {
+        uint256 spotifyEarnings;         // Royalties from Spotify
+        uint256 appleMusicEarnings;      // Royalties from Apple Music
+        uint256 youtubeEarnings;         // Royalties from YouTube Music
+        uint256 otherEarnings;           // Other platforms (Amazon, Tidal, etc.)
+        uint256 totalExternalEarnings;   // Sum of all external
+        uint256 lastUpdated;
+        bool    settled;                 // Funds settled to artist wallet
+    }
+    mapping(address => ExternalStreamEarnings) public externalEarnings;
+
+    // ── Track Distribution Status ───────────────────────────────────────
+    struct DistributionStatus {
+        bytes32   trackCid;
+        address   artist;
+        uint256   submittedAt;
+        bool      spotifyDistributed;
+        bool      appleMusicDistributed;
+        bool      youtubeDistributed;
+        bool      amazonDistributed;
+        bool      tidalDistributed;
+        uint256   externalStreamCount;    // Total external streams tracked
+    }
+    mapping(bytes32 => DistributionStatus) public distributionStatus;
+
     // ── Streaming transaction records (for audit trail) ─────────────────
     struct StreamingTransaction {
         bytes32   trackCid;         // Content CID being streamed
@@ -229,6 +266,24 @@ contract RoyaltyDistributor {
         NodeTier oldTier,
         NodeTier newTier,
         uint256 uptime
+    );
+    event DDEXTrackSubmitted(
+        bytes32 indexed trackCid,
+        address indexed artist,
+        string isrc,
+        string title
+    );
+    event ExternalStreamEarningsUpdated(
+        address indexed artist,
+        uint256 spotifyEarnings,
+        uint256 appleMusicEarnings,
+        uint256 youtubeEarnings,
+        uint256 totalExternal
+    );
+    event ExternalEarningsSettled(
+        address indexed artist,
+        uint256 totalAmount,
+        string[] platforms
     );
 
     // ── Emergency pause (for exploit response) ─────────────────────────
@@ -683,6 +738,133 @@ contract RoyaltyDistributor {
         require(amount <= platformFeesAccumulated, "insufficient platform fees");
         platformFeesAccumulated -= amount;
         seedingRewardsPool += amount;
+    }
+
+    /// @notice Submit a track for DDEX distribution (Spotify, Apple Music, etc.).
+    /// @dev Called by artist or upload coordinator.
+    /// @param trackCid BTFS CID of the track
+    /// @param isrc International Standard Recording Code
+    /// @param title Track title
+    /// @param artist Artist name
+    /// @param releaseDate Unix timestamp of intended release
+    function submitForDDEXDistribution(
+        bytes32 trackCid,
+        string calldata isrc,
+        string calldata title,
+        string calldata artist,
+        uint256 releaseDate
+    ) external {
+        require(trackIPISplits[trackCid].splitAddresses.length > 0, "no IPI splits registered");
+        require(bytes(isrc).length == 12, "ISRC must be 12 characters");
+        require(releaseDate <= block.timestamp + 30 days, "release date too far future");
+
+        DDEXTrackMetadata storage metadata = ddexMetadata[trackCid];
+        require(!metadata.distributionSubmitted, "already submitted for distribution");
+
+        metadata.trackCid = trackCid;
+        metadata.isrc = isrc;
+        metadata.title = title;
+        metadata.artist = artist;
+        metadata.releaseDate = releaseDate;
+        metadata.distributionSubmitted = true;
+
+        // Initialize distribution status
+        distributionStatus[trackCid] = DistributionStatus({
+            trackCid: trackCid,
+            artist: msg.sender,
+            submittedAt: block.timestamp,
+            spotifyDistributed: false,
+            appleMusicDistributed: false,
+            youtubeDistributed: false,
+            amazonDistributed: false,
+            tidalDistributed: false,
+            externalStreamCount: 0
+        });
+
+        emit DDEXTrackSubmitted(trackCid, msg.sender, isrc, title);
+    }
+
+    /// @notice Record external streaming earnings from DDEX partners.
+    /// @dev Called by oracle/admin after syncing with Spotify, Apple Music APIs.
+    /// @param artist Artist address
+    /// @param spotifyEarnings Spotify royalties accumulated (in BTT equivalent)
+    /// @param appleMusicEarnings Apple Music royalties
+    /// @param youtubeEarnings YouTube Music royalties
+    /// @param otherEarnings Other platforms (Amazon, Tidal, etc.)
+    function recordExternalStreamEarnings(
+        address artist,
+        uint256 spotifyEarnings,
+        uint256 appleMusicEarnings,
+        uint256 youtubeEarnings,
+        uint256 otherEarnings
+    ) external onlyAdmin notPaused {
+        require(artist != address(0), "zero artist address");
+
+        ExternalStreamEarnings storage ext = externalEarnings[artist];
+        ext.spotifyEarnings = spotifyEarnings;
+        ext.appleMusicEarnings = appleMusicEarnings;
+        ext.youtubeEarnings = youtubeEarnings;
+        ext.otherEarnings = otherEarnings;
+        ext.totalExternalEarnings = spotifyEarnings + appleMusicEarnings + youtubeEarnings + otherEarnings;
+        ext.lastUpdated = block.timestamp;
+
+        emit ExternalStreamEarningsUpdated(
+            artist, spotifyEarnings, appleMusicEarnings, youtubeEarnings, ext.totalExternalEarnings
+        );
+    }
+
+    /// @notice Settle external streaming earnings to artist's on-platform account.
+    /// @dev Transfers accumulated DDEX royalties to artist's earnings balance.
+    /// @param artist Artist address to settle for
+    function settleExternalEarnings(address artist) external onlyAdmin nonReentrant notPaused {
+        ExternalStreamEarnings storage ext = externalEarnings[artist];
+        require(ext.totalExternalEarnings > 0, "no external earnings");
+        require(!ext.settled, "already settled in this cycle");
+
+        uint256 totalAmount = ext.totalExternalEarnings;
+        ext.settled = true;
+        ext.lastUpdated = block.timestamp;
+
+        // Add external earnings to artist's on-platform balance
+        artistEarnings[artist].totalEarned += totalAmount;
+
+        // Create platforms list for event
+        string[] memory platforms = new string[](4);
+        if (ext.spotifyEarnings > 0) platforms[0] = "Spotify";
+        if (ext.appleMusicEarnings > 0) platforms[1] = "AppleMusic";
+        if (ext.youtubeEarnings > 0) platforms[2] = "YouTube";
+        if (ext.otherEarnings > 0) platforms[3] = "Other";
+
+        emit ExternalEarningsSettled(artist, totalAmount, platforms);
+    }
+
+    /// @notice Reset external earnings for next settlement cycle.
+    /// @dev Called by admin after settling to prepare for next period.
+    function resetExternalEarningsForNextCycle(address artist) external onlyAdmin {
+        ExternalStreamEarnings storage ext = externalEarnings[artist];
+        require(ext.settled, "not yet settled");
+
+        ext.spotifyEarnings = 0;
+        ext.appleMusicEarnings = 0;
+        ext.youtubeEarnings = 0;
+        ext.otherEarnings = 0;
+        ext.totalExternalEarnings = 0;
+        ext.settled = false;
+    }
+
+    /// @notice Get DDEX metadata for a track.
+    function getDDEXMetadata(bytes32 trackCid) external view returns (DDEXTrackMetadata memory) {
+        return ddexMetadata[trackCid];
+    }
+
+    /// @notice Get external earnings for an artist.
+    function getExternalEarnings(address artist) external view returns (ExternalStreamEarnings memory) {
+        return externalEarnings[artist];
+    }
+
+    /// @notice Get distribution status for a track.
+    function getDistributionStatus(bytes32 trackCid) external view returns (DistributionStatus memory) {
+        return distributionStatus[trackCid];
     }
 
     /// @notice Get artist earnings and withdrawal history.
