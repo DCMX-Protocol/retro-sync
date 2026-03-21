@@ -31,3 +31,5 @@ ethers-contract  = { version = "2" }
 quick-xml    = { workspace = true }
 xot          = { workspace = true }
 xrust        = { path = "../nix/xrust" }
+erdfa-publish = { path = "../nix/erdfa-publish" }
+ciborium     = "0.2"

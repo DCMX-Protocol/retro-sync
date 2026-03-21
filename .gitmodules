@@ -22,3 +22,9 @@
 [submodule "nix/actions/cachix-action"]
 	path = nix/actions/cachix-action
 	url = https://github.com/meta-introspector/cachix-action.git
+[submodule "nix/erdfa-publish"]
+	path = nix/erdfa-publish
+	url = https://github.com/meta-introspector/erdfa-publish.git
+[submodule "nix/fractran-vm"]
+	path = nix/fractran-vm
+	url = /home/mdupont/.emacs.d.kiro/kiro.el-research/fractran-vm

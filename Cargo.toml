@@ -9,6 +9,7 @@ members  = [
     "tools/btfs-keygen",
     "six_sigma/spc",
     "tools/ceremony",
+    "nix/erdfa-publish",
 ]
 
 [workspace.package]

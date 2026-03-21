@@ -38,6 +38,7 @@ mod takedown;
 mod wikidata;
 mod xslt;
 mod zk_cache; // Global Trade Management — ECCN, HS codes, export control, sanctions
+mod shard;
 
 #[derive(Clone)]
 pub struct AppState {
@@ -52,6 +53,7 @@ pub struct AppState {
     pub mod_queue: Arc<moderation::ModerationQueue>,
     pub sap_client: Arc<sap::SapClient>,
     pub gtms_db: Arc<gtms::GtmsStore>,
+    pub shard_db: Arc<std::collections::HashMap<String, serde_json::Value>>,
 }
 
 #[tokio::main]
@@ -75,6 +77,7 @@ async fn main() -> anyhow::Result<()> {
         mod_queue: Arc::new(moderation::ModerationQueue::open("moderation.db")?),
         sap_client: Arc::new(sap::SapClient::from_env()),
         gtms_db: Arc::new(gtms::GtmsStore::new()),
+        shard_db: Arc::new(std::collections::HashMap::new()),
     };
 
     let app = Router::new()
@@ -124,6 +127,7 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/gtms/classify", post(gtms::classify_work))
         .route("/api/gtms/screen", post(gtms::screen_distribution))
         .route("/api/gtms/declaration/:id", get(gtms::get_declaration))
+        .route("/api/shard/:cid", get(shard::get_shard))
         .layer(middleware::from_fn_with_state(
             state.clone(),
             auth::verify_zero_trust,
