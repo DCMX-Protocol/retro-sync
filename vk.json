@@ -1,0 +1,69 @@
+{
+  "alpha": {
+    "x": "0x5351cd069a85466f3c7f7caeabc99093279230c96287884babbba9c44556850b",
+    "y": "0x772fce2c8f650cf26b8af0ff8443d27918c115696aab67c5ef16e41e91f5ed00"
+  },
+  "beta": {
+    "x": [
+      "0x20ef81bc44b16ce5d2f2a9df0f972165a0ba71d690578180ce1eab7cde83ae1c",
+      "0x07519105c0e34e2efcebc37aa719af369f0e7425fe46f7c88e57c063ba3faf23"
+    ],
+    "y": [
+      "0x6afe03d47ca069a307ca1f0fe817006899de0ae2a66379690bd830219dfc8428",
+      "0xc1ed06319dd6a0916358ecdad4d6b23cf5c00941b83b84533c510f2bdd7c0f05"
+    ]
+  },
+  "delta": {
+    "x": [
+      "0x0b5309924f868a922fec8e6469bed49c17292be1329977e8b81e294fdfa78c24",
+      "0xf60c3041a5d4c6718ef458e31c8451c92c0ed073afacc31956299db1be178a08"
+    ],
+    "y": [
+      "0xdb78958d611ed3f6fec3d1c8b457f54dfbbcfbf50924e38df2ffad37e5f9b40f",
+      "0x7802aee2cc51c8964ff4b44d2d0a0d6fbe669ed770af33457b3f1a812bc7c304"
+    ]
+  },
+  "deployment": {
+    "step1": "Deploy ZKVerifier.sol (already done by Foundry script)",
+    "step2": "Call ZKVerifier.setVerifyingKey(band, alpha, beta, gamma, delta, ic)",
+    "step3": "Set BTTC_DEV_MODE=0 in .env",
+    "step4": "Run integration test: cargo test --package backend test_full_pipeline"
+  },
+  "gamma": {
+    "x": [
+      "0xff0e7deac80289ff4c5fac1efc9db632eb755bbaf972213becca641ec01dd308",
+      "0xbc502fd97524526e9461d2c0dc8ae658f045c8ba02e5bdff21f8f63564ee0627"
+    ],
+    "y": [
+      "0x21699d9c644777794001bad26cd9ca0cd0956bc03dc066503fd191560afdf60e",
+      "0x110b821a9ddb97f7705299d3c7beed9d25e7e019517195b36ca864db58809c1d"
+    ]
+  },
+  "ic": [
+    {
+      "x": "0x64556af4017e85f445ccb0956615da88d29ab61f7f797fab08d19b992cf93d20",
+      "y": "0x481d789f7d1439fa599f3af2686fd1b54c76101259ebb01cba49ef72468f2a19"
+    },
+    {
+      "x": "0xd39da171234061f497cab9a96451eeaa71f7a4711c020dad54da9ae9334dc71e",
+      "y": "0x4e1c0e71760bfc1ed3ba4ebf885b9d23dd5ad071bfe7c858346afe30e5556b1e"
+    },
+    {
+      "x": "0xf1d7f0631a91965d4fb48005124a359c258387560a6f63ec8ebbbabadc18ff1f",
+      "y": "0xbdd3122a0714eafdb8a1e3679da242ab6ffd160816401e8509a06be90d7a431b"
+    }
+  ],
+  "meta": {
+    "ceremony_type": "single_party_testnet",
+    "circuit": "RoyaltySplitCircuit",
+    "curve": "BN254",
+    "generated_at": "2026-03-20T18:43:55.939221789+00:00",
+    "n_artists": 16,
+    "protocol": "groth16",
+    "public_inputs": [
+      "band (u8, 0-2)",
+      "basis_points_sum (u64, must = 10000)"
+    ],
+    "warning": "Single-party setup: toxic waste not destroyed. Use MPC for mainnet."
+  }
+}

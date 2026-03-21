@@ -4,21 +4,9 @@
 [submodule "nix/xrust"]
 	path = nix/xrust
 	url = https://github.com/meta-introspector/xrust.git
-[submodule "nix/actions/checkout"]
-	path = nix/actions/checkout
-	url = https://github.com/meta-introspector/checkout.git
-[submodule "nix/actions/rust-toolchain"]
-	path = nix/actions/rust-toolchain
-	url = https://github.com/meta-introspector/rust-toolchain.git
-[submodule "nix/actions/rust-cache"]
-	path = nix/actions/rust-cache
-	url = https://github.com/meta-introspector/rust-cache.git
-[submodule "nix/actions/foundry-toolchain"]
-	path = nix/actions/foundry-toolchain
-	url = https://github.com/meta-introspector/foundry-toolchain.git
-[submodule "nix/actions/install-nix-action"]
-	path = nix/actions/install-nix-action
-	url = https://github.com/meta-introspector/install-nix-action.git
-[submodule "nix/actions/cachix-action"]
-	path = nix/actions/cachix-action
-	url = https://github.com/meta-introspector/cachix-action.git
+[submodule "nix/erdfa-publish"]
+	path = nix/erdfa-publish
+	url = https://github.com/meta-introspector/erdfa-publish.git
+[submodule "nix/fractran-vm"]
+	path = nix/fractran-vm
+	url = /home/mdupont/.emacs.d.kiro/kiro.el-research/fractran-vm

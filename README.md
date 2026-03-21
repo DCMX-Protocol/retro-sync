@@ -1,3 +1,8 @@
+<<<<<<< HEAD
+# Welcome to your Lovable project
+
+TODO: Document your project here
+=======
 # Retrosync Media Group — Enterprise Platform
 
 ## Stack
@@ -29,4 +34,4 @@ cargo run --bin backend
 
 ## Ceremony
 Before production: `cargo run --bin ceremony` then call ZKVerifier.setVerifyingKey()
-Updating README for redeploy.
+>>>>>>> 61e9a1a (Initial commit: frontend with wasm-bindgen, BTFS daemon, and project structure)

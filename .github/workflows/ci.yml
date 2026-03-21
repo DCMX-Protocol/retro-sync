@@ -21,10 +21,11 @@ jobs:
     name: Rust (test + clippy + fmt)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: meta-introspector/checkout@v4
+        with: { submodules: recursive }
+      - uses: meta-introspector/rust-toolchain@stable
         with: { targets: wasm32-unknown-unknown }
-      - uses: Swatinem/rust-cache@v2
+      - uses: meta-introspector/rust-cache@v2
       - run: cargo fmt --all -- --check
       - run: cargo clippy --all-targets --all-features -- -D warnings
       - run: cargo test --all
@@ -33,35 +34,50 @@ jobs:
     name: Foundry (forge test + fuzz)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: foundry-rs/foundry-toolchain@v1
+      - uses: meta-introspector/checkout@v4
+        with: { submodules: recursive }
+      - uses: meta-introspector/foundry-toolchain@v1
       - run: |
-          cd libs/contracts
+          cd contracts
           forge install OpenZeppelin/openzeppelin-contracts --no-commit || true
           forge test --fuzz-runs 2000 -v
       - run: |
-          cd libs/contracts
+          cd contracts
           forge coverage
 
   wasm-build:
     name: WASM Frontend (trunk build)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: meta-introspector/checkout@v4
+        with: { submodules: recursive }
+      - uses: meta-introspector/rust-toolchain@stable
         with: { targets: wasm32-unknown-unknown }
       - run: cargo install trunk --locked
       - run: |
-          cd apps/wasm-frontend
+          cd frontend
           trunk build --release
+
+  nix-flake-check:
+    name: Nix Flake Check (pre-commit hooks)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: meta-introspector/checkout@v4
+        with: { submodules: recursive }
+      - uses: meta-introspector/install-nix-action@v27
+      - uses: meta-introspector/cachix-action@v15
+        with:
+          name: retrosync
+      - run: nix flake check --all-systems
 
   compliance-check:
     name: Compliance (DMCA + GDPR + KYC + Moderation endpoints)
     runs-on: ubuntu-latest
     needs: rust-tests
     steps:
-      - uses: actions/checkout@v4
-      - uses: dtolnay/rust-toolchain@stable
+      - uses: meta-introspector/checkout@v4
+        with: { submodules: recursive }
+      - uses: meta-introspector/rust-toolchain@stable
       - run: cargo build --bin backend
       - name: Start backend
         run: |

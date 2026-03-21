@@ -27,9 +27,9 @@ dist-ssr
 target/
 out/
 
-# Config
+# Config / secrets — NEVER commit these
 .env
-.env.local
+.env.*
 *.key
 *.pem
 pki/
@@ -41,5 +41,11 @@ pki/
 # Foundry
 cache/
 broadcast/
+
+# Python
 __pycache__/
 *.pyc
+
+# Nix
+result
+result-*
