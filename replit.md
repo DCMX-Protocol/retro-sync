@@ -26,6 +26,28 @@ A decentralized media distribution and royalty management platform for the music
 - Frontend: npm with `--legacy-peer-deps` flag (due to Vite 8 peer dependency constraints)
 - Backend/Rust: Cargo workspace
 
+## Security Features (implemented)
+- **Wallet auth**: Challenge-response authentication (`GET /api/auth/challenge/:addr`, `POST /api/auth/verify`) — EIP-191 ECDSA, 24h JWT, single-use nonces
+- **LMDB persistence**: All five stores (KYC, moderation, privacy, takedown, ZK cache) backed by heed 0.20 LMDB — survive restarts
+- **Per-user auth guards**: KYC and privacy endpoints enforce `JWT sub == uid` — 403 on mismatch
+- **BTFS API key**: `X-API-Key` header on all BTFS requests when `BTFS_API_KEY` env var is set
+- **JWT extractor**: `auth::extract_caller` decodes Bearer JWT, checks expiry, returns wallet address
+- **CORS**: Locked to `ALLOWED_ORIGINS` env var
+- **Upload cap**: 100MB hard limit (`MAX_AUDIO_BYTES` env var)
+- **DDEX**: XML escaping on all user inputs
+- **Moderation IDs**: Cryptographically random (OS entropy)
+
+## Key Backend Modules (apps/api-server/src/)
+- `persist.rs` — generic LMDB store (put/get/append/update/delete)
+- `wallet_auth.rs` — challenge issuance, ECDSA verify, JWT issuance
+- `auth.rs` — Zero Trust middleware + `extract_caller` helper
+- `kyc.rs` — KYC/AML with LMDB + per-user guard
+- `moderation.rs` — DSA content queue with LMDB
+- `privacy.rs` — GDPR/CCPA with LMDB + per-user guard
+- `takedown.rs` — DMCA §512 with LMDB
+- `zk_cache.rs` — ZK proof cache with LMDB
+- `btfs.rs` — BTFS upload/pin with API key auth
+
 ## Deployment
 - Target: Static site
 - Build: `npm run build`

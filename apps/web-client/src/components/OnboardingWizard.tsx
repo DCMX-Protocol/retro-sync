@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Wallet, ShieldCheck, Music, Link2, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
+import { type LucideIcon, X, Wallet, ShieldCheck, Music, Link2, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
 import { type WalletState } from "@/types/wallet";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 type Step = "wallet" | "ipi" | "kyc" | "confirm";
 
-const STEPS: { id: Step; label: string; icon: any }[] = [
+const STEPS: { id: Step; label: string; icon: LucideIcon }[] = [
   { id: "wallet", label: "Wallet", icon: Wallet },
   { id: "ipi", label: "IPI Number", icon: Music },
   { id: "kyc", label: "Verify IPI & Identity", icon: ShieldCheck },
