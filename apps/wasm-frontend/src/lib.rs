@@ -1,5 +1,5 @@
-use wasm_bindgen::prelude::*;
 use js_sys;
+use wasm_bindgen::prelude::*;
 use web_sys;
 
 #[wasm_bindgen(start)]
@@ -13,7 +13,8 @@ pub fn main() -> Result<(), JsValue> {
 pub fn get_tron_address() -> Option<String> {
     let window = web_sys::window()?;
     let tron_web = js_sys::Reflect::get(&window, &JsValue::from_str("tronWeb")).ok()?;
-    let default_address = js_sys::Reflect::get(&tron_web, &JsValue::from_str("defaultAddress")).ok()?;
+    let default_address =
+        js_sys::Reflect::get(&tron_web, &JsValue::from_str("defaultAddress")).ok()?;
     let base58 = js_sys::Reflect::get(&default_address, &JsValue::from_str("base58")).ok()?;
     base58.as_string()
 }

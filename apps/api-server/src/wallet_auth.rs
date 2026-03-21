@@ -186,8 +186,8 @@ pub async fn verify_challenge(
     }
 
     // Verify the signature
-    let verified = verify_evm_signature(&challenge.nonce, &req.signature, &address)
-        .unwrap_or(false);
+    let verified =
+        verify_evm_signature(&challenge.nonce, &req.signature, &address).unwrap_or(false);
 
     let env = std::env::var("RETROSYNC_ENV").unwrap_or_else(|_| "development".into());
     if !verified && env == "production" {
@@ -217,13 +217,13 @@ pub async fn verify_challenge(
 /// Verify an EIP-191 personal_sign signature.
 /// The message is prefixed as: `\x19Ethereum Signed Message:\n{len}{msg}`
 /// Returns true if the recovered address matches the claimed address.
-fn verify_evm_signature(message: &str, signature_hex: &str, claimed_address: &str) -> anyhow::Result<bool> {
+fn verify_evm_signature(
+    message: &str,
+    signature_hex: &str,
+    claimed_address: &str,
+) -> anyhow::Result<bool> {
     // EIP-191 prefix
-    let prefixed = format!(
-        "\x19Ethereum Signed Message:\n{}{}",
-        message.len(),
-        message
-    );
+    let prefixed = format!("\x19Ethereum Signed Message:\n{}{}", message.len(), message);
 
     // SHA3-256 (keccak256) of the prefixed message
     let msg_hash = keccak256(prefixed.as_bytes());
@@ -250,7 +250,10 @@ fn verify_evm_signature(message: &str, signature_hex: &str, claimed_address: &st
     // Recover the public key and derive the address
     let recovered = recover_evm_address(&msg_hash, r, s, recovery_id)?;
 
-    Ok(recovered.to_ascii_lowercase() == claimed_address.trim_start_matches("0x").to_ascii_lowercase())
+    Ok(recovered.to_ascii_lowercase()
+        == claimed_address
+            .trim_start_matches("0x")
+            .to_ascii_lowercase())
 }
 
 /// Keccak-256 hash (Ethereum's hash function), delegated to ethers::utils.

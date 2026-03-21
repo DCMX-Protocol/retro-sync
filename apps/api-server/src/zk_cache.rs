@@ -38,14 +38,27 @@ impl ZkProofCache {
     }
 
     /// Retrieve a cached proof. Returns `None` on miss.
-    pub fn get(&self, band: u8, n_artists: u32, total_btt: u64, splits_bps: &[u16]) -> Option<Vec<u8>> {
+    pub fn get(
+        &self,
+        band: u8,
+        n_artists: u32,
+        total_btt: u64,
+        splits_bps: &[u16],
+    ) -> Option<Vec<u8>> {
         let key = Self::key_str(band, n_artists, total_btt, splits_bps);
         let hex_str: String = self.db.get(&key).ok().flatten()?;
         hex::decode(hex_str).ok()
     }
 
     /// Store a proof. The proof bytes are hex-encoded to stay JSON-compatible.
-    pub fn put(&self, band: u8, n_artists: u32, total_btt: u64, splits_bps: &[u16], proof: Vec<u8>) {
+    pub fn put(
+        &self,
+        band: u8,
+        n_artists: u32,
+        total_btt: u64,
+        splits_bps: &[u16],
+        proof: Vec<u8>,
+    ) {
         let key = Self::key_str(band, n_artists, total_btt, splits_bps);
         let hex_proof = hex::encode(&proof);
         if let Err(e) = self.db.put(&key, &hex_proof) {

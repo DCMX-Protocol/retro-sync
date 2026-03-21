@@ -12,14 +12,13 @@ async fn main() -> Result<()> {
         // completes the builder.
         .finish();
 
-    tracing::subscriber::set_global_default(subscriber)
-        .expect("setting default subscriber failed");
+    tracing::subscriber::set_global_default(subscriber).expect("setting default subscriber failed");
 
     info!("RetroSync Rust Sandbox Initialized");
-    
+
     // Example: Test some ZK operations or shared logic here
     println!("--- Sandbox Environment ---");
     println!("Use this for rapid prototyping and isolated testing of backend logic.");
-    
+
     Ok(())
 }

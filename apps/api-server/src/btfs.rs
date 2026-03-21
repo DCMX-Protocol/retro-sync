@@ -47,7 +47,10 @@ fn btfs_client() -> anyhow::Result<(reqwest::Client, Option<String>)> {
 }
 
 /// Attach BTFS API key to a request builder if BTFS_API_KEY is set.
-fn with_api_key(builder: reqwest::RequestBuilder, api_key: Option<&str>) -> reqwest::RequestBuilder {
+fn with_api_key(
+    builder: reqwest::RequestBuilder,
+    api_key: Option<&str>,
+) -> reqwest::RequestBuilder {
     match api_key {
         Some(key) => builder.header("X-API-Key", key),
         None => builder,

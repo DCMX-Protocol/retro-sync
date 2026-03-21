@@ -21,7 +21,9 @@ pub async fn verify_zero_trust(
     // SECURITY: Dev bypass is BLOCKED in production
     if std::env::var("ZERO_TRUST_DISABLED").unwrap_or_default() == "1" {
         if is_production {
-            warn!("SECURITY: ZERO_TRUST_DISABLED=1 is not allowed in production — blocking request");
+            warn!(
+                "SECURITY: ZERO_TRUST_DISABLED=1 is not allowed in production — blocking request"
+            );
             return Err(StatusCode::FORBIDDEN);
         }
         warn!("ZERO_TRUST_DISABLED=1 — skipping auth (dev only, NOT for production)");
@@ -32,10 +34,7 @@ pub async fn verify_zero_trust(
     // /api/auth/* — wallet challenge issuance + verification (these PRODUCE auth tokens)
     // /health, /metrics — infra health checks
     let path = request.uri().path();
-    if path == "/health"
-        || path == "/metrics"
-        || path.starts_with("/api/auth/")
-    {
+    if path == "/health" || path == "/metrics" || path.starts_with("/api/auth/") {
         return Ok(next.run(request).await);
     }
 
@@ -132,21 +131,37 @@ fn base64_decode_url(s: &str) -> Result<Vec<u8>, ()> {
 }
 
 fn base64_simple_decode(s: &str) -> Result<Vec<u8>, String> {
-    let chars: Vec<u8> = s.chars().filter_map(|c| {
-        if c.is_ascii_uppercase() { Some(c as u8 - b'A') }
-        else if c.is_ascii_lowercase() { Some(c as u8 - b'a' + 26) }
-        else if c.is_ascii_digit() { Some(c as u8 - b'0' + 52) }
-        else if c == '+' || c == '-' { Some(62) }
-        else if c == '/' || c == '_' { Some(63) }
-        else { None }
-    }).collect();
-    
+    let chars: Vec<u8> = s
+        .chars()
+        .filter_map(|c| {
+            if c.is_ascii_uppercase() {
+                Some(c as u8 - b'A')
+            } else if c.is_ascii_lowercase() {
+                Some(c as u8 - b'a' + 26)
+            } else if c.is_ascii_digit() {
+                Some(c as u8 - b'0' + 52)
+            } else if c == '+' || c == '-' {
+                Some(62)
+            } else if c == '/' || c == '_' {
+                Some(63)
+            } else {
+                None
+            }
+        })
+        .collect();
+
     let mut out = Vec::new();
     for chunk in chars.chunks(4) {
-        if chunk.len() < 2 { break; }
+        if chunk.len() < 2 {
+            break;
+        }
         out.push((chunk[0] << 2) | (chunk[1] >> 4));
-        if chunk.len() >= 3 { out.push((chunk[1] << 4) | (chunk[2] >> 2)); }
-        if chunk.len() >= 4 { out.push((chunk[2] << 6) | chunk[3]); }
+        if chunk.len() >= 3 {
+            out.push((chunk[1] << 4) | (chunk[2] >> 2));
+        }
+        if chunk.len() >= 4 {
+            out.push((chunk[2] << 6) | chunk[3]);
+        }
     }
     Ok(out)
 }
@@ -160,8 +175,12 @@ fn base64_encode_url(bytes: &[u8]) -> String {
         let b2 = if chunk.len() > 2 { chunk[2] } else { 0 };
         out.push(chars[(b0 >> 2) as usize] as char);
         out.push(chars[((b0 & 3) << 4 | b1 >> 4) as usize] as char);
-        if chunk.len() > 1 { out.push(chars[((b1 & 0xf) << 2 | b2 >> 6) as usize] as char); }
-        if chunk.len() > 2 { out.push(chars[(b2 & 0x3f) as usize] as char); }
+        if chunk.len() > 1 {
+            out.push(chars[((b1 & 0xf) << 2 | b2 >> 6) as usize] as char);
+        }
+        if chunk.len() > 2 {
+            out.push(chars[(b2 & 0x3f) as usize] as char);
+        }
     }
     out.replace('+', "-").replace('/', "_").replace('=', "")
 }
@@ -169,7 +188,11 @@ fn base64_encode_url(bytes: &[u8]) -> String {
 fn hmac_sha256(key: &[u8], msg: &[u8]) -> Vec<u8> {
     use sha2::{Digest, Sha256};
     const BLOCK: usize = 64;
-    let mut k = if key.len() > BLOCK { Sha256::digest(key).to_vec() } else { key.to_vec() };
+    let mut k = if key.len() > BLOCK {
+        Sha256::digest(key).to_vec()
+    } else {
+        key.to_vec()
+    };
     k.resize(BLOCK, 0);
     let ipad: Vec<u8> = k.iter().map(|b| b ^ 0x36).collect();
     let opad: Vec<u8> = k.iter().map(|b| b ^ 0x5c).collect();
@@ -178,7 +201,9 @@ fn hmac_sha256(key: &[u8], msg: &[u8]) -> Vec<u8> {
 }
 
 fn constant_time_eq(a: &[u8], b: &[u8]) -> bool {
-    if a.len() != b.len() { return false; }
+    if a.len() != b.len() {
+        return false;
+    }
     a.iter().zip(b).fold(0u8, |acc, (x, y)| acc | (x ^ y)) == 0
 }
 
@@ -213,12 +238,10 @@ pub fn extract_caller(headers: &axum::http::HeaderMap) -> Result<String, axum::h
         .to_str()
         .map_err(|_| StatusCode::BAD_REQUEST)?;
 
-    let token = auth_header
-        .strip_prefix("Bearer ")
-        .ok_or_else(|| {
-            warn!("extract_caller: invalid Authorization format");
-            StatusCode::UNAUTHORIZED
-        })?;
+    let token = auth_header.strip_prefix("Bearer ").ok_or_else(|| {
+        warn!("extract_caller: invalid Authorization format");
+        StatusCode::UNAUTHORIZED
+    })?;
 
     if token.is_empty() {
         warn!("extract_caller: empty token");
@@ -232,15 +255,11 @@ pub fn extract_caller(headers: &axum::http::HeaderMap) -> Result<String, axum::h
         return Err(StatusCode::UNAUTHORIZED);
     }
 
-    let payload_bytes = base64_simple_decode(
-        &parts[1]
-            .replace('-', "+")
-            .replace('_', "/"),
-    )
-    .map_err(|_| {
-        warn!("extract_caller: base64 decode failed");
-        StatusCode::UNAUTHORIZED
-    })?;
+    let payload_bytes = base64_simple_decode(&parts[1].replace('-', "+").replace('_', "/"))
+        .map_err(|_| {
+            warn!("extract_caller: base64 decode failed");
+            StatusCode::UNAUTHORIZED
+        })?;
 
     let payload: serde_json::Value = serde_json::from_slice(&payload_bytes).map_err(|_| {
         warn!("extract_caller: JSON parse failed");

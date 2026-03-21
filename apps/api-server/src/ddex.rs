@@ -12,14 +12,16 @@ pub struct DdexRegistration {
 /// Escape a string for safe embedding in XML content or attribute values.
 /// Prevents XML injection from user-controlled inputs.
 fn xml_escape(s: &str) -> String {
-    s.chars().flat_map(|c| match c {
-        '&'  => "&amp;".chars().collect::<Vec<_>>(),
-        '<'  => "&lt;".chars().collect(),
-        '>'  => "&gt;".chars().collect(),
-        '"'  => "&quot;".chars().collect(),
-        '\'' => "&apos;".chars().collect(),
-        c    => vec![c],
-    }).collect()
+    s.chars()
+        .flat_map(|c| match c {
+            '&' => "&amp;".chars().collect::<Vec<_>>(),
+            '<' => "&lt;".chars().collect(),
+            '>' => "&gt;".chars().collect(),
+            '"' => "&quot;".chars().collect(),
+            '\'' => "&apos;".chars().collect(),
+            c => vec![c],
+        })
+        .collect()
 }
 
 pub fn build_ern_xml(
@@ -30,15 +32,15 @@ pub fn build_ern_xml(
     wiki: &crate::wikidata::WikidataArtist,
 ) -> String {
     // SECURITY FIX: XML-escape all user-controlled inputs before embedding in XML
-    let title   = xml_escape(title);
-    let isrc    = xml_escape(isrc);
-    let cid     = xml_escape(cid);
+    let title = xml_escape(title);
+    let isrc = xml_escape(isrc);
+    let cid = xml_escape(cid);
     let wikidata_qid = xml_escape(wiki.qid.as_deref().unwrap_or(""));
     let wikidata_url = xml_escape(wiki.wikidata_url.as_deref().unwrap_or(""));
-    let mbid         = xml_escape(wiki.musicbrainz_id.as_deref().unwrap_or(""));
-    let label_name   = xml_escape(wiki.label_name.as_deref().unwrap_or(""));
-    let country      = xml_escape(wiki.country.as_deref().unwrap_or(""));
-    let genres       = xml_escape(&wiki.genres.join(", "));
+    let mbid = xml_escape(wiki.musicbrainz_id.as_deref().unwrap_or(""));
+    let label_name = xml_escape(wiki.label_name.as_deref().unwrap_or(""));
+    let country = xml_escape(wiki.country.as_deref().unwrap_or(""));
+    let genres = xml_escape(&wiki.genres.join(", "));
 
     let tier = RarityTier::from_band(fp.band);
     format!(
@@ -132,17 +134,15 @@ pub async fn register(
         });
     }
 
-    let mut client = reqwest::Client::new().post(&ddex_url)
+    let mut client = reqwest::Client::new()
+        .post(&ddex_url)
         .header("Content-Type", "application/xml");
 
     if let Some(key) = api_key {
         client = client.header("Authorization", format!("Bearer {}", key));
     }
 
-    let resp = client
-        .body(xml)
-        .send()
-        .await?;
+    let resp = client.body(xml).send().await?;
     if !resp.status().is_success() {
         anyhow::bail!("DDEX failed: {}", resp.status());
     }

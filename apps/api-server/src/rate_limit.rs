@@ -24,11 +24,7 @@ use axum::{
     middleware::Next,
     response::Response,
 };
-use std::{
-    collections::HashMap,
-    sync::Mutex,
-    time::Instant,
-};
+use std::{collections::HashMap, sync::Mutex, time::Instant};
 use tracing::warn;
 
 const WINDOW_SECS: u64 = 60;

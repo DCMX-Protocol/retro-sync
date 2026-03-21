@@ -41,8 +41,7 @@ impl LmdbStore {
                 .open(dir)?
         };
         let mut wtxn = env.write_txn()?;
-        let db: Database<Bytes, Bytes> =
-            env.create_database(&mut wtxn, Some(db_name))?;
+        let db: Database<Bytes, Bytes> = env.create_database(&mut wtxn, Some(db_name))?;
         wtxn.commit()?;
         Ok(Self { env, db })
     }
@@ -65,10 +64,7 @@ impl LmdbStore {
     ) -> anyhow::Result<()> {
         let mut wtxn = self.env.write_txn()?;
         // Read existing list (to_vec eagerly so we release the borrow on wtxn)
-        let existing: Option<Vec<u8>> = self
-            .db
-            .get(&wtxn, key.as_bytes())?
-            .map(|b| b.to_vec());
+        let existing: Option<Vec<u8>> = self.db.get(&wtxn, key.as_bytes())?.map(|b| b.to_vec());
         let mut list: Vec<V> = match existing {
             None => vec![],
             Some(bytes) => serde_json::from_slice(&bytes)?,
@@ -81,10 +77,7 @@ impl LmdbStore {
     }
 
     /// Read the value at `key`, returning `None` if absent.
-    pub fn get<V: for<'de> Deserialize<'de>>(
-        &self,
-        key: &str,
-    ) -> anyhow::Result<Option<V>> {
+    pub fn get<V: for<'de> Deserialize<'de>>(&self, key: &str) -> anyhow::Result<Option<V>> {
         let rtxn = self.env.read_txn()?;
         match self.db.get(&rtxn, key.as_bytes())? {
             None => Ok(None),
@@ -93,10 +86,7 @@ impl LmdbStore {
     }
 
     /// Read a JSON array stored under `key`, returning an empty vec if absent.
-    pub fn get_list<V: for<'de> Deserialize<'de>>(
-        &self,
-        key: &str,
-    ) -> anyhow::Result<Vec<V>> {
+    pub fn get_list<V: for<'de> Deserialize<'de>>(&self, key: &str) -> anyhow::Result<Vec<V>> {
         let rtxn = self.env.read_txn()?;
         match self.db.get(&rtxn, key.as_bytes())? {
             None => Ok(vec![]),

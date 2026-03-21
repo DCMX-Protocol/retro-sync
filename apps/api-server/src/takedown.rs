@@ -110,11 +110,7 @@ pub async fn submit_notice(
     if !req.good_faith || !req.accuracy {
         return Err(StatusCode::BAD_REQUEST);
     }
-    let id = format!(
-        "DMCA-{}-{}",
-        chrono::Utc::now().format("%Y%m%d"),
-        rand_id()
-    );
+    let id = format!("DMCA-{}-{}", chrono::Utc::now().format("%Y%m%d"), rand_id());
     let notice = TakedownNotice {
         id: id.clone(),
         isrc: req.isrc.clone(),

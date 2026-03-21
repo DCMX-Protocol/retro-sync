@@ -11,9 +11,9 @@ use axum::{
     routing::{delete, get, post},
     Router,
 };
-use tower_http::cors::{CorsLayer, Any};
 use shared::parsers::recognize_isrc;
 use std::sync::Arc;
+use tower_http::cors::{Any, CorsLayer};
 use tracing::{info, warn};
 use tracing_subscriber::EnvFilter;
 
@@ -89,29 +89,47 @@ async fn main() -> anyhow::Result<()> {
         .route("/health", get(health))
         .route("/metrics", get(metrics::handler))
         // ── Wallet authentication (no auth required — these issue the auth token)
-        .route("/api/auth/challenge/:address", get(wallet_auth::issue_challenge))
+        .route(
+            "/api/auth/challenge/:address",
+            get(wallet_auth::issue_challenge),
+        )
         .route("/api/auth/verify", post(wallet_auth::verify_challenge))
         // ── Track upload + status
         .route("/api/upload", post(upload_track))
         .route("/api/track/:id", get(track_status))
         // ── DMCA §512
         .route("/api/takedown", post(takedown::submit_notice))
-        .route("/api/takedown/:id/counter", post(takedown::submit_counter_notice))
+        .route(
+            "/api/takedown/:id/counter",
+            post(takedown::submit_counter_notice),
+        )
         .route("/api/takedown/:id", get(takedown::get_notice))
         // ── GDPR/CCPA
         .route("/api/privacy/consent", post(privacy::record_consent))
-        .route("/api/privacy/delete/:uid", delete(privacy::delete_user_data))
+        .route(
+            "/api/privacy/delete/:uid",
+            delete(privacy::delete_user_data),
+        )
         .route("/api/privacy/export/:uid", get(privacy::export_user_data))
         // ── Moderation (DSA/Article 17)
         .route("/api/moderation/report", post(moderation::submit_report))
         .route("/api/moderation/queue", get(moderation::get_queue))
-        .route("/api/moderation/:id/resolve", post(moderation::resolve_report))
+        .route(
+            "/api/moderation/:id/resolve",
+            post(moderation::resolve_report),
+        )
         // ── KYC/AML
         .route("/api/kyc/:uid", post(kyc::submit_kyc))
         .route("/api/kyc/:uid/status", get(kyc::kyc_status))
         // ── CWR/XSLT society submissions
-        .route("/api/royalty/xslt/:society", post(xslt::transform_submission))
-        .route("/api/royalty/xslt/all", post(xslt::transform_all_submissions))
+        .route(
+            "/api/royalty/xslt/:society",
+            post(xslt::transform_submission),
+        )
+        .route(
+            "/api/royalty/xslt/all",
+            post(xslt::transform_all_submissions),
+        )
         // ── SAP S/4HANA + ECC
         .route("/api/sap/royalty-posting", post(sap::post_royalty_document))
         .route("/api/sap/vendor-sync", post(sap::sync_vendor))
@@ -192,10 +210,7 @@ async fn upload_track(
                     .ok()
                     .and_then(|s| s.parse().ok())
                     .unwrap_or(100 * 1024 * 1024);
-                let bytes = field
-                    .bytes()
-                    .await
-                    .map_err(|_| StatusCode::BAD_REQUEST)?;
+                let bytes = field.bytes().await.map_err(|_| StatusCode::BAD_REQUEST)?;
                 if bytes.len() > max_bytes {
                     warn!(
                         size = bytes.len(),

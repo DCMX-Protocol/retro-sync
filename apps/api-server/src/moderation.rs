@@ -168,10 +168,7 @@ async fn submit_ncmec_report(report_id: &str, isrc: &str) -> anyhow::Result<Stri
         anyhow::bail!("NCMEC API returned {}: {}", status, body_text);
     }
 
-    let result: serde_json::Value = resp
-        .json()
-        .await
-        .unwrap_or_else(|_| serde_json::json!({}));
+    let result: serde_json::Value = resp.json().await.unwrap_or_else(|_| serde_json::json!({}));
 
     let ncmec_id = result["reportId"]
         .as_str()
@@ -187,11 +184,7 @@ pub async fn submit_report(
     Json(req): Json<ReportRequest>,
 ) -> Result<Json<serde_json::Value>, StatusCode> {
     let sla = req.category.sla_hours();
-    let id = format!(
-        "MOD-{}-{}",
-        chrono::Utc::now().format("%Y%m%d"),
-        rand_id()
-    );
+    let id = format!("MOD-{}-{}", chrono::Utc::now().format("%Y%m%d"), rand_id());
     if req.category == ReportCategory::Csam {
         warn!(id=%id, isrc=%req.isrc, "CSAM — IMMEDIATE REMOVAL + NCMEC CyberTipline referral");
         state
