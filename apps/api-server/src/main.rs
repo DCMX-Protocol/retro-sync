@@ -21,17 +21,24 @@ mod audio_qc;
 mod auth;
 mod btfs;
 mod bttc;
+mod bwarm;
+mod coinbase;
 mod ddex;
+mod dqi;
 mod dsp;
+mod durp;
 mod fraud;
 mod gtms;
+mod hyperglot;
 mod identifiers;
 mod iso_store;
 mod kyc;
+mod langsec;
 mod ledger;
 mod metrics;
 mod mirrors;
 mod moderation;
+mod music_reports;
 mod persist;
 mod privacy;
 mod publishing;
@@ -40,6 +47,7 @@ mod royalty_reporting;
 mod sap;
 mod shard;
 mod takedown;
+mod tron;
 mod wallet_auth;
 mod wikidata;
 mod xslt;
@@ -61,6 +69,11 @@ pub struct AppState {
     pub challenge_store: Arc<wallet_auth::ChallengeStore>,
     pub rate_limiter: Arc<rate_limit::RateLimiter>,
     pub shard_store: Arc<shard::ShardStore>,
+    // ── New integrations ──────────────────────────────────────────────────
+    pub tron_config: Arc<tron::TronConfig>,
+    pub coinbase_config: Arc<coinbase::CoinbaseCommerceConfig>,
+    pub durp_config: Arc<durp::DurpConfig>,
+    pub music_reports_config: Arc<music_reports::MusicReportsConfig>,
 }
 
 #[tokio::main]
@@ -87,6 +100,10 @@ async fn main() -> anyhow::Result<()> {
         challenge_store: Arc::new(wallet_auth::ChallengeStore::new()),
         rate_limiter: Arc::new(rate_limit::RateLimiter::new()),
         shard_store: Arc::new(shard::ShardStore::new()),
+        tron_config: Arc::new(tron::TronConfig::from_env()),
+        coinbase_config: Arc::new(coinbase::CoinbaseCommerceConfig::from_env()),
+        durp_config: Arc::new(durp::DurpConfig::from_env()),
+        music_reports_config: Arc::new(music_reports::MusicReportsConfig::from_env()),
     };
 
     let app = Router::new()
@@ -148,6 +165,34 @@ async fn main() -> anyhow::Result<()> {
         // ── Shard store (CFT audio decomposition + NFT-gated access)
         .route("/api/shard/:cid", get(shard::get_shard))
         .route("/api/shard/decompose", post(shard::decompose_and_index))
+        // ── Tron network (TronLink wallet auth + TRX royalty distribution)
+        .route("/api/tron/challenge/:address", get(tron_issue_challenge))
+        .route("/api/tron/verify", post(tron_verify))
+        // ── Coinbase Commerce (payments + webhook)
+        .route(
+            "/api/payments/coinbase/charge",
+            post(coinbase_create_charge),
+        )
+        .route("/api/payments/coinbase/webhook", post(coinbase_webhook))
+        .route(
+            "/api/payments/coinbase/status/:charge_id",
+            get(coinbase_charge_status),
+        )
+        // ── DQI (Data Quality Initiative)
+        .route("/api/dqi/evaluate", post(dqi_evaluate))
+        // ── DURP (Distributor Unmatched Recordings Portal)
+        .route("/api/durp/submit", post(durp_submit))
+        // ── BWARM (Best Workflow for All Rights Management)
+        .route("/api/bwarm/record", post(bwarm_create_record))
+        .route("/api/bwarm/conflicts", post(bwarm_detect_conflicts))
+        // ── Music Reports
+        .route(
+            "/api/music-reports/licence/:isrc",
+            get(music_reports_lookup),
+        )
+        .route("/api/music-reports/rates", get(music_reports_rates))
+        // ── Hyperglot (script detection)
+        .route("/api/hyperglot/detect", post(hyperglot_detect))
         .layer({
             // SECURITY: CORS locked to explicit allowed origins (ALLOWED_ORIGINS env var).
             use axum::http::header::{AUTHORIZATION, CONTENT_TYPE};
@@ -377,4 +422,267 @@ async fn upload_track(
         "dsp_ready":       dsp_failures.is_empty(),
         "dsp_failures":    dsp_failures.iter().map(|r| &r.dsp).collect::<Vec<_>>(),
     })))
+}
+
+// ── Tron handlers ─────────────────────────────────────────────────────────────
+
+async fn tron_issue_challenge(
+    Path(address): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: validate Tron address before issuing challenge
+    langsec::validate_tron_address(&address).map_err(|e| {
+        warn!(err=%e, "Tron challenge: invalid address");
+        StatusCode::UNPROCESSABLE_ENTITY
+    })?;
+    let challenge = tron::issue_tron_challenge(&address).map_err(|e| {
+        warn!(err=%e, "Tron challenge: issue failed");
+        StatusCode::BAD_REQUEST
+    })?;
+    Ok(Json(serde_json::json!({
+        "challenge_id": challenge.challenge_id,
+        "address": challenge.address.0,
+        "nonce": challenge.nonce,
+        "expires_at": challenge.expires_at,
+    })))
+}
+
+async fn tron_verify(
+    State(state): State<AppState>,
+    Json(req): Json<tron::TronVerifyRequest>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // NOTE: In production, look up the nonce from the challenge store by challenge_id.
+    // For now we echo the challenge_id as the nonce (to be wired to ChallengeStore).
+    let nonce = req.challenge_id.clone();
+    let result = tron::verify_tron_signature(&state.tron_config, &req, &nonce)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "Tron verify: failed");
+            StatusCode::UNAUTHORIZED
+        })?;
+    if !result.verified {
+        return Err(StatusCode::UNAUTHORIZED);
+    }
+    state
+        .audit_log
+        .record(&format!("TRON_AUTH_OK address='{}'", result.address))
+        .ok();
+    Ok(Json(serde_json::json!({
+        "verified": result.verified,
+        "address": result.address.0,
+        "message": result.message,
+    })))
+}
+
+// ── Coinbase Commerce handlers ─────────────────────────────────────────────────
+
+async fn coinbase_create_charge(
+    State(state): State<AppState>,
+    Json(req): Json<coinbase::ChargeRequest>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: validate text fields
+    langsec::validate_free_text(&req.name, "name", 200)
+        .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+    let resp = coinbase::create_charge(&state.coinbase_config, &req)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "Coinbase charge creation failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(serde_json::json!({
+        "charge_id":   resp.charge_id,
+        "hosted_url":  resp.hosted_url,
+        "amount_usd":  resp.amount_usd,
+        "expires_at":  resp.expires_at,
+        "status":      format!("{:?}", resp.status),
+    })))
+}
+
+async fn coinbase_webhook(
+    State(state): State<AppState>,
+    request: axum::extract::Request,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let sig = request
+        .headers()
+        .get("x-cc-webhook-signature")
+        .and_then(|v| v.to_str().ok())
+        .unwrap_or("")
+        .to_string();
+    let body = axum::body::to_bytes(request.into_body(), langsec::MAX_JSON_BODY_BYTES)
+        .await
+        .map_err(|_| StatusCode::BAD_REQUEST)?;
+    coinbase::verify_webhook_signature(&state.coinbase_config, &body, &sig).map_err(|e| {
+        warn!(err=%e, "Coinbase webhook signature invalid");
+        StatusCode::UNAUTHORIZED
+    })?;
+    let payload: coinbase::WebhookPayload =
+        serde_json::from_slice(&body).map_err(|_| StatusCode::BAD_REQUEST)?;
+    if let Some((event_type, charge_id)) = coinbase::handle_webhook_event(&payload) {
+        state
+            .audit_log
+            .record(&format!(
+                "COINBASE_WEBHOOK event='{event_type}' charge='{charge_id}'"
+            ))
+            .ok();
+    }
+    Ok(Json(serde_json::json!({ "received": true })))
+}
+
+async fn coinbase_charge_status(
+    State(state): State<AppState>,
+    Path(charge_id): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let status = coinbase::get_charge_status(&state.coinbase_config, &charge_id)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "Coinbase status lookup failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(
+        serde_json::json!({ "charge_id": charge_id, "status": format!("{:?}", status) }),
+    ))
+}
+
+// ── DQI handler ───────────────────────────────────────────────────────────────
+
+async fn dqi_evaluate(
+    State(state): State<AppState>,
+    Json(input): Json<dqi::DqiInput>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let report = dqi::evaluate(&input);
+    state
+        .audit_log
+        .record(&format!(
+            "DQI_EVALUATE isrc='{}' score={:.1}% tier='{}'",
+            report.isrc,
+            report.score_pct,
+            report.tier.as_str()
+        ))
+        .ok();
+    Ok(Json(serde_json::to_value(&report).unwrap_or_default()))
+}
+
+// ── DURP handler ──────────────────────────────────────────────────────────────
+
+async fn durp_submit(
+    State(state): State<AppState>,
+    Json(records): Json<Vec<durp::DurpRecord>>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    if records.is_empty() || records.len() > 5000 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let errors = durp::validate_records(&records);
+    if !errors.is_empty() {
+        return Ok(Json(serde_json::json!({
+            "status": "validation_failed",
+            "errors": errors,
+        })));
+    }
+    let csv = durp::generate_csv(&records);
+    let batch_id = format!(
+        "BATCH-{:016x}",
+        std::time::SystemTime::now()
+            .duration_since(std::time::UNIX_EPOCH)
+            .unwrap_or_default()
+            .as_nanos()
+    );
+    let submission = durp::submit_batch(&state.durp_config, &batch_id, &csv)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "DURP submission failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    state
+        .audit_log
+        .record(&format!(
+            "DURP_SUBMIT batch='{}' records={} status='{:?}'",
+            batch_id,
+            records.len(),
+            submission.status
+        ))
+        .ok();
+    Ok(Json(serde_json::json!({
+        "batch_id": submission.batch_id,
+        "status": format!("{:?}", submission.status),
+        "records": records.len(),
+    })))
+}
+
+// ── BWARM handlers ─────────────────────────────────────────────────────────────
+
+async fn bwarm_create_record(
+    State(state): State<AppState>,
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let title = payload["title"].as_str().unwrap_or("").to_string();
+    let isrc = payload["isrc"].as_str();
+    langsec::validate_free_text(&title, "title", 500)
+        .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+    let record = bwarm::BwarmRecord::new(&title, isrc);
+    let xml = bwarm::generate_bwarm_xml(&record);
+    state
+        .audit_log
+        .record(&format!(
+            "BWARM_CREATE id='{}' title='{}'",
+            record.record_id, title
+        ))
+        .ok();
+    Ok(Json(serde_json::json!({
+        "record_id": record.record_id,
+        "state": record.state.as_str(),
+        "xml_length": xml.len(),
+    })))
+}
+
+async fn bwarm_detect_conflicts(
+    Json(record): Json<bwarm::BwarmRecord>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let conflicts = bwarm::detect_conflicts(&record);
+    let state = bwarm::compute_state(&record);
+    Ok(Json(serde_json::json!({
+        "state": state.as_str(),
+        "conflict_count": conflicts.len(),
+        "conflicts": conflicts,
+    })))
+}
+
+// ── Music Reports handlers ────────────────────────────────────────────────────
+
+async fn music_reports_lookup(
+    State(state): State<AppState>,
+    Path(isrc): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let licences = music_reports::lookup_by_isrc(&state.music_reports_config, &isrc)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "Music Reports lookup failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(serde_json::json!({
+        "isrc": isrc,
+        "licence_count": licences.len(),
+        "licences": licences,
+    })))
+}
+
+async fn music_reports_rates() -> Json<serde_json::Value> {
+    let rate = music_reports::current_mechanical_rate();
+    let dsps = music_reports::dsp_licence_requirements();
+    Json(serde_json::json!({
+        "mechanical_rate": rate,
+        "dsp_requirements": dsps,
+    }))
+}
+
+// ── Hyperglot handler ─────────────────────────────────────────────────────────
+
+async fn hyperglot_detect(
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let text = payload["text"].as_str().unwrap_or("");
+    // LangSec: limit input before passing to script detector
+    if text.len() > 16384 {
+        return Err(StatusCode::PAYLOAD_TOO_LARGE);
+    }
+    let result = hyperglot::detect_scripts(text);
+    Ok(Json(serde_json::to_value(&result).unwrap_or_default()))
 }

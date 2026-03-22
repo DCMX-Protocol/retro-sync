@@ -47,6 +47,36 @@ pub struct RoyaltySplit {
     pub amount_btt: u128,
 }
 
+/// A validated Tron Base58Check address (starts with 'T', 34 chars).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct TronAddress(pub String);
+
+impl std::fmt::Display for TronAddress {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
+/// A DURP submission reference (RTSY-{hex16}).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct DurpRef(pub String);
+
+impl std::fmt::Display for DurpRef {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
+/// A BWARM rights record identifier (BWARM-{hex16}).
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq, Hash)]
+pub struct BwarmId(pub String);
+
+impl std::fmt::Display for BwarmId {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        f.write_str(&self.0)
+    }
+}
+
 #[derive(Debug, Clone, PartialEq)]
 pub enum ParseError {
     InvalidFormat(String),
