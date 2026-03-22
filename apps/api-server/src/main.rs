@@ -19,10 +19,13 @@ use tracing_subscriber::EnvFilter;
 
 mod audio_qc;
 mod auth;
+mod bbs;
 mod btfs;
 mod bttc;
 mod bwarm;
+mod cmrra;
 mod coinbase;
+mod collection_societies;
 mod ddex;
 mod dqi;
 mod dsp;
@@ -31,6 +34,7 @@ mod fraud;
 mod gtms;
 mod hyperglot;
 mod identifiers;
+mod isni;
 mod iso_store;
 mod kyc;
 mod langsec;
@@ -74,6 +78,9 @@ pub struct AppState {
     pub coinbase_config: Arc<coinbase::CoinbaseCommerceConfig>,
     pub durp_config: Arc<durp::DurpConfig>,
     pub music_reports_config: Arc<music_reports::MusicReportsConfig>,
+    pub isni_config: Arc<isni::IsniConfig>,
+    pub cmrra_config: Arc<cmrra::CmrraConfig>,
+    pub bbs_config: Arc<bbs::BbsConfig>,
 }
 
 #[tokio::main]
@@ -104,6 +111,9 @@ async fn main() -> anyhow::Result<()> {
         coinbase_config: Arc::new(coinbase::CoinbaseCommerceConfig::from_env()),
         durp_config: Arc::new(durp::DurpConfig::from_env()),
         music_reports_config: Arc::new(music_reports::MusicReportsConfig::from_env()),
+        isni_config: Arc::new(isni::IsniConfig::from_env()),
+        cmrra_config: Arc::new(cmrra::CmrraConfig::from_env()),
+        bbs_config: Arc::new(bbs::BbsConfig::from_env()),
     };
 
     let app = Router::new()
@@ -193,6 +203,26 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/music-reports/rates", get(music_reports_rates))
         // ── Hyperglot (script detection)
         .route("/api/hyperglot/detect", post(hyperglot_detect))
+        // ── ISNI (International Standard Name Identifier)
+        .route("/api/isni/validate", post(isni_validate))
+        .route("/api/isni/lookup/:isni", get(isni_lookup))
+        .route("/api/isni/search", post(isni_search))
+        // ── CMRRA (Canadian mechanical licensing)
+        .route("/api/cmrra/rates", get(cmrra_rates))
+        .route("/api/cmrra/licence", post(cmrra_request_licence))
+        .route("/api/cmrra/statement/csv", post(cmrra_statement_csv))
+        // ── BBS (Broadcast Blanket Service)
+        .route("/api/bbs/cue-sheet", post(bbs_submit_cue_sheet))
+        .route("/api/bbs/rate", post(bbs_estimate_rate))
+        .route("/api/bbs/bmat-csv", post(bbs_bmat_csv))
+        // ── Collection Societies
+        .route("/api/societies", get(societies_list))
+        .route("/api/societies/:id", get(societies_by_id))
+        .route(
+            "/api/societies/territory/:territory",
+            get(societies_by_territory),
+        )
+        .route("/api/societies/route", post(societies_route_royalty))
         .layer({
             // SECURITY: CORS locked to explicit allowed origins (ALLOWED_ORIGINS env var).
             use axum::http::header::{AUTHORIZATION, CONTENT_TYPE};
@@ -685,4 +715,322 @@ async fn hyperglot_detect(
     }
     let result = hyperglot::detect_scripts(text);
     Ok(Json(serde_json::to_value(&result).unwrap_or_default()))
+}
+
+// ── ISNI handlers ─────────────────────────────────────────────────────────────
+
+async fn isni_validate(
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let raw = payload["isni"].as_str().unwrap_or("");
+    // LangSec: ISNI is 16 chars max; enforce before parse
+    if raw.len() > 32 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    match isni::validate_isni(raw) {
+        Ok(validated) => Ok(Json(serde_json::json!({
+            "valid": true,
+            "isni": validated.0,
+            "formatted": format!("{validated}"),
+        }))),
+        Err(e) => Ok(Json(serde_json::json!({
+            "valid": false,
+            "error": e.to_string(),
+        }))),
+    }
+}
+
+async fn isni_lookup(
+    State(state): State<AppState>,
+    Path(isni_raw): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    if isni_raw.len() > 32 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let validated = isni::validate_isni(&isni_raw).map_err(|e| {
+        warn!(err=%e, "ISNI lookup: invalid ISNI");
+        StatusCode::UNPROCESSABLE_ENTITY
+    })?;
+    let record = isni::lookup_isni(&state.isni_config, &validated)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "ISNI lookup failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(serde_json::to_value(&record).unwrap_or_default()))
+}
+
+async fn isni_search(
+    State(state): State<AppState>,
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let name = payload["name"].as_str().unwrap_or("");
+    if name.is_empty() || name.len() > 200 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let limit = payload["limit"].as_u64().unwrap_or(10) as usize;
+    let results = isni::search_isni_by_name(&state.isni_config, name, limit.min(50))
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "ISNI search failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(serde_json::json!({
+        "name": name,
+        "count": results.len(),
+        "results": results,
+    })))
+}
+
+// ── CMRRA handlers ────────────────────────────────────────────────────────────
+
+async fn cmrra_rates() -> Json<serde_json::Value> {
+    let rates = cmrra::current_canadian_rates();
+    let csi = cmrra::csi_blanket_info();
+    Json(serde_json::json!({
+        "rates": rates,
+        "csi_blanket": csi,
+    }))
+}
+
+async fn cmrra_request_licence(
+    State(state): State<AppState>,
+    Json(req): Json<cmrra::CmrraLicenceRequest>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: validate ISRC before forwarding
+    if req.isrc.len() != 12 || !req.isrc.chars().all(|c| c.is_alphanumeric()) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let resp = cmrra::request_licence(&state.cmrra_config, &req)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "CMRRA licence request failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    state
+        .audit_log
+        .record(&format!(
+            "CMRRA_LICENCE isrc='{}' licence='{}' status='{:?}'",
+            req.isrc, resp.licence_number, resp.status
+        ))
+        .ok();
+    Ok(Json(serde_json::to_value(&resp).unwrap_or_default()))
+}
+
+async fn cmrra_statement_csv(
+    Json(lines): Json<Vec<cmrra::CmrraStatementLine>>,
+) -> Result<axum::response::Response, StatusCode> {
+    if lines.is_empty() || lines.len() > 10_000 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let csv = cmrra::generate_quarterly_csv(&lines);
+    Ok(axum::response::Response::builder()
+        .status(200)
+        .header("Content-Type", "text/csv; charset=utf-8")
+        .header(
+            "Content-Disposition",
+            "attachment; filename=\"cmrra-statement.csv\"",
+        )
+        .body(axum::body::Body::from(csv))
+        .unwrap())
+}
+
+// ── BBS handlers ──────────────────────────────────────────────────────────────
+
+async fn bbs_submit_cue_sheet(
+    State(state): State<AppState>,
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let cues: Vec<bbs::BroadcastCue> = serde_json::from_value(payload["cues"].clone())
+        .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+
+    let period_start: chrono::DateTime<chrono::Utc> = payload["period_start"]
+        .as_str()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or_else(chrono::Utc::now);
+    let period_end: chrono::DateTime<chrono::Utc> = payload["period_end"]
+        .as_str()
+        .and_then(|s| s.parse().ok())
+        .unwrap_or_else(chrono::Utc::now);
+
+    let errors = bbs::validate_cue_batch(&cues);
+    if !errors.is_empty() {
+        return Ok(Json(serde_json::json!({
+            "status": "validation_failed",
+            "errors": errors,
+        })));
+    }
+
+    let batch = bbs::submit_cue_sheet(&state.bbs_config, cues, period_start, period_end)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "BBS cue sheet submission failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    state
+        .audit_log
+        .record(&format!(
+            "BBS_CUESHEET batch='{}' cues={}",
+            batch.batch_id,
+            batch.cues.len()
+        ))
+        .ok();
+    Ok(Json(serde_json::json!({
+        "batch_id": batch.batch_id,
+        "cues": batch.cues.len(),
+        "submitted_at": batch.submitted_at,
+    })))
+}
+
+async fn bbs_estimate_rate(
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let licence_type: bbs::BbsLicenceType = serde_json::from_value(payload["licence_type"].clone())
+        .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+    let territory = payload["territory"].as_str().unwrap_or("US");
+    // LangSec: territory is always 2 uppercase letters
+    if territory.len() != 2 || !territory.chars().all(|c| c.is_ascii_alphabetic()) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let annual_hours = payload["annual_hours"].as_f64().unwrap_or(2000.0);
+    if !(0.0_f64..=8760.0).contains(&annual_hours) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let fee_usd = bbs::estimate_blanket_fee(&licence_type, territory, annual_hours);
+    Ok(Json(serde_json::json!({
+        "licence_type": licence_type.display_name(),
+        "territory": territory,
+        "annual_hours": annual_hours,
+        "estimated_fee_usd": fee_usd,
+    })))
+}
+
+async fn bbs_bmat_csv(
+    Json(cues): Json<Vec<bbs::BroadcastCue>>,
+) -> Result<axum::response::Response, StatusCode> {
+    if cues.is_empty() || cues.len() > 10_000 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let csv = bbs::generate_bmat_csv(&cues);
+    Ok(axum::response::Response::builder()
+        .status(200)
+        .header("Content-Type", "text/csv; charset=utf-8")
+        .header(
+            "Content-Disposition",
+            "attachment; filename=\"bmat-broadcast.csv\"",
+        )
+        .body(axum::body::Body::from(csv))
+        .unwrap())
+}
+
+// ── Collection Societies handlers ─────────────────────────────────────────────
+
+async fn societies_list() -> Json<serde_json::Value> {
+    let all = collection_societies::all_societies();
+    let summary: Vec<_> = all
+        .iter()
+        .map(|s| {
+            serde_json::json!({
+                "id": s.id,
+                "name": s.name,
+                "territories": s.territories,
+                "rights": s.rights,
+                "cisac_member": s.cisac_member,
+                "biem_member": s.biem_member,
+                "currency": s.currency,
+                "website": s.website,
+            })
+        })
+        .collect();
+    Json(serde_json::json!({
+        "count": summary.len(),
+        "societies": summary,
+    }))
+}
+
+async fn societies_by_id(Path(id): Path<String>) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: society IDs are ASCII alphanumeric + underscore/hyphen, max 32 chars
+    if id.len() > 32
+        || !id
+            .chars()
+            .all(|c| c.is_alphanumeric() || c == '_' || c == '-')
+    {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let society = collection_societies::society_by_id(&id).ok_or(StatusCode::NOT_FOUND)?;
+    Ok(Json(serde_json::json!({
+        "id": society.id,
+        "name": society.name,
+        "territories": society.territories,
+        "rights": society.rights,
+        "cisac_member": society.cisac_member,
+        "biem_member": society.biem_member,
+        "website": society.website,
+        "currency": society.currency,
+        "payment_network": society.payment_network,
+        "minimum_payout": society.minimum_payout,
+        "reporting_standard": society.reporting_standard,
+    })))
+}
+
+async fn societies_by_territory(
+    Path(territory): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: territory is always 2 uppercase letters
+    if territory.len() != 2 || !territory.chars().all(|c| c.is_ascii_alphabetic()) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let t = territory.to_uppercase();
+    let societies = collection_societies::societies_for_territory(&t);
+    let result: Vec<_> = societies
+        .iter()
+        .map(|s| {
+            serde_json::json!({
+                "id": s.id,
+                "name": s.name,
+                "rights": s.rights,
+                "currency": s.currency,
+                "website": s.website,
+            })
+        })
+        .collect();
+    Ok(Json(serde_json::json!({
+        "territory": t,
+        "count": result.len(),
+        "societies": result,
+    })))
+}
+
+async fn societies_route_royalty(
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let territory = payload["territory"].as_str().unwrap_or("");
+    let amount_usd = payload["amount_usd"].as_f64().unwrap_or(0.0);
+    let isrc = payload["isrc"].as_str();
+    let iswc = payload["iswc"].as_str();
+
+    // LangSec validations
+    if territory.len() != 2 || !territory.chars().all(|c| c.is_ascii_alphabetic()) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    if !(0.0_f64..=1_000_000.0).contains(&amount_usd) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let right_type: collection_societies::RightType =
+        serde_json::from_value(payload["right_type"].clone())
+            .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+
+    let instructions = collection_societies::route_royalty(
+        &territory.to_uppercase(),
+        right_type,
+        amount_usd,
+        isrc,
+        iswc,
+    );
+    Ok(Json(serde_json::json!({
+        "territory": territory.to_uppercase(),
+        "amount_usd": amount_usd,
+        "instruction_count": instructions.len(),
+        "instructions": instructions,
+    })))
 }

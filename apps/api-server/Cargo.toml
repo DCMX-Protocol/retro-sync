@@ -8,6 +8,10 @@ license.workspace = true
 name = "backend"
 path = "src/main.rs"
 
+[lib]
+name = "backend"
+path = "src/lib.rs"
+
 [dependencies]
 tokio        = { workspace = true }
 axum         = { workspace = true }
@@ -31,6 +35,7 @@ ethers-contract  = { version = "2" }
 quick-xml    = { workspace = true }
 xot          = { workspace = true }
 tower-http   = { workspace = true }
+thiserror    = { workspace = true }
 
 [features]
 default = []
