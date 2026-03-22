@@ -104,140 +104,154 @@ fn main() {
             "collection": "Hurrian Hymn h.6 — 71-Shard NFT",
             "algebra": "Cl(15,0,0)",
             "pipeline": "retro-sync/nft71",
-            "version": "0.2.0",
+            "version": "0.3.0",
         })
     };
 
+    // === DATA LAYERS — all content to be striped across 71 shards ===
+    let witnesses = serde_json::json!([
+        serde_json::from_str::<serde_json::Value>(&w_source).unwrap_or_default(),
+        serde_json::from_str::<serde_json::Value>(&w_midi).unwrap_or_default(),
+        serde_json::from_str::<serde_json::Value>(&w_pdf).unwrap_or_default(),
+        serde_json::from_str::<serde_json::Value>(&w_wav).unwrap_or_default(),
+        serde_json::from_str::<serde_json::Value>(&w_commit).unwrap_or_default(),
+    ]);
+    let eigenspace_json = serde_json::json!({
+        "earth": eigen.earth_pct, "spoke": eigen.spoke_pct, "hub": eigen.hub_pct,
+        "grade_energy": eigen.grade_energy.to_vec(),
+        "fractran_state": format!("{}", eigen.fractran_state),
+        "triplet_count": eigen.triplet_count,
+    });
+    let metadata_json = serde_json::json!({
+        "tablet": "RS 15.30 + 15.49 + 17.387", "site": "Royal Palace, Ugarit (Ras Shamra, Syria)",
+        "scribe": "Ammurabi", "tuning": "nīd qablim (nid qabli)", "strings": 9,
+        "instrument": "sammûm", "deity": "Nikkal", "genre": "zaluzi",
+        "date": "~1400 BC", "coordinates": "35.6°N 35.78°E",
+    });
+    let reconstructions_json = serde_json::json!([
+        {"scholar": "M. L. West", "year": 1994, "approach": "dichords on descending diatonic scale", "notation": notation_json},
+        {"scholar": "Anne D. Kilmer", "year": 1974, "approach": "first modern reconstruction, ascending scale"},
+        {"scholar": "Marcelle Duchesne-Guillemin", "years": "1975, 1984", "approach": "melodic interpretation of interval names"},
+        {"scholar": "Richard Dumbrill", "approach": "organological analysis, used by Peter Pringle"},
+        {"scholar": "Raoul Gregory Vitale", "approach": "alternative interval reading"},
+    ]);
+    let refs_json: Vec<serde_json::Value> = ref_urls.iter().map(|u| serde_json::json!(u)).collect();
+    let yt_json: Vec<serde_json::Value> = yt_urls.iter().map(|u| serde_json::json!(u)).collect();
+    let pipeline_json = serde_json::json!({
+        "sop": read_text("datasets/SOP-RETROSYNC-PUB-001.md"),
+        "erdfa_cft": "e1=file(p2) → e2=para(p3) → e3=col(p5) → e4=line(p7) → e5=token(p11) → e6=byte(p13) → e7=emoji(p17) → e8=unicode(p19) → e9=bit(p23)",
+        "boustrophedon": {"method": "Way of the Oxen", "rows": 3},
+        "cl15": {"algebra": "Cl(15,0,0)", "generators": 15, "dimension": "2^15 = 32768"},
+    });
+
+    // Collect all layers as named byte blobs, then stripe across 71 shards
+    let layers: Vec<(&str, Vec<u8>)> = vec![
+        ("source",          src_text.as_bytes().to_vec()),
+        ("lilypond",        ly_text.as_bytes().to_vec()),
+        ("midi",            base64::Engine::decode(&base64::engine::general_purpose::STANDARD, &midi_b64).unwrap_or_default()),
+        ("pdf",             base64::Engine::decode(&base64::engine::general_purpose::STANDARD, &pdf_b64).unwrap_or_default()),
+        ("wav",             base64::Engine::decode(&base64::engine::general_purpose::STANDARD, &wav_b64).unwrap_or_default()),
+        ("witnesses",       serde_json::to_vec(&witnesses).unwrap()),
+        ("eigenspace",      serde_json::to_vec(&eigenspace_json).unwrap()),
+        ("metadata",        serde_json::to_vec(&metadata_json).unwrap()),
+        ("reconstructions", serde_json::to_vec(&reconstructions_json).unwrap()),
+        ("references",      serde_json::to_vec(&serde_json::json!(refs_json)).unwrap()),
+        ("youtube",         serde_json::to_vec(&serde_json::json!(yt_json)).unwrap()),
+        ("pipeline",        serde_json::to_vec(&pipeline_json).unwrap()),
+        ("colophon",        serde_json::to_vec(&serde_json::json!(colophon)).unwrap()),
+    ];
+
+    // SHA-256 of each complete layer for reconstruction verification
+    let layer_hashes: Vec<(&str, String)> = layers.iter()
+        .map(|(name, data)| (*name, hex::encode(Sha256::digest(data))))
+        .collect();
+
+    // Stripe: for each layer, split into 71 chunks (round-robin byte assignment)
+    fn stripe(data: &[u8], n: usize) -> Vec<Vec<u8>> {
+        let mut chunks: Vec<Vec<u8>> = (0..n).map(|_| Vec::new()).collect();
+        for (i, &b) in data.iter().enumerate() {
+            chunks[i % n].push(b);
+        }
+        chunks
+    }
+
+    let striped: Vec<(&str, Vec<Vec<u8>>)> = layers.iter()
+        .map(|(name, data)| (*name, stripe(data, 71)))
+        .collect();
+
     let mut shards: BTreeMap<u64, Vec<u8>> = BTreeMap::new();
+    let mut payloads: BTreeMap<u64, serde_json::Value> = BTreeMap::new();
     let mut manifest = Vec::new();
 
     for idx in 1..=71u64 {
-        let payload = if is_prime(idx) {
-            // Generator shards — SSP interval data
+        let i = (idx - 1) as usize;
+
+        // Determine shard's primary identity
+        let (cat, name) = if is_prime(idx) {
             let ssp_pos = SSP.iter().position(|&p| p == idx);
-            let name = ssp_pos.map(|i| INTERVAL_NAMES[i]).unwrap_or("cft-prime");
-            let mut s = header(idx, "generator", name);
-            if let Some(i) = ssp_pos {
+            ("generator", ssp_pos.map(|j| INTERVAL_NAMES[j]).unwrap_or("cft-prime"))
+        } else {
+            match idx {
+                4|6 => ("source", "text"),
+                8|9|10 => ("artifact", "binary"),
+                12|14|15|16|18 => ("witness", "chain"),
+                20..=25 => ("eigenspace", "cl15"),
+                26..=35 => ("metadata", "tablet"),
+                36..=42 => ("reconstruction", "scholarly"),
+                44..=57 => ("reference", "url"),
+                58..=65 => ("youtube", "private"),
+                66..=70 => ("pipeline", "sop"),
+                _ => ("reserved", "future"),
+            }
+        };
+
+        let mut s = header(idx, cat, name);
+
+        // Generator-specific: SSP interval data
+        if is_prime(idx) {
+            if let Some(j) = SSP.iter().position(|&p| p == idx) {
                 s["interval"] = serde_json::json!({
-                    "name": INTERVAL_NAMES[i],
-                    "ssp_index": i,
-                    "prime": SSP[i],
-                    "string_pair": match i {
+                    "name": INTERVAL_NAMES[j], "ssp_index": j, "prime": SSP[j],
+                    "string_pair": match j {
                         0 => "1-5", 1 => "2-6", 2 => "3-7", 3 => "4-1",
                         4 => "5-2", 5 => "6-3", 6 => "7-4", 7 => "7-5",
                         8 => "1-6", 9 => "2-7", 10 => "1-3", 11 => "2-4",
                         12 => "3-5", 13 => "4-6", _ => "colophon",
                     },
-                    "type": if i < 7 { "primary" } else if i < 14 { "secondary" } else { "crown" },
+                    "type": if j < 7 { "primary" } else if j < 14 { "secondary" } else { "crown" },
                 });
-                // Count occurrences in the notation
                 let count: u32 = notation.iter()
-                    .filter(|e| hurrian_h6::interval_to_ssp_index(&e.term) == Some(i))
-                    .map(|e| e.count as u32)
-                    .sum();
+                    .filter(|e| hurrian_h6::interval_to_ssp_index(&e.term) == Some(j))
+                    .map(|e| e.count as u32).sum();
                 s["occurrences_in_h6"] = serde_json::json!(count);
             }
-            if idx == 71 { s["colophon"] = serde_json::json!(colophon); }
-            s
-        } else {
-            match idx {
-                // === SOURCE ===
-                4 => {
-                    let mut s = header(idx, "source", "hurrian_h6.txt");
-                    s["content"] = serde_json::json!(src_text);
-                    s["sha256"] = serde_json::json!(file_hash("fixtures/data/hurrian_h6.txt"));
-                    s["bytes"] = serde_json::json!(src_text.len());
-                    s
-                }
-                6 => {
-                    let mut s = header(idx, "source", "h6_west.ly");
-                    s["content"] = serde_json::json!(ly_text);
-                    s["sha256"] = serde_json::json!(file_hash("fixtures/lilypond/h6_west.ly"));
-                    s["bytes"] = serde_json::json!(ly_text.len());
-                    s
-                }
-                // === ARTIFACTS (binary, base64) ===
-                8 => {
-                    let mut s = header(idx, "artifact", "h6_west.midi");
-                    s["encoding"] = serde_json::json!("base64");
-                    s["data"] = serde_json::json!(midi_b64);
-                    s["sha256"] = serde_json::json!(midi_hash);
-                    s["bytes"] = serde_json::json!(606);
-                    s
-                }
-                9 => {
-                    let mut s = header(idx, "artifact", "h6_west.pdf");
-                    s["encoding"] = serde_json::json!("base64");
-                    s["data"] = serde_json::json!(pdf_b64);
-                    s["sha256"] = serde_json::json!(pdf_hash);
-                    s["bytes"] = serde_json::json!(std::fs::metadata("fixtures/output/h6_west.pdf").map(|m| m.len()).unwrap_or(0));
-                    s
-                }
-                10 => {
-                    let mut s = header(idx, "artifact", "h6_west.wav");
-                    s["encoding"] = serde_json::json!("base64");
-                    s["data"] = serde_json::json!(wav_b64);
-                    s["sha256"] = serde_json::json!(wav_hash);
-                    s["bytes"] = serde_json::json!(std::fs::metadata("fixtures/output/h6_west.wav").map(|m| m.len()).unwrap_or(0));
-                    s["sample_rate"] = serde_json::json!(44100);
-                    s["format"] = serde_json::json!("WAV PCM 16-bit");
-                    s
-                }
-                // === WITNESSES ===
-                12 => { let mut s = header(idx, "witness", "00_source"); s["witness"] = serde_json::from_str(&w_source).unwrap_or_default(); s }
-                14 => { let mut s = header(idx, "witness", "01_midi"); s["witness"] = serde_json::from_str(&w_midi).unwrap_or_default(); s }
-                15 => { let mut s = header(idx, "witness", "01_pdf"); s["witness"] = serde_json::from_str(&w_pdf).unwrap_or_default(); s }
-                16 => { let mut s = header(idx, "witness", "02_wav"); s["witness"] = serde_json::from_str(&w_wav).unwrap_or_default(); s }
-                18 => { let mut s = header(idx, "witness", "99_commitment"); s["witness"] = serde_json::from_str(&w_commit).unwrap_or_default(); s }
-                // === EIGENSPACE ===
-                20 => { let mut s = header(idx, "eigenspace", "earth"); s["value"] = serde_json::json!(eigen.earth_pct); s["description"] = serde_json::json!("grades 0-5 of Cl(15,0,0)"); s }
-                21 => { let mut s = header(idx, "eigenspace", "spoke"); s["value"] = serde_json::json!(eigen.spoke_pct); s["description"] = serde_json::json!("grades 6-10 of Cl(15,0,0)"); s }
-                22 => { let mut s = header(idx, "eigenspace", "hub"); s["value"] = serde_json::json!(eigen.hub_pct); s["description"] = serde_json::json!("grades 11-15 of Cl(15,0,0) — j-invariant"); s }
-                24 => { let mut s = header(idx, "eigenspace", "grade_energy"); s["grades"] = serde_json::json!(eigen.grade_energy.to_vec()); s }
-                25 => { let mut s = header(idx, "eigenspace", "fractran_state"); s["state"] = serde_json::json!(format!("{}", eigen.fractran_state)); s["triplet_count"] = serde_json::json!(eigen.triplet_count); s }
-                // === METADATA ===
-                26 => { let mut s = header(idx, "metadata", "tablet_provenance"); s["tablet"] = serde_json::json!("RS 15.30 + 15.49 + 17.387"); s["site"] = serde_json::json!("Royal Palace, Ugarit (Ras Shamra, Syria)"); s["excavation"] = serde_json::json!("1950s"); s["catalogue"] = serde_json::json!("h.6 (Laroche)"); s }
-                27 => { let mut s = header(idx, "metadata", "scribe_colophon"); s["scribe"] = serde_json::json!("Ammurabi"); s["text"] = serde_json::json!("This [is] a song [in the] nitkibli [tuning], a zaluzi, written down by Ammurabi"); s }
-                28 => { let mut s = header(idx, "metadata", "tuning_system"); s["tuning"] = serde_json::json!("nīd qablim (nid qabli)"); s["strings"] = serde_json::json!(9); s["scale"] = serde_json::json!("descending diatonic"); s }
-                30 => { let mut s = header(idx, "metadata", "instrument"); s["instrument"] = serde_json::json!("sammûm"); s["strings"] = serde_json::json!(9); s["type"] = serde_json::json!("lyre"); s }
-                32 => { let mut s = header(idx, "metadata", "deity"); s["deity"] = serde_json::json!("Nikkal"); s["domain"] = serde_json::json!("goddess of orchards"); s["consort"] = serde_json::json!("Yarikh (moon god)"); s }
-                33 => { let mut s = header(idx, "metadata", "genre"); s["genre"] = serde_json::json!("zaluzi"); s["meaning"] = serde_json::json!("prayer to the gods"); s }
-                34 => { let mut s = header(idx, "metadata", "date"); s["date"] = serde_json::json!("~1400 BC"); s["century"] = serde_json::json!("14th century BC"); s["age_years"] = serde_json::json!(3426); s }
-                35 => { let mut s = header(idx, "metadata", "site"); s["city"] = serde_json::json!("Ugarit"); s["modern"] = serde_json::json!("Ras Shamra, Syria"); s["coordinates"] = serde_json::json!("35.6°N 35.78°E"); s }
-                // === RECONSTRUCTIONS ===
-                36 => { let mut s = header(idx, "reconstruction", "west_1994"); s["scholar"] = serde_json::json!("M. L. West"); s["year"] = serde_json::json!(1994); s["approach"] = serde_json::json!("dichords on descending diatonic scale"); s["notation"] = serde_json::json!(notation_json); s }
-                38 => { let mut s = header(idx, "reconstruction", "kilmer_1974"); s["scholar"] = serde_json::json!("Anne D. Kilmer"); s["year"] = serde_json::json!(1974); s["approach"] = serde_json::json!("first modern reconstruction, ascending scale"); s }
-                39 => { let mut s = header(idx, "reconstruction", "duchesne_guillemin"); s["scholar"] = serde_json::json!("Marcelle Duchesne-Guillemin"); s["years"] = serde_json::json!("1975, 1984"); s["approach"] = serde_json::json!("melodic interpretation of interval names"); s }
-                40 => { let mut s = header(idx, "reconstruction", "dumbrill"); s["scholar"] = serde_json::json!("Richard Dumbrill"); s["approach"] = serde_json::json!("organological analysis, used by Peter Pringle"); s }
-                42 => { let mut s = header(idx, "reconstruction", "vitale"); s["scholar"] = serde_json::json!("Raoul Gregory Vitale"); s["approach"] = serde_json::json!("alternative interval reading"); s }
-                // === REFERENCES ===
-                44..=57 => {
-                    let ref_idx = (idx - 44) as usize;
-                    let url = ref_urls.get(ref_idx).unwrap_or(&"");
-                    let mut s = header(idx, "reference", url);
-                    s["url"] = serde_json::json!(url);
-                    s["capture_status"] = serde_json::json!("pending_zktls");
-                    s
-                }
-                // === YOUTUBE ===
-                58..=65 => {
-                    let yt_idx = (idx - 58) as usize;
-                    let url = yt_urls.get(yt_idx).unwrap_or(&"");
-                    let mut s = header(idx, "youtube", url);
-                    s["url"] = serde_json::json!(url);
-                    s["capture_status"] = serde_json::json!("pending_private_witness");
-                    s["note"] = serde_json::json!("audio captured privately for spectral comparison only — never redistributed");
-                    s
-                }
-                // === PIPELINE ===
-                66 => { let mut s = header(idx, "pipeline", "sop_retrosync_pub_001"); s["sop"] = serde_json::json!(read_text("datasets/SOP-RETROSYNC-PUB-001.md")); s }
-                68 => { let mut s = header(idx, "pipeline", "erdfa_cft_decomposition"); s["levels"] = serde_json::json!("e1=file(p2) → e2=para(p3) → e3=col(p5) → e4=line(p7) → e5=token(p11) → e6=byte(p13) → e7=emoji(p17) → e8=unicode(p19) → e9=bit(p23)"); s }
-                69 => { let mut s = header(idx, "pipeline", "boustrophedon_extraction"); s["method"] = serde_json::json!("Way of the Oxen — alternating direction rows"); s["rows"] = serde_json::json!(3); s }
-                70 => { let mut s = header(idx, "pipeline", "cl15_algebra"); s["algebra"] = serde_json::json!("Cl(15,0,0)"); s["generators"] = serde_json::json!(15); s["dimension"] = serde_json::json!("2^15 = 32768"); s["eigenspaces"] = serde_json::json!(["Earth (0-5)", "Spoke (6-10)", "Hub (11-15)"]); s }
-                // === RESERVED ===
-                _ => header(idx, "reserved", "future"),
-            }
-        };
+        }
+
+        // === INTERLEAVED DATA LAYERS — every shard carries a stripe of everything ===
+        use base64::{Engine, engine::general_purpose::STANDARD};
+        let mut data_layers = serde_json::Map::new();
+        for (layer_name, chunks) in &striped {
+            data_layers.insert(layer_name.to_string(), serde_json::json!({
+                "chunk": i,
+                "of": 71,
+                "encoding": "base64",
+                "data": STANDARD.encode(&chunks[i]),
+                "total_bytes": layers.iter().find(|(n,_)| n == layer_name).unwrap().1.len(),
+            }));
+        }
+        s["data_layers"] = serde_json::Value::Object(data_layers);
+
+        // Layer hashes so any shard can verify reconstruction
+        s["layer_hashes"] = serde_json::json!(
+            layer_hashes.iter().map(|(n,h)| serde_json::json!({"layer": n, "sha256": h})).collect::<Vec<_>>()
+        );
+
+        // Artifact hashes for the original files
+        s["artifact_hashes"] = serde_json::json!({
+            "midi": midi_hash, "pdf": pdf_hash, "wav": wav_hash,
+        });
+
+        let payload = s;
 
         let cbor = da51_wrap(&payload);
         let hash = Sha256::digest(&serde_json::to_vec(&payload).unwrap());
@@ -256,14 +270,18 @@ fn main() {
         }));
 
         shards.insert(idx, cbor);
+        payloads.insert(idx, payload);
     }
 
-    // Write shards
+    // Write shards (CBOR canonical + JSON for HF)
     let out = Path::new("fixtures/output/nft71");
     std::fs::create_dir_all(out).unwrap();
+    let json_dir = out.join("json");
+    std::fs::create_dir_all(&json_dir).unwrap();
     for (idx, cbor) in &shards {
-        let path = out.join(format!("{:02}.cbor", idx));
-        std::fs::write(&path, cbor).unwrap();
+        std::fs::write(out.join(format!("{:02}.cbor", idx)), cbor).unwrap();
+        let json = serde_json::to_string_pretty(&payloads[idx]).unwrap();
+        std::fs::write(json_dir.join(format!("{:02}.json", idx)), json).unwrap();
     }
 
     // Summary
@@ -272,7 +290,9 @@ fn main() {
 
     let manifest_json = serde_json::to_string_pretty(&serde_json::json!({
         "title": "Hurrian Hymn h.6 — 71-Shard NFT Collection",
-        "version": "0.2.0",
+        "version": "0.3.0",
+        "encoding": "interleaved — all data striped round-robin across 71 shards",
+        "layers": layer_hashes.iter().map(|(n,h)| serde_json::json!({"name": n, "sha256": h})).collect::<Vec<_>>(),
         "shard_count": 71,
         "generators": generators,
         "derived": 71 - generators,
