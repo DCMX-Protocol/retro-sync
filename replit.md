@@ -40,6 +40,13 @@ A decentralized media distribution and royalty management platform for the music
 - **DDEX**: XML escaping on all user inputs
 - **Moderation IDs**: Cryptographically random (OS entropy)
 
+## Smart Contracts (contracts/src/)
+- `SoulboundNFT.sol` — ERC-5192 soulbound token (non-transferable). One token per track, stores ISRC, BTFS CID, band, and all contributor wallet addresses, IPI numbers, roles, and basis-point splits. Deterministic token ID = `keccak256(bytes(isrc))`. Minted only by PublishingAgreement. Burned by admin on DMCA takedown.
+- `PublishingAgreement.sol` — Multi-party on-chain publishing contract. Admin proposes an agreement; each songwriter/publisher signs from their own wallet. Once all parties have signed, the soulbound NFT is minted automatically. Emits `AgreementFullySigned` + `SoulboundMinted` events for the backend to trigger DDEX.
+- `RoyaltyDistributor.sol` — Distributes BTT royalties with ZK split proof verification.
+- `ZKVerifier.sol` — On-chain Groth16 verifier for the royalty split circuit (3 public inputs: band, bps_sum, split_commitment).
+- `MockBTT.sol` — ERC-20 test token (owner-restricted mint).
+
 ## Key Backend Modules (apps/api-server/src/)
 - `persist.rs` — generic LMDB store (put/get/append/update/delete)
 - `rate_limit.rs` — per-IP sliding-window rate limiter middleware
@@ -51,6 +58,15 @@ A decentralized media distribution and royalty management platform for the music
 - `takedown.rs` — DMCA §512 with LMDB
 - `zk_cache.rs` — ZK proof cache with LMDB
 - `btfs.rs` — BTFS upload/pin with API key auth + TLS enforcement
+- `publishing.rs` — `POST /api/register`: validates all contributors' KYC, stores publishing agreement, delivers to DDEX ERN 4.1 with full IPI + wallet attribution; soulbound NFT minted on-chain once all parties sign
+
+## Upload + Publishing Pipeline
+1. User fills MetadataUpload form: title, ISRC, audio file, contributors (wallet, IPI, role, bps splits summing to 10,000)
+2. Frontend POSTs audio as multipart to `POST /api/upload` → BTFS upload, BTTC distribution, DDEX registration, mirrors push. Returns `cid`, `band`.
+3. Frontend POSTs JSON to `POST /api/register` → KYC-checks all contributors, logs publishing agreement, delivers full ERN 4.1 XML with contributor IPI/wallet attribution to DDEX sandbox.
+4. On-chain: Backend (or deployer) calls `PublishingAgreement.propose(isrc, cid, band, wallets[], ipis[], roles[], bps[])`.
+5. Each party calls `PublishingAgreement.sign(agreementId)` from their wallet (via frontend or direct tx). When the last party signs, `SoulboundNFT.mint()` fires automatically.
+6. Soulbound NFT permanently records creative attribution on-chain (ISRC, BTFS CID, all IPI numbers, wallet addresses, royalty splits).
 
 ## Deployment
 - Target: Static site

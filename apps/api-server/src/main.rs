@@ -34,6 +34,7 @@ mod mirrors;
 mod moderation;
 mod persist;
 mod privacy;
+mod publishing;
 mod rate_limit;
 mod royalty_reporting;
 mod sap;
@@ -97,6 +98,8 @@ async fn main() -> anyhow::Result<()> {
         // ── Track upload + status
         .route("/api/upload", post(upload_track))
         .route("/api/track/:id", get(track_status))
+        // ── Publishing agreements + soulbound NFT minting
+        .route("/api/register", post(publishing::register_track))
         // ── DMCA §512
         .route("/api/takedown", post(takedown::submit_notice))
         .route(
