@@ -31,7 +31,7 @@ pub async fn sign_bytes(payload: &[u8]) -> anyhow::Result<Vec<u8>> {
 
     #[cfg(feature = "ledger")]
     {
-        use ethers::signers::{HDPath, Ledger, Signer};
+        use ethers_signers::{HDPath, Ledger, Signer};
 
         let chain_id = std::env::var("BTTC_CHAIN_ID")
             .unwrap_or_else(|_| "199".into()) // BTTC mainnet
@@ -85,7 +85,7 @@ pub async fn get_address() -> anyhow::Result<String> {
 
     #[cfg(feature = "ledger")]
     {
-        use ethers::signers::{HDPath, Ledger, Signer};
+        use ethers_signers::{HDPath, Ledger, Signer};
         let chain_id = std::env::var("BTTC_CHAIN_ID")
             .unwrap_or_else(|_| "199".into())
             .parse::<u64>()?;

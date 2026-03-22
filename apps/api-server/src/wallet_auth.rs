@@ -341,7 +341,7 @@ fn verify_evm_signature(
 /// Keccak-256 hash (Ethereum's hash function), delegated to ethers::utils.
 /// NOTE: Ethereum Keccak-256 differs from SHA3-256. Use this only.
 fn keccak256(data: &[u8]) -> [u8; 32] {
-    ethers::utils::keccak256(data)
+    ethers_core::utils::keccak256(data)
 }
 
 /// ECDSA public key recovery on secp256k1.
@@ -352,7 +352,7 @@ fn recover_evm_address(
     s: &[u8],
     recovery_id: u8,
 ) -> anyhow::Result<String> {
-    use ethers::types::{Signature, H256};
+    use ethers_core::types::{Signature, H256, U256};
 
     let mut r_arr = [0u8; 32];
     let mut s_arr = [0u8; 32];
@@ -360,8 +360,8 @@ fn recover_evm_address(
     s_arr.copy_from_slice(s);
 
     let sig = Signature {
-        r: ethers::types::U256::from_big_endian(&r_arr),
-        s: ethers::types::U256::from_big_endian(&s_arr),
+        r: U256::from_big_endian(&r_arr),
+        s: U256::from_big_endian(&s_arr),
         v: recovery_id as u64,
     };
 

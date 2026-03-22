@@ -146,7 +146,6 @@ features = ["no-env-filter"]
 [features]
 celo = ["ethers-core/celo"]
 default = [
-    "ws",
     "rustls",
 ]
 dev-rpc = []
@@ -162,7 +161,6 @@ openssl = [
 ]
 optimism = ["ethers-core/optimism"]
 rustls = [
-    "tokio-tungstenite/rustls-tls-webpki-roots",
     "reqwest/rustls-tls",
 ]
 ws = [

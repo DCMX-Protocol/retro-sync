@@ -16,7 +16,7 @@
 use anyhow::{anyhow, Result};
 use base64::{engine::general_purpose::STANDARD as B64, Engine};
 use ed25519_dalek::{SigningKey, VerifyingKey};
-use ethers::signers::{HDPath, Ledger, Signer};
+use ethers_signers::{HDPath, Ledger, Signer};
 use sha2::{Digest, Sha256};
 use std::path::PathBuf;
 

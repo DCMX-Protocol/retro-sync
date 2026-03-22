@@ -29,9 +29,9 @@ heed         = { workspace = true }
 shared          = { path = "../../libs/shared" }
 zk_circuits     = { path = "../../libs/zk-circuits" }
 erdfa-publish   = { path = "../../nix/erdfa-publish" }
-ethers           = { version = "2", features = ["ledger", "abigen", "ws"] }
+ethers-core      = { version = "2" }
+ethers-providers = { version = "2" }
 ethers-signers   = { version = "2", features = ["ledger"] }
-ethers-contract  = { version = "2" }
 quick-xml    = { workspace = true }
 xot          = { workspace = true }
 tower-http   = { workspace = true }
