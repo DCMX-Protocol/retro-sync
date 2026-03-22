@@ -114,7 +114,7 @@ pub fn band_from_digit_root(dr: u64) -> u8 {
 }
 
 /// Full fingerprint of a track.
-#[derive(Debug, Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize, Default)]
 pub struct PatternFingerprint {
     pub hash_u64: u64,
     pub cycle_position: u8,

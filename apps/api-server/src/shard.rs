@@ -6,7 +6,15 @@
 //! Shards are semantic representations of track structure encoded as DA51-tagged
 //! CBOR bytes using the erdfa-publish library.
 //!
-//! NFT holders get full-quality shards; public access returns 30-second previews.
+//! ## NFT gating model (updated)
+//!
+//! Shard DATA is **fully public** — `GET /api/shard/:cid` returns the complete shard
+//! to any caller without authentication.  This follows the "public DA" (decentralised
+//! availability) model: the bits are always accessible on BTFS.
+//!
+//! NFT ownership gates only the **ShardManifest** (assembly instructions) served via
+//! `GET /api/manifest/:token_id`.  A wallet that holds the NFT can request the
+//! ordered CID list + optional AES-256-GCM decryption key for the assembled track.
 //!
 //! Pre-generated source shards (Emacs Lisp / Fractran VM reflections of each
 //! Rust module) live in `shards/` at the repo root and can be served directly
@@ -20,7 +28,7 @@ use axum::{
 use erdfa_publish::{cft::Scale as TextScale, Component, Shard, ShardSet};
 use shared::types::Isrc;
 use std::{collections::HashMap, sync::RwLock};
-use tracing::{info, warn};
+use tracing::info;
 
 // ── Audio CFT scale tower ──────────────────────────────────────────────────
 
@@ -75,12 +83,15 @@ impl AudioScale {
 
 // ── Shard quality tiers ────────────────────────────────────────────────────
 
+/// Quality is now informational only.  All shard data served via the API is
+/// `Full` — the old `Preview` tier is removed.  NFT gates the *manifest*, not
+/// the data.  `Degraded` and `Steganographic` tiers are retained for future
+/// p2p stream quality signalling.
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub enum ShardQuality {
-    Full,                   // lossless, NFT-gated
-    Preview,                // 30-second truncated
-    Degraded { kbps: u16 }, // low-bitrate public stream
-    Steganographic,         // hidden in cover content
+    Full,                   // full public shard — always returned
+    Degraded { kbps: u16 }, // low-bitrate p2p stream (reserved)
+    Steganographic,         // hidden in cover content (reserved)
 }
 
 // ── In-memory shard store ──────────────────────────────────────────────────
@@ -190,42 +201,38 @@ use crate::AppState;
 
 /// `GET /api/shard/:cid`
 ///
-/// Returns shard JSON. Wallet header `x-wallet-address` is checked for NFT
-/// ownership; holders receive `quality: "full"`, everyone else gets a truncated
-/// preview with a purchase prompt.
+/// Returns the full shard JSON to any caller — shards are public DA on BTFS.
+/// NFT ownership is NOT checked here; it gates only `/api/manifest/:token_id`
+/// (the assembly instructions + optional decryption key).
+///
+/// The optional `x-wallet-address` header is accepted but only logged for
+/// analytics; it does not alter the response.
 pub async fn get_shard(
     State(state): State<AppState>,
     Path(cid): Path<String>,
     headers: axum::http::HeaderMap,
 ) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: CID must be non-empty and ≤ 128 chars
+    if cid.is_empty() || cid.len() > 128 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    let shard_data = state.shard_store.get(&cid).ok_or(StatusCode::NOT_FOUND)?;
+
     let wallet = headers
         .get("x-wallet-address")
         .and_then(|v| v.to_str().ok())
         .map(String::from);
 
-    let shard_data = state.shard_store.get(&cid).ok_or(StatusCode::NOT_FOUND)?;
+    info!(cid = %cid, wallet = ?wallet, "Public shard served");
 
-    let has_access = match &wallet {
-        Some(addr) => check_nft_ownership(addr, &cid).await,
-        None => false,
-    };
-
-    if has_access {
-        info!(cid = %cid, "Full-quality shard access granted");
-        Ok(Json(serde_json::json!({
-            "cid":     cid,
-            "quality": "full",
-            "data":    shard_data,
-        })))
-    } else {
-        warn!(cid = %cid, "Degraded shard served — no NFT ownership proven");
-        Ok(Json(serde_json::json!({
-            "cid":     cid,
-            "quality": "preview",
-            "data":    truncate_shard(&shard_data),
-            "message": "Purchase the SoulboundNFT for full-quality access",
-        })))
-    }
+    Ok(Json(serde_json::json!({
+        "cid":     cid,
+        "quality": "full",
+        "data":    shard_data,
+        // Hint: for assembly instructions use GET /api/manifest/<token_id> (NFT-gated)
+        "manifest_hint": "/api/manifest/{token_id}",
+    })))
 }
 
 /// `POST /api/shard/decompose`
@@ -273,24 +280,6 @@ pub async fn decompose_and_index(
 }
 
 // ── Helpers ────────────────────────────────────────────────────────────────
-
-/// Query MasterPattern.sol `ownerOf()` on BTTC to verify NFT ownership.
-/// In dev mode (`BTTC_DEV_MODE=1`) always returns `true`.
-async fn check_nft_ownership(wallet: &str, _cid: &str) -> bool {
-    if std::env::var("BTTC_DEV_MODE").unwrap_or_default() == "1" {
-        return true;
-    }
-    // TODO: ethers call to MasterPattern.sol ownerOf() on BTTC mainnet
-    let _ = wallet;
-    false
-}
-
-fn truncate_shard(data: &serde_json::Value) -> serde_json::Value {
-    match data.get("component") {
-        Some(c) => serde_json::json!({ "component": c, "truncated": true }),
-        None => serde_json::json!({ "truncated": true }),
-    }
-}
 
 fn shard_cid_list(shards: &[Shard]) -> Vec<String> {
     shards.iter().map(|s| s.cid.clone()).collect()

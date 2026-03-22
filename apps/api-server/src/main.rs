@@ -20,6 +20,8 @@ use tracing_subscriber::EnvFilter;
 mod audio_qc;
 mod auth;
 mod bbs;
+mod ddex_gateway;
+mod dsr_parser;
 mod btfs;
 mod bttc;
 mod bwarm;
@@ -42,13 +44,16 @@ mod ledger;
 mod metrics;
 mod mirrors;
 mod moderation;
+mod multisig_vault;
 mod music_reports;
+mod nft_manifest;
 mod persist;
 mod privacy;
 mod publishing;
 mod rate_limit;
 mod royalty_reporting;
 mod sap;
+mod sftp;
 mod shard;
 mod takedown;
 mod tron;
@@ -81,6 +86,10 @@ pub struct AppState {
     pub isni_config: Arc<isni::IsniConfig>,
     pub cmrra_config: Arc<cmrra::CmrraConfig>,
     pub bbs_config: Arc<bbs::BbsConfig>,
+    // ── DDEX Gateway (ERN push + DSR pull) ───────────────────────────────────
+    pub gateway_config: Arc<ddex_gateway::GatewayConfig>,
+    // ── Multi-sig vault (Safe + USDC payout) ─────────────────────────────────
+    pub vault_config: Arc<multisig_vault::VaultConfig>,
 }
 
 #[tokio::main]
@@ -114,6 +123,8 @@ async fn main() -> anyhow::Result<()> {
         isni_config: Arc::new(isni::IsniConfig::from_env()),
         cmrra_config: Arc::new(cmrra::CmrraConfig::from_env()),
         bbs_config: Arc::new(bbs::BbsConfig::from_env()),
+        gateway_config: Arc::new(ddex_gateway::GatewayConfig::from_env()),
+        vault_config: Arc::new(multisig_vault::VaultConfig::from_env()),
     };
 
     let app = Router::new()
@@ -223,6 +234,25 @@ async fn main() -> anyhow::Result<()> {
             get(societies_by_territory),
         )
         .route("/api/societies/route", post(societies_route_royalty))
+        // ── DDEX Gateway (ERN push + DSR pull)
+        .route("/api/gateway/status", get(gateway_status))
+        .route("/api/gateway/ern/push", post(gateway_ern_push))
+        .route("/api/gateway/dsr/cycle", post(gateway_dsr_cycle))
+        .route("/api/gateway/dsr/parse", post(gateway_dsr_parse_upload))
+        // ── Multi-sig vault (Safe + USDC payout)
+        .route("/api/vault/summary", get(vault_summary))
+        .route("/api/vault/deposits", get(vault_deposits))
+        .route("/api/vault/payout", post(vault_propose_payout))
+        .route(
+            "/api/vault/tx/:safe_tx_hash",
+            get(vault_tx_status),
+        )
+        // ── NFT Shard Manifest
+        .route("/api/manifest/:token_id", get(manifest_lookup))
+        .route("/api/manifest/mint", post(manifest_mint))
+        .route("/api/manifest/proof", post(manifest_ownership_proof))
+        // ── DSR flat-file parser (standalone, no SFTP needed)
+        .route("/api/dsr/parse", post(dsr_parse_inline))
         .layer({
             // SECURITY: CORS locked to explicit allowed origins (ALLOWED_ORIGINS env var).
             use axum::http::header::{AUTHORIZATION, CONTENT_TYPE};
@@ -1033,4 +1063,380 @@ async fn societies_route_royalty(
         "instruction_count": instructions.len(),
         "instructions": instructions,
     })))
+}
+
+// ── DDEX Gateway handlers ─────────────────────────────────────────────────────
+
+async fn gateway_status(
+    State(state): State<AppState>,
+) -> Json<serde_json::Value> {
+    let status = ddex_gateway::gateway_status(&state.gateway_config);
+    Json(serde_json::to_value(&status).unwrap_or_default())
+}
+
+async fn gateway_ern_push(
+    State(state): State<AppState>,
+    Json(payload): Json<ddex_gateway::PendingRelease>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: ISRC must be 12 alphanumeric characters
+    if payload.isrc.len() != 12 || !payload.isrc.chars().all(|c| c.is_alphanumeric()) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    if payload.title.is_empty() || payload.title.len() > 500 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    let results = ddex_gateway::push_ern(&state.gateway_config, &payload).await;
+
+    state
+        .audit_log
+        .record(&format!(
+            "GATEWAY_ERN_PUSH isrc='{}' dsps={}",
+            payload.isrc,
+            results.len()
+        ))
+        .ok();
+
+    let delivered = results.iter().filter(|r| r.receipt.is_some()).count();
+    let failed = results.len() - delivered;
+    Ok(Json(serde_json::json!({
+        "isrc": payload.isrc,
+        "dsp_count": results.len(),
+        "delivered": delivered,
+        "failed": failed,
+        "results": results.iter().map(|r| serde_json::json!({
+            "dsp": r.dsp,
+            "success": r.receipt.is_some(),
+            "seq": r.event.seq,
+        })).collect::<Vec<_>>(),
+    })))
+}
+
+async fn gateway_dsr_cycle(
+    State(state): State<AppState>,
+) -> Json<serde_json::Value> {
+    let results = ddex_gateway::run_dsr_cycle(&state.gateway_config).await;
+    let total_records: usize = results.iter().map(|r| r.total_records).sum();
+    let total_revenue: f64 = results.iter().map(|r| r.total_revenue_usd).sum();
+    state
+        .audit_log
+        .record(&format!(
+            "GATEWAY_DSR_CYCLE dsps={} total_records={} total_revenue_usd={:.2}",
+            results.len(),
+            total_records,
+            total_revenue
+        ))
+        .ok();
+    Json(serde_json::json!({
+        "dsp_count": results.len(),
+        "total_records": total_records,
+        "total_revenue_usd": total_revenue,
+        "results": results.iter().map(|r| serde_json::json!({
+            "dsp": r.dsp,
+            "files_discovered": r.files_discovered,
+            "files_processed": r.files_processed,
+            "records": r.total_records,
+            "revenue_usd": r.total_revenue_usd,
+        })).collect::<Vec<_>>(),
+    }))
+}
+
+async fn gateway_dsr_parse_upload(
+    State(_state): State<AppState>,
+    mut multipart: Multipart,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let mut content = String::new();
+    let mut dialect_hint: Option<dsr_parser::DspDialect> = None;
+
+    while let Some(field) = multipart
+        .next_field()
+        .await
+        .map_err(|_| StatusCode::BAD_REQUEST)?
+    {
+        let name = field.name().unwrap_or("").to_string();
+        match name.as_str() {
+            "file" => {
+                let bytes = field.bytes().await.map_err(|_| StatusCode::BAD_REQUEST)?;
+                // LangSec: limit DSR file to 50 MB
+                if bytes.len() > 52_428_800 {
+                    return Err(StatusCode::PAYLOAD_TOO_LARGE);
+                }
+                content =
+                    String::from_utf8(bytes.to_vec()).map_err(|_| StatusCode::BAD_REQUEST)?;
+            }
+            "dialect" => {
+                let text = field
+                    .text()
+                    .await
+                    .map_err(|_| StatusCode::BAD_REQUEST)?;
+                dialect_hint = match text.to_lowercase().as_str() {
+                    "spotify" => Some(dsr_parser::DspDialect::Spotify),
+                    "apple" => Some(dsr_parser::DspDialect::AppleMusic),
+                    "amazon" => Some(dsr_parser::DspDialect::Amazon),
+                    "youtube" => Some(dsr_parser::DspDialect::YouTube),
+                    "tidal" => Some(dsr_parser::DspDialect::Tidal),
+                    "deezer" => Some(dsr_parser::DspDialect::Deezer),
+                    _ => Some(dsr_parser::DspDialect::DdexStandard),
+                };
+            }
+            _ => {}
+        }
+    }
+
+    if content.is_empty() {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+
+    let report = dsr_parser::parse_dsr_file(&content, dialect_hint);
+    Ok(Json(serde_json::json!({
+        "dialect": report.dialect.display_name(),
+        "records": report.records.len(),
+        "rejections": report.rejections.len(),
+        "total_revenue_usd": report.total_revenue_usd,
+        "isrc_totals": report.isrc_totals,
+        "parsed_at": report.parsed_at,
+    })))
+}
+
+/// POST /api/dsr/parse — accept DSR content as JSON body (simpler than multipart).
+async fn dsr_parse_inline(
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let content = payload["content"].as_str().unwrap_or("");
+    if content.is_empty() {
+        return Err(StatusCode::BAD_REQUEST);
+    }
+    // LangSec: limit inline DSR content
+    if content.len() > 52_428_800 {
+        return Err(StatusCode::PAYLOAD_TOO_LARGE);
+    }
+    let hint: Option<dsr_parser::DspDialect> =
+        payload["dialect"]
+            .as_str()
+            .map(|d| match d.to_lowercase().as_str() {
+                "spotify" => dsr_parser::DspDialect::Spotify,
+                "apple" => dsr_parser::DspDialect::AppleMusic,
+                "amazon" => dsr_parser::DspDialect::Amazon,
+                "youtube" => dsr_parser::DspDialect::YouTube,
+                "tidal" => dsr_parser::DspDialect::Tidal,
+                "deezer" => dsr_parser::DspDialect::Deezer,
+                _ => dsr_parser::DspDialect::DdexStandard,
+            });
+
+    let report = dsr_parser::parse_dsr_file(content, hint);
+    Ok(Json(serde_json::json!({
+        "dialect": report.dialect.display_name(),
+        "records": report.records.len(),
+        "rejections": report.rejections.len(),
+        "total_revenue_usd": report.total_revenue_usd,
+        "isrc_totals": report.isrc_totals,
+        "parsed_at": report.parsed_at,
+    })))
+}
+
+// ── Multi-sig Vault handlers ──────────────────────────────────────────────────
+
+async fn vault_summary(
+    State(state): State<AppState>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let summary = multisig_vault::vault_summary(&state.vault_config)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "vault_summary failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(serde_json::to_value(&summary).unwrap_or_default()))
+}
+
+async fn vault_deposits(
+    State(state): State<AppState>,
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let from_block = payload["from_block"].as_u64().unwrap_or(0);
+    let deposits = multisig_vault::scan_usdc_deposits(&state.vault_config, from_block)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, "vault_deposits scan failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+    Ok(Json(serde_json::json!({
+        "from_block": from_block,
+        "count": deposits.len(),
+        "deposits": deposits,
+    })))
+}
+
+async fn vault_propose_payout(
+    State(state): State<AppState>,
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let payouts: Vec<multisig_vault::ArtistPayout> =
+        serde_json::from_value(payload["payouts"].clone())
+            .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+
+    let total_usdc = payload["total_usdc"].as_u64().unwrap_or(0);
+
+    // LangSec: sanity-check payout wallets
+    for p in &payouts {
+        if !p.wallet.starts_with("0x") || p.wallet.len() != 42 {
+            return Err(StatusCode::UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    let proposal = multisig_vault::propose_artist_payouts(
+        &state.vault_config,
+        &payouts,
+        total_usdc,
+        None,
+        0,
+    )
+    .await
+    .map_err(|e| {
+        warn!(err=%e, "vault_propose_payout failed");
+        StatusCode::BAD_GATEWAY
+    })?;
+
+    state
+        .audit_log
+        .record(&format!(
+            "VAULT_PAYOUT_PROPOSED safe_tx='{}' payees={}",
+            proposal.safe_tx_hash,
+            payouts.len()
+        ))
+        .ok();
+
+    Ok(Json(serde_json::to_value(&proposal).unwrap_or_default()))
+}
+
+async fn vault_tx_status(
+    State(state): State<AppState>,
+    Path(safe_tx_hash): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    // LangSec: safe_tx_hash is 0x + 64 hex chars
+    if safe_tx_hash.len() > 66 || !safe_tx_hash.starts_with("0x") {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    let status =
+        multisig_vault::check_execution_status(&state.vault_config, &safe_tx_hash)
+            .await
+            .map_err(|e| {
+                warn!(err=%e, "vault_tx_status failed");
+                StatusCode::BAD_GATEWAY
+            })?;
+    Ok(Json(serde_json::to_value(&status).unwrap_or_default()))
+}
+
+// ── NFT Shard Manifest handlers ───────────────────────────────────────────────
+
+async fn manifest_lookup(
+    Path(token_id_str): Path<String>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let token_id: u64 = token_id_str
+        .parse()
+        .map_err(|_| StatusCode::UNPROCESSABLE_ENTITY)?;
+
+    let manifest = nft_manifest::lookup_manifest_by_token(token_id)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, token_id, "manifest_lookup failed");
+            StatusCode::NOT_FOUND
+        })?;
+    Ok(Json(serde_json::to_value(&manifest).unwrap_or_default()))
+}
+
+async fn manifest_mint(
+    State(state): State<AppState>,
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let isrc = payload["isrc"].as_str().unwrap_or("");
+    let track_cid = payload["track_cid"].as_str().unwrap_or("");
+
+    // LangSec
+    if isrc.len() != 12 || !isrc.chars().all(|c| c.is_alphanumeric()) {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+    if track_cid.is_empty() || track_cid.len() > 128 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    let shard_order: Vec<String> = payload["shard_order"]
+        .as_array()
+        .ok_or(StatusCode::BAD_REQUEST)?
+        .iter()
+        .filter_map(|v| v.as_str().map(String::from))
+        .collect();
+
+    if shard_order.is_empty() || shard_order.len() > 10_000 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    let enc_key_hex = payload["enc_key_hex"].as_str().map(String::from);
+    let nonce_hex = payload["nonce_hex"].as_str().map(String::from);
+
+    // Validate enc_key_hex is 64 hex chars if present
+    if let Some(ref key) = enc_key_hex {
+        if key.len() != 64 || !key.chars().all(|c| c.is_ascii_hexdigit()) {
+            return Err(StatusCode::UNPROCESSABLE_ENTITY);
+        }
+    }
+
+    let mut manifest = nft_manifest::ShardManifest::new(
+        isrc,
+        track_cid,
+        shard_order,
+        std::collections::HashMap::new(),
+        enc_key_hex,
+        nonce_hex,
+    );
+
+    let receipt = nft_manifest::mint_manifest_nft(&mut manifest)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, %isrc, "manifest_mint failed");
+            StatusCode::BAD_GATEWAY
+        })?;
+
+    state
+        .audit_log
+        .record(&format!(
+            "NFT_MANIFEST_MINTED isrc='{}' token_id={} cid='{}'",
+            isrc, receipt.token_id, receipt.manifest_cid
+        ))
+        .ok();
+
+    Ok(Json(serde_json::json!({
+        "token_id": receipt.token_id,
+        "tx_hash": receipt.tx_hash,
+        "manifest_cid": receipt.manifest_cid,
+        "zk_commit_hash": receipt.zk_commit_hash,
+        "shard_count": manifest.shard_count,
+        "encrypted": manifest.is_encrypted(),
+        "minted_at": receipt.minted_at,
+    })))
+}
+
+async fn manifest_ownership_proof(
+    Json(payload): Json<serde_json::Value>,
+) -> Result<Json<serde_json::Value>, StatusCode> {
+    let token_id: u64 = payload["token_id"]
+        .as_u64()
+        .ok_or(StatusCode::UNPROCESSABLE_ENTITY)?;
+    let wallet = payload["wallet"].as_str().unwrap_or("");
+
+    // LangSec: wallet must be a valid EVM address
+    if !wallet.starts_with("0x") || wallet.len() != 42 {
+        return Err(StatusCode::UNPROCESSABLE_ENTITY);
+    }
+
+    let manifest = nft_manifest::lookup_manifest_by_token(token_id)
+        .await
+        .map_err(|e| {
+            warn!(err=%e, token_id, "manifest_ownership_proof: lookup failed");
+            StatusCode::NOT_FOUND
+        })?;
+
+    let proof =
+        nft_manifest::generate_manifest_ownership_proof_stub(token_id, wallet, &manifest);
+
+    Ok(Json(serde_json::to_value(&proof).unwrap_or_default()))
 }
