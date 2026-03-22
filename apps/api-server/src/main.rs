@@ -38,6 +38,7 @@ mod publishing;
 mod rate_limit;
 mod royalty_reporting;
 mod sap;
+mod shard;
 mod takedown;
 mod wallet_auth;
 mod wikidata;
@@ -59,6 +60,7 @@ pub struct AppState {
     pub gtms_db: Arc<gtms::GtmsStore>,
     pub challenge_store: Arc<wallet_auth::ChallengeStore>,
     pub rate_limiter: Arc<rate_limit::RateLimiter>,
+    pub shard_store: Arc<shard::ShardStore>,
 }
 
 #[tokio::main]
@@ -84,6 +86,7 @@ async fn main() -> anyhow::Result<()> {
         gtms_db: Arc::new(gtms::GtmsStore::new()),
         challenge_store: Arc::new(wallet_auth::ChallengeStore::new()),
         rate_limiter: Arc::new(rate_limit::RateLimiter::new()),
+        shard_store: Arc::new(shard::ShardStore::new()),
     };
 
     let app = Router::new()
@@ -142,6 +145,9 @@ async fn main() -> anyhow::Result<()> {
         .route("/api/gtms/classify", post(gtms::classify_work))
         .route("/api/gtms/screen", post(gtms::screen_distribution))
         .route("/api/gtms/declaration/:id", get(gtms::get_declaration))
+        // ── Shard store (CFT audio decomposition + NFT-gated access)
+        .route("/api/shard/:cid", get(shard::get_shard))
+        .route("/api/shard/decompose", post(shard::decompose_and_index))
         .layer({
             // SECURITY: CORS locked to explicit allowed origins (ALLOWED_ORIGINS env var).
             use axum::http::header::{AUTHORIZATION, CONTENT_TYPE};

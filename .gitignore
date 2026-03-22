@@ -50,5 +50,3 @@ __pycache__/
 result
 result-*
 
-# Generated CBOR shards (erdfa-publish output — build artifacts)
-shards/
