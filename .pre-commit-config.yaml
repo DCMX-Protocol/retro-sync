@@ -1,0 +1,68 @@
+# Pre-commit hooks for Retrosync Media Group
+#
+# Nix users: run `nix develop` first — the shellHook wires up the
+# pinned-toolchain versions of rustfmt and nixpkgs-fmt automatically.
+#
+# Non-Nix users: install pre-commit then run `pre-commit install`.
+# Requires on PATH: cargo, rustfmt (rustup component add rustfmt),
+#                   clippy  (rustup component add clippy),
+#                   nixpkgs-fmt (optional — skip if not editing .nix files)
+
+repos:
+  # ── General hygiene ────────────────────────────────────────────────────
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.6.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-json
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # ── Rust ───────────────────────────────────────────────────────────────
+  # Nix: uses pinned toolchain from flake.nix (rust-overlay stable)
+  # Non-Nix: uses whatever rustfmt/cargo is on PATH
+  - repo: local
+    hooks:
+      - id: rustfmt
+        name: rustfmt
+        description: Enforce Rust formatting (cargo fmt --all -- --check)
+        entry: cargo fmt --all --
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+      - id: cargo-clippy
+        name: cargo clippy
+        description: Deny all clippy warnings across the full workspace
+        entry: cargo clippy --all -- -D warnings
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+  # ── Nix ────────────────────────────────────────────────────────────────
+  # Requires: nixpkgs-fmt (nix profile install nixpkgs#nixpkgs-fmt)
+  # Automatically skipped if nixpkgs-fmt is not on PATH.
+  - repo: local
+    hooks:
+      - id: nixpkgs-fmt
+        name: nixpkgs-fmt
+        description: Format .nix files with nixpkgs-fmt
+        entry: nixpkgs-fmt
+        language: system
+        types: [nix]
+
+  # ── Solidity ───────────────────────────────────────────────────────────
+  # Requires: forge (Foundry) on PATH
+  - repo: local
+    hooks:
+      - id: forge-fmt
+        name: forge fmt
+        description: Format Solidity files with forge fmt
+        entry: bash -c 'cd contracts && forge fmt --check'
+        language: system
+        files: \.sol$
+        pass_filenames: false
