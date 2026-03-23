@@ -23,10 +23,16 @@ fn main() {
 
     println!("=== Loading payload segments ===");
     let wav = load("fixtures/output/h6_west.wav");
-    let midi = load("fixtures/output/h6_west.midi");
+    let midi_west = load("fixtures/output/h6_west.midi");
+    let midi_01 = load("fixtures/output/yt_01.midi");
+    let midi_04 = load("fixtures/output/yt_04.midi");
+    let midi_06 = load("fixtures/output/yt_06.midi");
+    let midi_07 = load("fixtures/output/yt_07.midi");
+    let midi_08 = load("fixtures/output/yt_08.midi");
     let pdf = load("fixtures/output/h6_west.pdf");
     let source = load("fixtures/data/hurrian_h6.txt");
     let ly = load("fixtures/lilypond/h6_west.ly");
+    let erdfa = load("fixtures/output/retro-sync.tar");
     let cunei = "𒀸𒌑𒄴𒊑 𒄿𒊭𒅈𒌈 𒂊𒁍𒁍 𒉌𒀉𒃻 𒃻𒇷𒌈 𒆠𒁴𒈬 𒁉𒌈 𒊺𒊒 𒊭𒅖𒊭𒌈 𒊑𒁍𒌈 𒅖𒄣 𒋾𒌅𒅈𒃻 𒋾𒌅𒅈𒄿 𒊺𒅈𒁺 𒀀𒈬𒊏𒁉".as_bytes().to_vec();
 
     let wit_dir = Path::new("fixtures/output/witnesses");
@@ -37,13 +43,19 @@ fn main() {
 
     // Build NFT7 payload
     let segments: Vec<(&str, &[u8])> = vec![
-        ("wav",       &wav),
-        ("midi",      &midi),
-        ("pdf",       &pdf),
-        ("source",    &source),
-        ("lilypond",  &ly),
-        ("cuneiform", &cunei),
-        ("witnesses", &witnesses),
+        ("wav",        &wav),
+        ("midi_west",  &midi_west),
+        ("midi_01",    &midi_01),
+        ("midi_04",    &midi_04),
+        ("midi_06",    &midi_06),
+        ("midi_07",    &midi_07),
+        ("midi_08",    &midi_08),
+        ("pdf",        &pdf),
+        ("source",     &source),
+        ("lilypond",   &ly),
+        ("cuneiform",  &cunei),
+        ("witnesses",  &witnesses),
+        ("erdfa",      &erdfa),
     ];
     let payload = stego::nft7_encode(&segments);
     let payload_hash = hex::encode(&Sha256::digest(&payload)[..8]);
