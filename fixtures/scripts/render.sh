@@ -54,21 +54,22 @@ echo "[0] source: ${INPUT_HASH:0:16}..."
 # Step 1: LilyPond → PDF + MIDI
 echo "[1] lilypond compile..."
 LILY_VER=$(lilypond --version 2>&1 | head -1)
-lilypond -o "${OUT}/h6_west" "$LY" 2>"${OUT}/lilypond.log"
-witness "01_midi" "lilypond" "$LILY_VER" "$INPUT_HASH" "${OUT}/h6_west.midi"
-[ -f "${OUT}/h6_west.pdf" ] && witness "01_pdf" "lilypond" "$LILY_VER" "$INPUT_HASH" "${OUT}/h6_west.pdf"
+STEM=$(basename "$LY" .ly)
+lilypond -o "${OUT}/${STEM}" "$LY" 2>"${OUT}/lilypond.log"
+witness "01_midi" "lilypond" "$LILY_VER" "$INPUT_HASH" "${OUT}/${STEM}.midi"
+[ -f "${OUT}/${STEM}.pdf" ] && witness "01_pdf" "lilypond" "$LILY_VER" "$INPUT_HASH" "${OUT}/${STEM}.pdf"
 
 # Step 2: MIDI → WAV via fluidsynth
 echo "[2] fluidsynth render..."
-MIDI_HASH=$(sha "${OUT}/h6_west.midi")
+MIDI_HASH=$(sha "${OUT}/${STEM}.midi")
 FLUID_VER=$(fluidsynth --version 2>&1 | head -1)
 # Use default soundfont — nix provides one
 SF2="${SOUNDFONT:-/run/current-system/sw/share/soundfonts/default.sf2}"
 [ ! -f "$SF2" ] && SF2=$(find /nix/store -name "*.sf2" -path "*/share/*" 2>/dev/null | head -1)
 [ ! -f "$SF2" ] && SF2=$(find /usr/share -name "*.sf2" 2>/dev/null | head -1)
 if [ -n "$SF2" ] && [ -f "$SF2" ]; then
-  fluidsynth -ni -F "${OUT}/h6_west.wav" -r 44100 "$SF2" "${OUT}/h6_west.midi" 2>"${OUT}/fluidsynth.log"
-  witness "02_wav" "fluidsynth" "$FLUID_VER" "$MIDI_HASH" "${OUT}/h6_west.wav"
+  fluidsynth -ni -F "${OUT}/${STEM}.wav" -r 44100 "$SF2" "${OUT}/${STEM}.midi" 2>"${OUT}/fluidsynth.log"
+  witness "02_wav" "fluidsynth" "$FLUID_VER" "$MIDI_HASH" "${OUT}/${STEM}.wav"
   SF_HASH=$(sha "$SF2")
   echo "  soundfont: ${SF2} (${SF_HASH:0:16}...)"
 else

@@ -1,87 +1,81 @@
 \version "2.24.0"
 \header {
   title = "Hurrian Hymn h.6 — Hymn to Nikkal"
-  subtitle = "West (1994) reconstruction"
+  subtitle = "West (1994) reconstruction from tablet RS 15.30"
   composer = "Anonymous (~1400 BC, Ugarit)"
   arranger = "Reconstruction: M. L. West (1994)"
   tagline = ##f
-  % Source: Tablet RS 15.30 + 15.49 + 17.387
-  % Tuning: nīd qablim (descending diatonic, nid qabli)
-  % Genre: zaluzi (prayer to the gods)
-  % Instrument: sammûm (9-string lyre)
-  % Deity: Nikkal (goddess of orchards)
-  % Pipeline: retro-sync / erdfa-publish / DA51 CBOR
-  % License: AGPL-3.0-or-later (this engraving)
-  % The underlying composition is public domain (~3400 years old)
+  % Tuning: nīd qablim (descending diatonic C–C on 9-string sammûm)
+  % Strings: 1=c'' 2=b' 3=a' 4=g' 5=f' 6=e' 7=d' 8=c' 9=b
+  % Genre: zaluzi (prayer to Nikkal, goddess of orchards)
+  % Scribe: Ammurabi
 }
 
-\paper {
-  #(set-paper-size "a4")
-}
+\paper { #(set-paper-size "a4") }
 
-% West's reconstruction uses a descending diatonic scale on the
-% 9-string sammûm.  The interval names from the tablet (qablīte,
-% irbutte, etc.) are read as simultaneous pairs — dichords played
-% on the lyre.  Numbers after each term indicate repetition count.
+% West's descending diatonic scale on the sammûm:
+%   String: 1    2    3    4    5    6    7    8    9
+%   Pitch:  c''  b'   a'   g'   f'   e'   d'   c'   b
 %
-% Notation from Dietrich & Loretz (1975) transcription:
-%   Line 1: qáb-li-te 3  ir-bu-te 1  qáb-li-te 3  ša-aḫ-ri 1
-%           i-šar-te 10  ušta-ma-a-ri
-%   Line 2: ti-ti-mi-šar-te 2  zi-ir-te 1  ša-aḫ-ri 2
-%           ša-aš-ša-te 2  ir-bu-te 2
+% Interval mapping (string pairs → dichords):
+%   qablītum       5–2  = f' + b'   (fourth)
+%   irbutte/rebûttum 2–7 = b' + d'  (sixth)
+%   šaḫri/šērum    7–5  = d' + f'   (third)
+%   išartum        2–6  = b' + e'   (fourth)
+%   tit.išartim    3–5  = a' + f'   (third)
+%   zirte          6–3  = e' + a'   (fourth)
+%   šaššatum       1–6  = c'' + e'  (sixth)
 %
-% West interprets these as dichords (string pairs) on a
-% descending C–C diatonic scale: c'' b' a' g' f' e' d' c' b
+% Tablet notation (Dietrich & Loretz 1975):
+%   Line 1: qablīte ×3, irbutte ×1, qablīte ×3, šaḫri ×1,
+%           išarte ×10, uštamari (colophon)
+%   Line 2: tit.išarte ×2, zirte ×1, šaḫri ×2,
+%           šaššate ×2, irbutte ×2
 
-% Interval mapping (West 1994):
-%   qablīte    = strings 5–2 = f'–b'  (fourth)
-%   irbutte    = strings 2–7 = b'–d'  (sixth)
-%   šaḫri      = strings 7–5 = d'–f'  (third)
-%   išarte     = strings 2–6 = b'–e'  (fourth)
-%   tit.išarte = strings 3–5 = a'–f'  (third)
-%   zirte      = strings 6–3 = e'–a'  (fourth)
-%   šaššate    = strings 1–6 = c''–e' (sixth)
-
-melody = \relative c'' {
+melody = \relative c' {
   \key c \major
   \time 4/4
   \tempo "Andante" 4 = 72
 
-  % Line 1: qablīte ×3
-  <f' b>2 <f' b>2 |
-  <f' b>2
-  % irbutte ×1
-  <b d'>2 |
-  % qablīte ×3
-  <f' b>2 <f' b>2 |
-  <f' b>2
-  % šaḫri ×1
+  % Line 1: qablīte ×3 (f'+b')
+  <f' b'>2 <f' b'>2 |
+  <f' b'>2
+  % irbutte ×1 (b'+d')
+  <b' d'>2 |
+  % qablīte ×3 (f'+b')
+  <f' b'>2 <f' b'>2 |
+  <f' b'>2
+  % šaḫri ×1 (d'+f')
   <d' f'>2 |
-  % išarte ×10
+
+  % išarte ×10 (b'+e') — the long central section
   <b e'>2 <b e'>2 |
   <b e'>2 <b e'>2 |
   <b e'>2 <b e'>2 |
   <b e'>2 <b e'>2 |
   <b e'>2 <b e'>2 |
 
-  % Line 2: tit.išarte ×2
+  % Line 2: tit.išarte ×2 (a'+f')
   <a' f'>2 <a' f'>2 |
-  % zirte ×1
+  % zirte ×1 (e'+a')
   <e' a'>2
-  % šaḫri ×2
+  % šaḫri ×2 (d'+f')
   <d' f'>2 |
   <d' f'>2
-  % šaššate ×2
+  % šaššate ×2 (c''+e')
   <c'' e'>2 |
   <c'' e'>2
-  % irbutte ×2
-  <b d'>2 |
-  <b d'>1 |
+  % irbutte ×2 (b'+d')
+  <b' d'>2 |
+  <b' d'>1 |
+
   \bar "|."
 }
 
 \score {
-  \new Staff \melody
+  \new Staff \with {
+    instrumentName = "Sammûm"
+  } \melody
   \layout { }
   \midi { }
 }

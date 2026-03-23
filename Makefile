@@ -19,8 +19,8 @@ SVG_DIR := $(OUT)/nft71_svg
 PNG_DIR := $(OUT)/nft71_stego_png
 WASM    := docs/pkg/stego_bg.wasm
 
-.PHONY: all dev test test-stego render svg stego wasm build \
-        pipeline deploy deploy-hf-space deploy-hf-data deploy-gh clean
+.PHONY: all dev test test-stego render render-all svg stego wasm build \
+        witness notes erdfa pipeline deploy deploy-hf-space deploy-hf-data deploy-gh clean
 
 all: pipeline
 
@@ -33,6 +33,28 @@ test:
 
 test-stego:
 	$(RUN) cargo test -p stego -- --nocapture
+
+# ── Step 0: Witness + archive all sources ─────────────────────────
+SOURCES_DIR := $(OUT)/sources
+
+witness:
+	$(RUN) bash fixtures/scripts/witness_sources.sh $(SOURCES_DIR)
+
+# ── Step 0b: Extract notes from witnessed audio ──────────────────
+notes: witness
+	$(RUN) bash fixtures/scripts/extract_notes.sh $(SOURCES_DIR)/audio $(SOURCES_DIR)/analysis
+
+# ── Step 0c: Convert all note extractions to lilypond → MIDI → WAV
+ANALYSIS_DIR := $(SOURCES_DIR)/analysis
+render-all: notes
+	@for f in $(ANALYSIS_DIR)/yt_*.notes; do \
+	  base=$$(basename "$$f" .notes); \
+	  python3 fixtures/scripts/notes_to_ly.py "$$f" "fixtures/lilypond/$${base}.ly"; \
+	done
+	@for ly in fixtures/lilypond/yt_*.ly; do \
+	  base=$$(basename "$$ly" .ly); \
+	  $(RUN) bash fixtures/scripts/render.sh "$$ly" $(OUT); \
+	done
 
 # ── Step 1: LilyPond → MIDI + PDF, FluidSynth → WAV ──────────────
 $(MIDI) $(PDF): $(LY)
@@ -68,8 +90,12 @@ wasm: $(WASM)
 build:
 	$(RUN) cargo build --release -p backend
 
+# ── Step 0c: Encode all artifacts as DA51 CBOR shards ────────────
+erdfa: stego render-all
+	$(RUN) cargo run --example nft71_erdfa -p fixtures
+
 # ── Pipeline (test + build all artifacts) ─────────────────────────
-pipeline: test stego wasm
+pipeline: test stego wasm erdfa
 	@echo "=== pipeline complete ==="
 	@echo "  tiles: $(PNG_DIR)/"
 	@echo "  wasm:  docs/pkg/"

@@ -67,6 +67,16 @@
             # Image (PPM tile generation)
             pkgs.imagemagick
 
+            # Archive + witness pipeline
+            pkgs.yt-dlp
+            pkgs.ffmpeg
+            pkgs.curl
+
+            # Audio analysis
+            pkgs.aubio
+            pkgs.sox
+            pkgs.soxr
+
             # Solidity (Foundry via ethereum.nix)
             pkgs.ethereum-nix.foundry
 

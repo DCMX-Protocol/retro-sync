@@ -15,3 +15,7 @@ base64       = "0.22"
 zk_circuits  = { path = "../libs/zk-circuits" }
 stego        = { path = "../libs/stego", features = ["png", "svg"] }
 ark-bn254    = { workspace = true }
+
+[[example]]
+name = "nft71_erdfa"
+path = "examples/nft71_erdfa.rs"
