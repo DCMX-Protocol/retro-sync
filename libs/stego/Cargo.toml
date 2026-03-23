@@ -10,9 +10,13 @@ crate-type = ["cdylib", "rlib"]
 [features]
 default = []
 wasm    = ["wasm-bindgen", "js-sys"]
+png     = ["dep:png"]
+svg     = ["dep:resvg"]
 
 [dependencies]
 wasm-bindgen = { version = "0.2", optional = true }
 js-sys       = { version = "0.3", optional = true }
+png          = { version = "0.17", optional = true }
+resvg        = { version = "0.44", optional = true, default-features = false, features = ["text"] }
 
 [dev-dependencies]

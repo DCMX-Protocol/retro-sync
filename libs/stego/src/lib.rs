@@ -14,6 +14,7 @@ pub const PLANES: usize = 6;
 pub const TILE_CAP: usize = PIXELS * PLANES / 8; // 196,608 B
 pub const TILE_COUNT: usize = 71;
 pub const TOTAL_CAP: usize = TILE_CAP * TILE_COUNT;
+pub const PRIMES: &[u64] = &[2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71];
 
 // ── Core bit-plane ops (work on raw RGB bytes, 3 bytes/pixel) ─────
 
@@ -139,6 +140,35 @@ pub fn join_payload(chunks: &[Vec<u8>]) -> Vec<u8> {
     let mut out: Vec<u8> = chunks.iter().flat_map(|c| c.iter().copied()).collect();
     // Don't trim — NFT7 header tells us exact segment lengths
     out
+}
+
+// ── PNG output (no gamma, no ICC — safe for browser Canvas) ───────
+
+#[cfg(feature = "png")]
+pub fn write_png(path: &std::path::Path, rgb: &[u8], w: u32, h: u32) {
+    let file = std::fs::File::create(path).unwrap();
+    let ref mut bw = std::io::BufWriter::new(file);
+    let mut encoder = png::Encoder::new(bw, w, h);
+    encoder.set_color(png::ColorType::Rgb);
+    encoder.set_depth(png::BitDepth::Eight);
+    // No set_srgb, no set_source_gamma — bare PNG, exact pixel values
+    let mut writer = encoder.write_header().unwrap();
+    writer.write_image_data(rgb).unwrap();
+}
+
+// ── SVG → RGB rasterization (no gamma, no ICC) ───────────────────
+
+/// Rasterize SVG to RGB pixel buffer at given dimensions.
+#[cfg(feature = "svg")]
+pub fn svg_to_rgb(svg_data: &[u8], w: u32, h: u32) -> Vec<u8> {
+    let tree = resvg::usvg::Tree::from_data(svg_data, &Default::default()).unwrap();
+    let mut pixmap = resvg::tiny_skia::Pixmap::new(w, h).unwrap();
+    let sx = w as f32 / tree.size().width();
+    let sy = h as f32 / tree.size().height();
+    let transform = resvg::tiny_skia::Transform::from_scale(sx, sy);
+    resvg::render(&tree, transform, &mut pixmap.as_mut());
+    // RGBA → RGB
+    pixmap.data().chunks(4).flat_map(|c| [c[0], c[1], c[2]]).collect()
 }
 
 // ── WASM bindings ─────────────────────────────────────────────────

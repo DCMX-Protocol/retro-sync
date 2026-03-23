@@ -13,4 +13,5 @@ ciborium     = "0.2"
 chrono       = { workspace = true }
 base64       = "0.22"
 zk_circuits  = { path = "../libs/zk-circuits" }
+stego        = { path = "../libs/stego", features = ["png", "svg"] }
 ark-bn254    = { workspace = true }

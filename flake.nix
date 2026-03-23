@@ -59,6 +59,14 @@
             pkgs.openssl
             pkgs.lmdb
 
+            # Music pipeline
+            pkgs.lilypond
+            pkgs.fluidsynth
+            pkgs.soundfont-fluid
+
+            # Image (PPM tile generation)
+            pkgs.imagemagick
+
             # Solidity (Foundry via ethereum.nix)
             pkgs.ethereum-nix.foundry
 
@@ -71,6 +79,7 @@
 
           OPENSSL_DIR = "${pkgs.openssl.dev}";
           OPENSSL_LIB_DIR = "${pkgs.openssl.out}/lib";
+          SOUNDFONT = "${pkgs.soundfont-fluid}/share/soundfonts/FluidR3_GM2-2.sf2";
 
           shellHook = preCommit.shellHook + ''
             echo "retro-sync dev shell ready"
@@ -78,6 +87,8 @@
             echo " bun : $(bun --version)"
             echo " node : $(node --version)"
             echo " forge : $(forge --version)"
+            echo " lily : $(lilypond --version 2>&1 | head -1)"
+            echo " fluid : $(fluidsynth --version 2>&1 | head -1)"
           '';
         };
 
