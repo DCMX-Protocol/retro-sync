@@ -91,8 +91,12 @@ build:
 	$(RUN) cargo build --release -p backend
 
 # ── Step 0c: Encode all artifacts as DA51 CBOR shards ────────────
-erdfa: stego render-all
+erdfa: stego notes
 	$(RUN) cargo run --example nft71_erdfa -p fixtures
+
+# ── Verify stego round-trip ──────────────────────────────────────
+verify: stego
+	$(RUN) cargo run --example verify_stego -p fixtures
 
 # ── Pipeline (test + build all artifacts) ─────────────────────────
 pipeline: test stego wasm erdfa

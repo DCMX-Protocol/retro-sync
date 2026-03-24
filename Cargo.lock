@@ -2180,6 +2180,7 @@ dependencies = [
  "chrono",
  "ciborium",
  "hex",
+ "png",
  "serde",
  "serde_json",
  "sha2",
