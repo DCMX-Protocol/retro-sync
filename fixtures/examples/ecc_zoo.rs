@@ -5,6 +5,7 @@
 
 use erdfa_publish::stego::{
     StegoPlugin, StegoChain, PngLsb, WavPhase, ZeroWidthText, RsHexComment, BitPlane6,
+    Hamming743, Golay24128,
 };
 use erdfa_publish::privacy::{PrivacyShard, PrivacyField, SignedPrivacyShard};
 use erdfa_publish::{Shard, Component};
@@ -22,6 +23,8 @@ fn main() {
         ("zwc-text", Box::new(ZeroWidthText)),
         ("rs-hex", Box::new(RsHexComment)),
         ("bitplane6", Box::new(BitPlane6)),
+        ("hamming743", Box::new(Hamming743)),
+        ("golay24", Box::new(Golay24128)),
     ];
 
     // Load first 5 tiles as sample payload
@@ -175,6 +178,8 @@ fn make_plugin(idx: usize) -> Box<dyn StegoPlugin> {
         2 => Box::new(ZeroWidthText),
         3 => Box::new(RsHexComment),
         4 => Box::new(BitPlane6),
+        5 => Box::new(Hamming743),
+        6 => Box::new(Golay24128),
         _ => unreachable!(),
     }
 }
