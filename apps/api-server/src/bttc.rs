@@ -12,7 +12,7 @@
 //! Value cap: MAX_DISTRIBUTION_BTT enforced before ABI encoding.
 //! The same cap is enforced in Solidity (defence-in-depth).
 
-use ethers::{
+use ethers_core::{
     abi::{encode, Token},
     types::{Address, Bytes, U256},
     utils::keccak256,
@@ -133,14 +133,13 @@ pub async fn submit_distribution(
 ///
 /// Uses ethers-rs `LedgerWallet` with HDPath `m/44'/60'/0'/0/0`.
 /// The Ledger must be connected, unlocked, and the Ethereum app open.
+/// Signing is performed directly via `Signer::sign_transaction` — no
+/// `SignerMiddleware` (and therefore no ethers-middleware / reqwest 0.11)
+/// is required.
 async fn send_via_ledger(rpc_url: &str, to: Address, calldata: Bytes) -> anyhow::Result<String> {
-    use ethers::{
-        middleware::SignerMiddleware,
-        providers::{Http, Middleware, Provider},
-        signers::{HDPath, Ledger},
-        types::TransactionRequest,
-    };
-    use std::sync::Arc;
+    use ethers_core::types::{transaction::eip2718::TypedTransaction, TransactionRequest};
+    use ethers_providers::{Http, Middleware, Provider};
+    use ethers_signers::{HDPath, Ledger, Signer};
 
     let provider = Provider::<Http>::try_from(rpc_url)
         .map_err(|e| anyhow::anyhow!("Cannot connect to RPC {rpc_url}: {e}"))?;
@@ -155,31 +154,37 @@ async fn send_via_ledger(rpc_url: &str, to: Address, calldata: Bytes) -> anyhow:
             )
         })?;
 
-    let signer = Arc::new(SignerMiddleware::new(provider, ledger));
-    let from = signer.address();
-    let nonce = signer.get_transaction_count(from, None).await?;
-    let estimate_tx = TransactionRequest::new()
-        .to(to)
-        .data(calldata.clone())
-        .from(from);
-    let gas_est = signer
-        .estimate_gas(&estimate_tx.into(), None)
+    let from = ledger.address();
+    let nonce = provider.get_transaction_count(from, None).await?;
+
+    let mut typed_tx = TypedTransaction::Legacy(
+        TransactionRequest::new()
+            .from(from)
+            .to(to)
+            .data(calldata)
+            .nonce(nonce)
+            .chain_id(chain_id),
+    );
+
+    let gas_est = provider
+        .estimate_gas(&typed_tx, None)
         .await
         .unwrap_or(U256::from(300_000u64));
     // 20% gas buffer
-    let gas_limit = gas_est * 120u64 / 100u64;
+    typed_tx.set_gas(gas_est * 120u64 / 100u64);
 
-    let tx = TransactionRequest::new()
-        .from(from)
-        .to(to)
-        .data(calldata)
-        .nonce(nonce)
-        .gas(gas_limit);
-
-    let pending = signer
-        .send_transaction(tx, None)
+    // Sign with Ledger hardware wallet (no middleware needed)
+    let signature = ledger
+        .sign_transaction(&typed_tx)
         .await
-        .map_err(|e| anyhow::anyhow!("Transaction rejected by Ledger or RPC: {e}"))?;
+        .map_err(|e| anyhow::anyhow!("Transaction rejected by Ledger: {e}"))?;
+
+    // Broadcast signed raw transaction via provider
+    let raw = typed_tx.rlp_signed(&signature);
+    let pending = provider
+        .send_raw_transaction(raw)
+        .await
+        .map_err(|e| anyhow::anyhow!("RPC rejected transaction: {e}"))?;
 
     // Wait for 1 confirmation
     let receipt = pending
