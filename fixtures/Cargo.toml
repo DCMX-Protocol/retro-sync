@@ -16,6 +16,7 @@ zk_circuits  = { path = "../libs/zk-circuits" }
 stego        = { path = "../libs/stego", features = ["png", "svg"] }
 png          = "0.17"
 ark-bn254    = { workspace = true }
+erdfa-publish = { path = "../nix/erdfa-publish" }
 
 [[example]]
 name = "nft71_erdfa"
@@ -24,3 +25,7 @@ path = "examples/nft71_erdfa.rs"
 [[example]]
 name = "verify_stego"
 path = "examples/verify_stego.rs"
+
+[[example]]
+name = "ecc_zoo"
+path = "examples/ecc_zoo.rs"
