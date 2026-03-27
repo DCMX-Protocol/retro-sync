@@ -121,7 +121,36 @@ window.loadPreset = loadPreset;
 function initFromParams() {
   const p = new URLSearchParams(location.search);
   const base = p.get('base') || p.get('src') || p.get('url');
+  const dataset = p.get('dataset');
+  const rdfa = p.get('rdfa');
+  
   if (base) { $('urls').value = base; loadFromURLs(); return true; }
+  
+  // HF dataset: ?dataset=user/repo or ?dataset=user/repo/path
+  if (dataset) {
+    const parts = dataset.split('/');
+    const repo = parts.slice(0, 2).join('/');
+    const path = parts.slice(2).join('/') || '';
+    const hfBase = `https://huggingface.co/datasets/${repo}/resolve/main/${path}`;
+    $('urls').value = hfBase;
+    log(`📦 Loading HF dataset: ${dataset}`);
+    loadFromURLs();
+    return true;
+  }
+  
+  // eRDFa shard URL: ?rdfa=https://example.com/shard.cbor
+  if (rdfa) {
+    log(`🔗 Loading eRDFa shard: ${rdfa}`);
+    fetch(rdfa).then(r => r.arrayBuffer()).then(buf => {
+      log(`📋 eRDFa shard: ${buf.byteLength} bytes`);
+      // Try to extract base URL from shard metadata
+      const text = new TextDecoder().decode(new Uint8Array(buf).slice(0, 200));
+      const m = text.match(/https?:\/\/[^\s"]+/);
+      if (m) { $('urls').value = m[0]; loadFromURLs(); }
+    }).catch(e => log(`⚠ eRDFa load failed: ${e.message}`));
+    return true;
+  }
+  
   return false;
 }
 

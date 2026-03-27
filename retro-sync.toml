@@ -4,7 +4,7 @@
 name         = "retro-sync"
 description  = "Queryable NFT dataset for music publishers"
 projects_dir = "projects"
-default      = "hurrian-h6"
+default      = "bach-invention"
 
 [sources]
 # API endpoints for data ingest
