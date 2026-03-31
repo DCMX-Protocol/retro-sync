@@ -10,7 +10,6 @@ path = "src/main.rs"
 
 [dependencies]
 # Ledger HID signing
-ethers         = { version = "2", features = ["ledger"] }
 ethers-signers = { version = "2", features = ["ledger"] }
 # Ed25519 keypair
 ed25519-dalek  = { version = "2", features = ["rand_core"] }

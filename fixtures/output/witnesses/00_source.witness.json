@@ -1,0 +1,8 @@
+{
+  "step": "00_source",
+  "timestamp": "20260327T233516Z",
+  "file": "fixtures/lilypond/h6_west.ly",
+  "sha256": "ae9f09b882e8a09d19da34deb439f4ffc78c138d50451535ac967931c3ae07d8",
+  "git_commit": "8d011d9fc771d277ac21fbee74a29f7a7d26cea8",
+  "hostname": "mdupont-G470"
+}

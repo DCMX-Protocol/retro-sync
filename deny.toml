@@ -1,0 +1,87 @@
+# cargo-deny configuration for Retrosync Media Group
+# https://embarkstudios.github.io/cargo-deny/
+#
+# Run: cargo deny check
+# CI: included in .github/workflows/ci.yml
+
+[advisories]
+# Reject crates with known security vulnerabilities
+version = 2
+db-urls = ["https://github.com/rustsec/advisory-db"]
+yanked = "deny"
+
+# These advisories are acknowledged with context:
+ignore = [
+    # RUSTSEC-2024-0370: derivative procedural macro — only used in test
+    # code paths; not reachable from production API surface.
+    # "RUSTSEC-2024-0370",
+]
+
+[licenses]
+# Allow only OSI-approved licences compatible with AGPL-3.0
+version = 2
+allow = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Unicode-DFS-2016",
+    "CC0-1.0",
+    "Zlib",
+    "OpenSSL",
+    "AGPL-3.0",
+    "AGPL-3.0-or-later",
+    "LGPL-2.0-or-later",
+    "LGPL-2.1",
+    "LGPL-2.1-or-later",
+    "MPL-2.0",
+]
+
+# Confidence threshold for licence detection (0.0–1.0)
+confidence-threshold = 0.8
+
+# Crates that are dual-licensed — accept either option
+exceptions = [
+    # nom is MIT OR Apache-2.0
+    { allow = ["MIT", "Apache-2.0"], name = "nom" },
+]
+
+[bans]
+# Reject duplicate versions of the same crate where possible
+multiple-versions = "warn"
+
+# Reject known-problematic crates
+deny = [
+    # openssl — prefer rustls; only allow if explicitly needed for C FFI
+    # { name = "openssl" },
+
+    # Yanked / unmaintained crates
+    { name = "failure", reason = "unmaintained since 2020; use anyhow or thiserror" },
+    { name = "error-chain", reason = "unmaintained; use anyhow or thiserror" },
+    { name = "tempdir", reason = "superseded by tempfile" },
+
+    # Security: avoid deprecated crypto primitives
+    { name = "md5", reason = "MD5 is cryptographically broken; use sha2" },
+    { name = "crypto",  reason = "unmaintained; use RustCrypto crates" },
+]
+
+# Allow these with multiple versions (common transitive dep conflicts)
+skip = [
+    { name = "syn" },        # syn 1.x vs 2.x is common during migration
+    { name = "quote" },
+    { name = "proc-macro2" },
+    { name = "bitflags" },   # bitflags 1.x vs 2.x
+]
+
+[sources]
+# Only allow crates from crates.io and path/git dependencies we control
+unknown-registry = "deny"
+unknown-git = "deny"
+allow-registry = ["https://github.com/rust-lang/crates.io-index"]
+
+# Allow our local path deps
+allow-git = [
+    # No external git deps at present
+]

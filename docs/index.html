@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>retro-sync — 71-Shard NFT</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:monospace;background:#0a0a0a;color:#0f0;padding:1em;max-width:960px;margin:0 auto}
+h1{color:#0ff;font-size:1.3em;margin-bottom:.2em}
+h2{color:#0ff;font-size:.95em;margin:1em 0 .3em;border-bottom:1px solid #333;padding-bottom:.2em}
+textarea,input[type=text]{width:100%;background:#111;color:#0f0;border:1px solid #333;padding:.4em;font-family:monospace;font-size:.85em;resize:vertical}
+textarea{height:4em}
+button{background:#222;color:#0ff;border:1px solid #0ff;padding:.3em .7em;cursor:pointer;font-family:monospace;font-size:.8em;margin:.2em .2em .2em 0}
+button:hover{background:#0ff;color:#000}
+.row{display:flex;gap:.4em;flex-wrap:wrap;margin:.3em 0;align-items:center}
+.out{background:#111;border:1px solid #333;padding:.4em;margin:.3em 0;word-break:break-all;min-height:1.5em;font-size:.8em;max-height:200px;overflow:auto}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(70px,1fr));gap:3px;margin:.5em 0}
+.tile{border:1px solid #333;text-align:center;font-size:9px;padding:2px;cursor:pointer;position:relative;min-height:70px}
+.tile img{width:100%;image-rendering:pixelated;image-rendering:crisp-edges}
+.tile.found{border-color:#0f0;background:#0f01}
+.tile.prime{border-color:#ff0}
+.tile.prime.found{border-color:#0f0}
+.tile:hover{background:#0ff1}
+.tile img{width:100%;display:block;image-rendering:pixelated}
+.tile .lbl{color:#888}
+.status{color:#888;font-size:.8em}
+canvas{border:1px solid #333;margin:.3em 0;max-width:100%}
+audio{width:100%;margin:.3em 0}
+.cid{color:#ff0;font-size:.8em}
+</style>
+</head>
+<body>
+<h1>retro-sync — 71-Shard NFT</h1>
+<p class="status">6-layer stego · WASM decoder · Groth16/BN254 · Cl(15,0,0)
+  <span id="progress" style="color:#0ff">0/71</span>
+  <span id="wasm-status" style="color:#f00">⏳ loading WASM…</span>
+</p>
+
+<h2>📡 Load Shards</h2>
+<textarea id="urls" placeholder="Paste image URLs (one per line), or a base URL like:
+https://example.com/retro-sync
+(will auto-append /tiles/01.png ... /tiles/71.png and /shards/01.json ... /shards/71.json)"></textarea>
+<div class="row">
+  <button onclick="loadFromURLs()">⬇ Fetch URLs</button>
+  <button onclick="loadFromFile()">📂 Load Image</button>
+  <input type="file" id="file-input" accept="image/*" multiple style="display:none">
+  <button onclick="loadFromPaste()">📋 Paste Image</button>
+  <button onclick="loadPreset('local')">📍 Local</button>
+  <button onclick="loadPreset('space')">HF Space</button>
+  <button onclick="loadPreset('dataset')">HF Dataset</button>
+  <button onclick="loadPreset('archive')">Archive.org</button>
+  <button onclick="loadPreset('gh')">GitHub Pages</button>
+</div>
+<div class="out" id="log"></div>
+
+<h2>🧩 Collection</h2>
+<div class="grid" id="grid"></div>
+
+<h2>🔍 Decode</h2>
+<div class="row">
+  <button onclick="decodeSelected()">Decode Selected</button>
+  <button onclick="decodeAll()">Decode All Collected</button>
+  <button onclick="reconstruct()">🎵 Reconstruct WAV</button>
+  <button onclick="shareLog()">📋 Share Log</button>
+</div>
+<canvas id="canvas" width="512" height="512"></canvas>
+<div class="out" id="decode-out"></div>
+
+<h2>🎵 Player</h2>
+<div id="player"></div>
+
+<h2>📦 Shard Data</h2>
+<div class="out" id="shard-out" style="white-space:pre-wrap"></div>
+
+<script type="module">
+import init, { decode_tile, reconstruct_payload, extract_segment } from './pkg/stego.js';
+
+let wasmReady = false;
+init().then(() => {
+  wasmReady = true;
+  document.getElementById('wasm-status').textContent = '✅ WASM ready';
+  document.getElementById('wasm-status').style.color = '#0f0';
+  log('🔧 stego WASM loaded');
+}).catch(e => {
+  document.getElementById('wasm-status').textContent = '❌ WASM failed';
+  log('⚠ WASM load failed: ' + e.message);
+});
+
+const PRIMES = new Set([2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71]);
+const TILE_CAP = 512 * 512 * 6 / 8; // 196608
+
+const tiles = {};
+const shardJSON = {};
+const tileBytes = {}; // idx → Uint8Array from WASM decode
+let selected = null;
+
+const $ = id => document.getElementById(id);
+function log(msg) {
+  $('log').textContent = msg + '\n' + $('log').textContent.slice(0, 4000);
+}
+window.log = log;
+
+function shareLog() {
+  const text = $('log').textContent + '\n---\n' + $('decode-out').textContent;
+  navigator.clipboard.writeText(text).then(() => log('📋 Log copied to clipboard'));
+}
+window.shareLog = shareLog;
+
+const PRESETS = {
+  local:   location.origin + location.pathname.replace(/\/[^/]*$/, ''),
+  space:   'https://huggingface.co/spaces/introspector/retro-sync/resolve/main',
+  dataset: 'https://huggingface.co/datasets/introspector/retro-sync/resolve/main',
+  archive: 'https://archive.org/download/retro-sync',
+  gh:      'https://meta-introspector.github.io/retro-sync',
+};
+
+function loadPreset(key) { $('urls').value = PRESETS[key] || ''; loadFromURLs(); }
+window.loadPreset = loadPreset;
+
+function initFromParams() {
+  const p = new URLSearchParams(location.search);
+  const base = p.get('base') || p.get('src') || p.get('url');
+  const dataset = p.get('dataset');
+  const rdfa = p.get('rdfa');
+  
+  if (base) { $('urls').value = base; loadFromURLs(); return true; }
+  
+  // HF dataset: ?dataset=user/repo or ?dataset=user/repo/path
+  if (dataset) {
+    const parts = dataset.split('/');
+    const repo = parts.slice(0, 2).join('/');
+    const path = parts.slice(2).join('/') || '';
+    const hfBase = `https://huggingface.co/datasets/${repo}/resolve/main/${path}`;
+    $('urls').value = hfBase;
+    log(`📦 Loading HF dataset: ${dataset}`);
+    loadFromURLs();
+    return true;
+  }
+  
+  // eRDFa shard URL: ?rdfa=https://example.com/shard.cbor
+  if (rdfa) {
+    log(`🔗 Loading eRDFa shard: ${rdfa}`);
+    fetch(rdfa).then(r => r.arrayBuffer()).then(buf => {
+      log(`📋 eRDFa shard: ${buf.byteLength} bytes`);
+      // Try to extract base URL from shard metadata
+      const text = new TextDecoder().decode(new Uint8Array(buf).slice(0, 200));
+      const m = text.match(/https?:\/\/[^\s"]+/);
+      if (m) { $('urls').value = m[0]; loadFromURLs(); }
+    }).catch(e => log(`⚠ eRDFa load failed: ${e.message}`));
+    return true;
+  }
+  
+  return false;
+}
+
+async function loadFromURLs() {
+  let text = $('urls').value.trim();
+  if (!text) {
+    // Auto-detect: try local path first
+    text = window.location.origin + window.location.pathname.replace(/\/[^/]*$/, '');
+    $('urls').value = text;
+    log('Auto-detecting local tiles...');
+  }
+  const lines = text.split('\n').map(l => l.trim()).filter(Boolean);
+
+  if (lines.length === 1 && !lines[0].match(/\.(png|jpg|json)$/i)) {
+    const base = lines[0].replace(/\/+$/, '');
+    log(`Base URL: ${base} — fetching 71 tiles...`);
+    let loaded = 0;
+    let failed = 0;
+    for (let i = 1; i <= 71; i++) {
+      const pad = String(i).padStart(2, '0');
+      const tileUrl = `${base}/tiles/${pad}.png`;
+      if (i === 1) log(`First tile: ${tileUrl}`);
+      loadTileFromURL(tileUrl, i);
+      fetchShard(`${base}/nft71/${pad}.json`, i).then(() => {
+        loaded++; $('progress').textContent = `${loaded}/71`;
+      }).catch(() => {});
+    }
+    return;
+  }
+
+  for (const url of lines) {
+    const m = url.match(/(\d{1,2})\.(png|jpg|jpeg|json)/i);
+    if (m) {
+      const idx = parseInt(m[1]);
+      if (m[2] === 'json') fetchShard(url, idx);
+      else loadTileFromURL(url, idx);
+    } else { log(`⚠ Can't parse index from: ${url}`); }
+  }
+}
+window.loadFromURLs = loadFromURLs;
+
+function loadTileFromURL(url, idx) {
+  const img = new Image();
+  img.crossOrigin = 'anonymous';
+  img.onload = () => { tiles[idx] = {img, pixels: null, url}; log(`✅ tile ${idx}`); renderGrid(); };
+  img.onerror = () => log(`⚠ tile ${idx} failed: ${url}`);
+  img.src = url;
+}
+
+async function fetchShard(url, idx) {
+  try { const r = await fetch(url); if (r.ok) shardJSON[idx] = await r.json(); } catch(e) {}
+}
+
+$('file-input').onchange = e => {
+  for (const file of e.target.files) {
+    const m = file.name.match(/(\d{1,2})/);
+    const idx = m ? parseInt(m[1]) : Object.keys(tiles).length + 1;
+    const img = new Image();
+    img.onload = () => { tiles[idx] = {img, pixels: null, url: file.name}; log(`✅ loaded ${file.name} as tile ${idx}`); renderGrid(); };
+    img.src = URL.createObjectURL(file);
+  }
+};
+function loadFromFile() { $('file-input').click(); }
+window.loadFromFile = loadFromFile;
+
+async function loadFromPaste() {
+  try {
+    const items = await navigator.clipboard.read();
+    for (const item of items) {
+      for (const type of item.types) {
+        if (type.startsWith('image/')) {
+          const blob = await item.getType(type);
+          const idx = Object.keys(tiles).length + 1;
+          const img = new Image();
+          img.onload = () => { tiles[idx] = {img, pixels: null, url: 'clipboard'}; log(`✅ pasted as tile ${idx}`); renderGrid(); };
+          img.src = URL.createObjectURL(blob);
+          return;
+        }
+      }
+    }
+    log('⚠ No image in clipboard');
+  } catch(e) { log('⚠ Clipboard: ' + e.message); }
+}
+window.loadFromPaste = loadFromPaste;
+
+function renderGrid() {
+  let html = '';
+  for (let i = 1; i <= 71; i++) {
+    const t = tiles[i];
+    const prime = PRIMES.has(i);
+    const cls = [t ? 'found' : '', prime ? 'prime' : ''].join(' ');
+    const sel = selected === i ? 'outline:2px solid #0ff;' : '';
+    if (t) {
+      html += `<div class="tile ${cls}" style="${sel}" onclick="selectTile(${i})">
+        <img src="${t.img.src}"><div class="lbl">${prime?'★':'·'}${i}</div></div>`;
+    } else {
+      html += `<div class="tile ${cls}" style="${sel}" onclick="selectTile(${i})">
+        <div style="padding:15px 0">${prime?'★':'·'}${i}</div><div class="lbl">—</div></div>`;
+    }
+  }
+  $('grid').innerHTML = html;
+}
+
+function getPixels(idx) {
+  const t = tiles[idx];
+  if (!t) return null;
+  if (t.pixels) return t.pixels;
+  const c = document.createElement('canvas');
+  c.width = t.img.width; c.height = t.img.height;
+  c.getContext('2d').drawImage(t.img, 0, 0);
+  t.pixels = c.getContext('2d').getImageData(0, 0, c.width, c.height).data;
+  return t.pixels;
+}
+
+function selectTile(idx) {
+  selected = idx;
+  renderGrid();
+  const t = tiles[idx];
+  if (t) {
+    const canvas = $('canvas');
+    canvas.width = t.img.width; canvas.height = t.img.height;
+    canvas.getContext('2d').drawImage(t.img, 0, 0);
+  }
+  if (shardJSON[idx]) {
+    $('shard-out').textContent = JSON.stringify(shardJSON[idx], null, 2).slice(0, 3000);
+  } else {
+    $('shard-out').textContent = `Shard ${idx} — no JSON loaded`;
+  }
+}
+window.selectTile = selectTile;
+
+function decodeSelected() {
+  if (!wasmReady) { log('⚠ WASM not loaded yet'); return; }
+  if (!selected || !tiles[selected]) { log('Select a tile first'); return; }
+  const rgba = getPixels(selected);
+  if (!rgba) return;
+
+  const bytes = decode_tile(new Uint8Array(rgba));
+  tileBytes[selected] = bytes;
+
+  const nonZero = bytes.filter(b => b !== 0).length;
+  const hex = Array.from(bytes.slice(0, 32)).map(b => b.toString(16).padStart(2, '0')).join(' ');
+  const magic = String.fromCharCode(bytes[0], bytes[1], bytes[2], bytes[3]);
+  $('decode-out').textContent = `Tile ${selected} — ${bytes.length}B extracted (${nonZero} non-zero)\nFirst 4: "${magic}"\nHex: ${hex}…`;
+  log(`✅ decoded tile ${selected}: ${nonZero} non-zero bytes`);
+}
+window.decodeSelected = decodeSelected;
+
+function decodeAll() {
+  if (!wasmReady) { log('⚠ WASM not loaded yet'); return; }
+  let count = 0;
+  for (let i = 1; i <= 71; i++) {
+    if (!tiles[i]) continue;
+    const rgba = getPixels(i);
+    if (!rgba) continue;
+    tileBytes[i] = decode_tile(new Uint8Array(rgba));
+    count++;
+  }
+  log(`✅ decoded ${count} tiles via WASM`);
+  $('decode-out').textContent = `${count} tiles decoded. Click "Reconstruct WAV" to assemble.`;
+}
+window.decodeAll = decodeAll;
+
+function reconstruct() {
+  if (!wasmReady) { log('⚠ WASM not loaded yet'); return; }
+  const n = Object.keys(tiles).length;
+  if (n < 71) log(`⚠ Have ${n}/71 tiles`);
+
+  log('Decoding all tiles via WASM...');
+  // Decode any missing tiles
+  for (let i = 1; i <= 71; i++) {
+    if (tileBytes[i]) continue;
+    const rgba = getPixels(i);
+    if (rgba) tileBytes[i] = decode_tile(new Uint8Array(rgba));
+  }
+
+  // Concatenate all tile bytes in order
+  const total = TILE_CAP * 71;
+  const allBytes = new Uint8Array(total);
+  for (let i = 1; i <= 71; i++) {
+    if (tileBytes[i]) allBytes.set(tileBytes[i], (i - 1) * TILE_CAP);
+  }
+
+  // Use WASM to parse NFT7
+  const info = reconstruct_payload(allBytes);
+  const parsed = JSON.parse(info);
+
+  if (parsed.error) {
+    log(`⚠ ${parsed.error}`);
+    $('decode-out').textContent = `Error: ${parsed.error}\nFirst 32 bytes: ${parsed.first32}`;
+    return;
+  }
+
+  let out = `🎵 NFT7 decoded — ${parsed.segments.length} segments:\n`;
+  for (const s of parsed.segments) out += `  ${s.name}: ${s.size.toLocaleString()} B  sha256:${s.sha256.slice(0,16)}…\n`;
+  $('decode-out').textContent = out;
+  log(`🎵 ${parsed.segments.length} segments reconstructed`);
+
+  const MIME = {wav:'audio/wav', midi:'audio/midi', pdf:'application/pdf',
+    source:'text/plain', lilypond:'text/x-lilypond', data:'text/plain', witnesses:'application/json'};
+  const EXT = {wav:'.wav', midi:'.midi', pdf:'.pdf',
+    source:'.txt', lilypond:'.ly', data:'.txt', witnesses:'.json'};
+
+  let html = `<p style="color:#0ff">retro-sync — ${parsed.segments.length} files from ${n} tiles</p>`;
+
+  // Parse witnesses for verification
+  let witnesses = [];
+  try {
+    const wData = extract_segment(allBytes, 'witnesses');
+    const wText = new TextDecoder().decode(wData);
+    // witnesses are concatenated JSON objects — split on }{ boundary
+    witnesses = wText.split(/\}\s*\{/).map((s,i,a) =>
+      JSON.parse((i>0?'{':'') + s + (i<a.length-1?'}':''))
+    );
+  } catch(e) {}
+
+  // Show witness chain
+  if (witnesses.length) {
+    html += `<div style="margin:8px 0;padding:6px;background:#111;border:1px solid #333">`;
+    html += `<div style="color:#0ff;margin-bottom:4px">🔗 Witness Chain (${witnesses.length} steps)</div>`;
+    for (const w of witnesses) {
+      if (w.output_hash) {
+        html += `<div style="font-size:.75em;color:#8b949e">`;
+        html += `${w.step}: <span style="color:#ff0">${w.output_hash.slice(0,16)}…</span> `;
+        html += `${w.output_file||''} ${w.output_bytes?'('+w.output_bytes.toLocaleString()+'B)':''} `;
+        html += `<span style="color:#666">${w.tool||''} ${w.tool_version||''}</span></div>`;
+      } else if (w.chain_hash) {
+        html += `<div style="font-size:.75em;color:#0f0">`;
+        html += `${w.step}: commitment <span style="color:#ff0">${w.chain_hash.slice(0,32)}…</span></div>`;
+      } else if (w.sha256) {
+        html += `<div style="font-size:.75em;color:#8b949e">`;
+        html += `${w.step}: source <span style="color:#ff0">${w.sha256.slice(0,16)}…</span> ${w.file||''}</div>`;
+      }
+    }
+    html += `</div>`;
+  }
+
+  // Download + preview for each segment
+  for (const s of parsed.segments) {
+    const data = extract_segment(allBytes, s.name);
+    const blob = new Blob([data], {type: MIME[s.name] || 'application/octet-stream'});
+    const url = URL.createObjectURL(blob);
+    const ext = EXT[s.name] || '.bin';
+    const sz = s.size > 1048576 ? (s.size/1048576).toFixed(1)+' MB' : (s.size/1024).toFixed(1)+' KB';
+    html += `<div style="margin:4px 0">`;
+    html += `<a href="${url}" download="segment${ext}" style="color:#0f0">⬇ ${s.name}${ext}</a> `;
+    html += `<span style="color:#888">${sz}</span> `;
+    html += `<span style="color:#ff0;font-size:.7em">sha256:${s.sha256.slice(0,16)}…</span>`;
+    if (s.name === 'wav') {
+      html += `<br><audio controls src="${url}" style="width:100%;margin:2px 0"></audio>`;
+    } else if (s.name === 'pdf') {
+      html += ` <a href="${url}" target="_blank" style="color:#58a6ff">📄 view</a>`;
+    } else if (s.name === 'midi_bundle') {
+      // Split bundle into individual MIDIs at MThd boundaries
+      const arr = new Uint8Array(data);
+      const midis = [];
+      for (let j = 0; j < arr.length - 4; j++) {
+        if (arr[j]===0x4D && arr[j+1]===0x54 && arr[j+2]===0x68 && arr[j+3]===0x64) midis.push(j);
+      }
+      html += `<div style="margin:4px 0;color:#0ff">${midis.length} MIDIs in bundle</div>`;
+      for (let m = 0; m < midis.length; m++) {
+        const start = midis[m];
+        const end = m+1 < midis.length ? midis[m+1] : arr.length;
+        const midiData = arr.slice(start, end);
+        const midiBlob = new Blob([midiData], {type:'audio/midi'});
+        const midiUrl = URL.createObjectURL(midiBlob);
+        html += `<div style="margin:2px 0">`;
+        html += `<a href="${midiUrl}" download="invention_${m+1}.mid" style="color:#0f0">⬇ #${m+1}</a> `;
+        html += `<span style="color:#888">${(end-start/1024).toFixed(1)}KB</span> `;
+        html += `<button onclick="playMidi(this,'${midiUrl}')" style="font-size:10px">▶ Play</button>`;
+        html += `</div>`;
+      }
+    } else if (s.name === 'midi') {
+      html += ` <span style="color:#888">🎹 MIDI</span>`;
+    } else if (['source','lilypond','data','witnesses'].includes(s.name)) {
+      const text = new TextDecoder().decode(data);
+      html += `<pre style="color:#0f0;font-size:.7em;max-height:80px;overflow:auto;margin:2px 0;padding:3px;background:#111;border:1px solid #222">${text.replace(/</g,'&lt;').slice(0,2000)}</pre>`;
+    }
+    html += `</div>`;
+  }
+  $('player').innerHTML = html;
+}
+window.reconstruct = reconstruct;
+
+// MIDI player via Tone.js + @tonejs/midi
+let toneLoaded = false;
+async function loadTone() {
+  if (toneLoaded) return;
+  const s1 = document.createElement('script');
+  s1.src = 'https://cdn.jsdelivr.net/npm/tone@14/build/Tone.min.js';
+  document.head.appendChild(s1);
+  const s2 = document.createElement('script');
+  s2.src = 'https://cdn.jsdelivr.net/npm/@tonejs/midi@2/build/Midi.js';
+  document.head.appendChild(s2);
+  await new Promise(r => { s2.onload = r; setTimeout(r, 3000); });
+  toneLoaded = true;
+}
+
+let currentSynth = null;
+async function playMidi(btn, url) {
+  await loadTone();
+  if (currentSynth) { currentSynth.dispose(); currentSynth = null; btn.textContent = '▶ Play'; }
+  btn.textContent = '⏳';
+  try {
+    const resp = await fetch(url);
+    const buf = await resp.arrayBuffer();
+    const midi = new Midi(buf);
+    await Tone.start();
+    const synth = new Tone.PolySynth(Tone.Synth, {maxPolyphony: 16}).toDestination();
+    currentSynth = synth;
+    const now = Tone.now();
+    for (const track of midi.tracks) {
+      for (const note of track.notes) {
+        synth.triggerAttackRelease(note.name, note.duration, now + note.time, note.velocity);
+      }
+    }
+    btn.textContent = '⏹ Stop';
+    btn.onclick = () => { synth.dispose(); currentSynth = null; btn.textContent = '▶ Play'; btn.onclick = () => playMidi(btn, url); };
+  } catch(e) { log('⚠ MIDI play error: ' + e.message); btn.textContent = '▶ Play'; }
+}
+window.playMidi = playMidi;
+
+renderGrid();
+log('🚀 Page loaded, checking params...');
+if (!initFromParams()) {
+  log('📍 No URL params, loading local preset...');
+  loadPreset('local');
+}
+</script>
+</body>
+</html>

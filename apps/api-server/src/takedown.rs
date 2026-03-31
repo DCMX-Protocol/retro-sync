@@ -1,4 +1,7 @@
 //! DMCA §512 notice-and-takedown. EU Copyright Directive Art. 17.
+//!
+//! Persistence: LMDB via persist::LmdbStore — notices survive server restarts.
+//! The rand_id now uses OS entropy for unpredictable DMCA IDs.
 use crate::AppState;
 use axum::{
     extract::{Path, State},
@@ -6,8 +9,7 @@ use axum::{
     response::Json,
 };
 use serde::{Deserialize, Serialize};
-use std::sync::Mutex;
-use tracing::{info, warn};
+use tracing::info;
 
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq)]
 pub enum NoticeStatus {
@@ -62,55 +64,43 @@ pub struct CounterNoticeRequest {
 }
 
 pub struct TakedownStore {
-    notices: Mutex<Vec<TakedownNotice>>,
-    path: String,
+    db: crate::persist::LmdbStore,
 }
 
 impl TakedownStore {
     pub fn open(path: &str) -> anyhow::Result<Self> {
         Ok(Self {
-            notices: Mutex::new(Vec::new()),
-            path: path.to_string(),
+            db: crate::persist::LmdbStore::open(path, "dmca_notices")?,
         })
     }
+
     pub fn add(&self, n: TakedownNotice) -> anyhow::Result<()> {
-        if let Ok(mut v) = self.notices.lock() {
-            v.push(n);
-        }
+        self.db.put(&n.id, &n)?;
         Ok(())
     }
+
     pub fn get(&self, id: &str) -> Option<TakedownNotice> {
-        self.notices
-            .lock()
-            .ok()?
-            .iter()
-            .find(|n| n.id == id)
-            .cloned()
+        self.db.get(id).ok().flatten()
     }
+
     pub fn update_status(&self, id: &str, status: NoticeStatus) {
-        if let Ok(mut v) = self.notices.lock() {
-            if let Some(n) = v.iter_mut().find(|n| n.id == id) {
-                n.status = status;
-                n.resolved_at = Some(chrono::Utc::now().to_rfc3339());
-            }
-        }
+        let _ = self.db.update::<TakedownNotice>(id, |n| {
+            n.status = status.clone();
+            n.resolved_at = Some(chrono::Utc::now().to_rfc3339());
+        });
     }
+
     pub fn set_counter(&self, id: &str, counter: CounterNotice) {
-        if let Ok(mut v) = self.notices.lock() {
-            if let Some(n) = v.iter_mut().find(|n| n.id == id) {
-                n.counter_notice = Some(counter);
-                n.status = NoticeStatus::CounterReceived;
-            }
-        }
+        let _ = self.db.update::<TakedownNotice>(id, |n| {
+            n.counter_notice = Some(counter.clone());
+            n.status = NoticeStatus::CounterReceived;
+        });
     }
 }
 
-fn rand_id() -> u32 {
-    use std::time::{SystemTime, UNIX_EPOCH};
-    SystemTime::now()
-        .duration_since(UNIX_EPOCH)
-        .map(|d| d.subsec_nanos())
-        .unwrap_or(0xdead)
+/// Cryptographically random 8-hex-char suffix for DMCA IDs.
+fn rand_id() -> String {
+    crate::wallet_auth::random_hex_pub(4)
 }
 
 pub async fn submit_notice(
@@ -120,11 +110,7 @@ pub async fn submit_notice(
     if !req.good_faith || !req.accuracy {
         return Err(StatusCode::BAD_REQUEST);
     }
-    let id = format!(
-        "DMCA-{}-{:08x}",
-        chrono::Utc::now().format("%Y%m%d"),
-        rand_id()
-    );
+    let id = format!("DMCA-{}-{}", chrono::Utc::now().format("%Y%m%d"), rand_id());
     let notice = TakedownNotice {
         id: id.clone(),
         isrc: req.isrc.clone(),
@@ -183,7 +169,7 @@ pub async fn submit_counter_notice(
     );
     state
         .audit_log
-        .record(&format!("DMCA_COUNTER id='{}'", id))
+        .record(&format!("DMCA_COUNTER id='{id}'"))
         .ok();
     Ok(Json(
         serde_json::json!({ "notice_id": id, "status": "CounterReceived",

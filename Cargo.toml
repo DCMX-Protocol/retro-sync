@@ -3,13 +3,15 @@ resolver = "2"
 members  = [
     "apps/api-server",
     "apps/wasm-frontend",
-    "apps/rust-sandbox",
     "libs/shared",
+    "libs/stego",
     "libs/zk-circuits",
     "tools/font_check",
     "tools/btfs-keygen",
     "ops/six-sigma/spc",
     "tools/ceremony",
+    "nix/erdfa-publish",
+    "fixtures",
 ]
 
 [workspace.package]
@@ -23,7 +25,7 @@ authors  = ["Retrosync Media Group <platform@retrosync.media>"]
 tokio        = { version = "1",  features = ["full"] }
 axum         = { version = "0.7", features = ["multipart"] }
 tower        = "0.4"
-tower-http   = { version = "0.5", features = ["cors", "trace"] }
+tower-http   = { version = "0.6", features = ["cors", "trace"] }
 
 # Serialisation
 serde        = { version = "1",  features = ["derive"] }
@@ -35,7 +37,7 @@ ark-ff               = "0.4"
 ark-ec               = "0.4"
 ark-bn254            = "0.4"
 ark-groth16          = "0.4"
-ark-relations        = "0.4"
+ark-relations        = { version = "0.4", default-features = false }
 ark-r1cs-std         = "0.4"
 ark-snark            = "0.4"
 sha2                 = "0.10"
@@ -73,3 +75,7 @@ web-sys      = { version = "0.3", features = [
     "FormData","DragEvent","DataTransfer","FileReader",
 ] }
 gloo         = { version = "0.11", features = ["net"] }
+
+[patch.crates-io]
+ethers-providers = { path = "vendor/ethers-providers" }
+ark-relations    = { path = "vendor/ark-relations" }

@@ -17,6 +17,7 @@ use tracing::{instrument, warn};
 
 /// Signs arbitrary bytes with the Ledger's Ethereum personal_sign path.
 /// For EIP-712 structured data, use the middleware in bttc.rs directly.
+#[allow(dead_code)]
 #[instrument(skip(payload))]
 pub async fn sign_bytes(payload: &[u8]) -> anyhow::Result<Vec<u8>> {
     if std::env::var("LEDGER_DEV_MODE").unwrap_or_default() == "1" {
@@ -30,7 +31,7 @@ pub async fn sign_bytes(payload: &[u8]) -> anyhow::Result<Vec<u8>> {
 
     #[cfg(feature = "ledger")]
     {
-        use ethers::signers::{HDPath, Ledger, Signer};
+        use ethers_signers::{HDPath, Ledger, Signer};
 
         let chain_id = std::env::var("BTTC_CHAIN_ID")
             .unwrap_or_else(|_| "199".into()) // BTTC mainnet
@@ -76,6 +77,7 @@ pub async fn sign_bytes(payload: &[u8]) -> anyhow::Result<Vec<u8>> {
 
 /// Returns the Ledger's Ethereum address at `m/44'/60'/0'/0/0`.
 /// Used to pre-verify the correct device is connected before submitting.
+#[allow(dead_code)]
 pub async fn get_address() -> anyhow::Result<String> {
     if std::env::var("LEDGER_DEV_MODE").unwrap_or_default() == "1" {
         return Ok("0xDEV0000000000000000000000000000000000001".into());
@@ -83,7 +85,7 @@ pub async fn get_address() -> anyhow::Result<String> {
 
     #[cfg(feature = "ledger")]
     {
-        use ethers::signers::{HDPath, Ledger, Signer};
+        use ethers_signers::{HDPath, Ledger, Signer};
         let chain_id = std::env::var("BTTC_CHAIN_ID")
             .unwrap_or_else(|_| "199".into())
             .parse::<u64>()?;

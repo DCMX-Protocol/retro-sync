@@ -8,6 +8,10 @@ license.workspace = true
 name = "backend"
 path = "src/main.rs"
 
+[lib]
+name = "backend"
+path = "src/lib.rs"
+
 [dependencies]
 tokio        = { workspace = true }
 axum         = { workspace = true }
@@ -22,14 +26,16 @@ chrono       = { workspace = true }
 sha2         = { workspace = true }
 hex          = { workspace = true }
 heed         = { workspace = true }
-shared       = { path = "../../libs/shared" }
-zk_circuits  = { path = "../../libs/zk-circuits" }
-ethers           = { version = "2", features = ["ledger", "abigen", "ws"] }
+shared          = { path = "../../libs/shared" }
+zk_circuits     = { path = "../../libs/zk-circuits" }
+erdfa-publish   = { path = "../../nix/erdfa-publish" }
+ethers-core      = { version = "2" }
+ethers-providers = { version = "2" }
 ethers-signers   = { version = "2", features = ["ledger"] }
-ethers-contract  = { version = "2" }
 quick-xml    = { workspace = true }
 xot          = { workspace = true }
-tower-http = { version = "0.6.8", features = ["cors"] }
+tower-http   = { workspace = true }
+thiserror    = { workspace = true }
 
 [features]
 default = []

@@ -1,6 +1,6 @@
 //! Streaming fraud detection — velocity checks + play ratio analysis.
 use serde::{Deserialize, Serialize};
-use std::collections::HashMap;
+use std::collections::{HashMap, HashSet};
 use std::sync::Mutex;
 use tracing::warn;
 
@@ -47,7 +47,15 @@ struct Window {
 pub struct FraudDetector {
     ip_vel: Mutex<HashMap<String, Window>>,
     usr_vel: Mutex<HashMap<String, Window>>,
-    blocked: Mutex<Vec<String>>,
+    /// SECURITY FIX: Changed from Vec<String> (O(n) scan) to HashSet<String> (O(1) lookup).
+    /// Prevents DoS via blocked-list inflation attack.
+    blocked: Mutex<HashSet<String>>,
+}
+
+impl Default for FraudDetector {
+    fn default() -> Self {
+        Self::new()
+    }
 }
 
 impl FraudDetector {
@@ -55,7 +63,7 @@ impl FraudDetector {
         Self {
             ip_vel: Mutex::new(HashMap::new()),
             usr_vel: Mutex::new(HashMap::new()),
-            blocked: Mutex::new(Vec::new()),
+            blocked: Mutex::new(HashSet::new()),
         }
     }
     pub fn analyse(&self, e: &PlayEvent) -> FraudAnalysis {
@@ -63,22 +71,22 @@ impl FraudDetector {
         let mut risk = RiskLevel::Clean;
         let ratio = e.play_duration_secs / e.track_duration_secs.max(1.0);
         if ratio < 0.05 {
-            signals.push(format!("play ratio {:.2} — bot skip", ratio));
+            signals.push(format!("play ratio {ratio:.2} — bot skip"));
             risk = RiskLevel::Suspicious;
         }
         let ip_c = self.inc(&self.ip_vel, &e.ip_hash);
         if ip_c > 200 {
-            signals.push(format!("IP velocity {} — click farm", ip_c));
+            signals.push(format!("IP velocity {ip_c} — click farm"));
             risk = RiskLevel::HighRisk;
         } else if ip_c > 50 {
-            signals.push(format!("IP velocity {} — suspicious", ip_c));
+            signals.push(format!("IP velocity {ip_c} — suspicious"));
             if risk < RiskLevel::Suspicious {
                 risk = RiskLevel::Suspicious;
             }
         }
         let usr_c = self.inc(&self.usr_vel, &e.user_id);
         if usr_c > 100 {
-            signals.push(format!("user velocity {} — bot", usr_c));
+            signals.push(format!("user velocity {usr_c} — bot"));
             risk = RiskLevel::HighRisk;
         }
         if self.is_blocked(&e.track_isrc) {
@@ -118,16 +126,14 @@ impl FraudDetector {
         }
     }
     pub fn block_isrc(&self, isrc: &str) {
-        if let Ok(mut v) = self.blocked.lock() {
-            if !v.contains(&isrc.to_string()) {
-                v.push(isrc.into());
-            }
+        if let Ok(mut s) = self.blocked.lock() {
+            s.insert(isrc.to_string());
         }
     }
     pub fn is_blocked(&self, isrc: &str) -> bool {
         self.blocked
             .lock()
-            .map(|v| v.contains(&isrc.to_string()))
+            .map(|s| s.contains(isrc))
             .unwrap_or(false)
     }
 }

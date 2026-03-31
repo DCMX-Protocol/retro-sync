@@ -19,7 +19,8 @@ const FrequencyVisualizer: React.FC<FrequencyVisualizerProps> = ({ isPlaying, au
 
     const initAudio = async () => {
       if (!audioContextRef.current) {
-        audioContextRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
+        const AudioCtx = window.AudioContext || (window as Window & { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+        audioContextRef.current = new AudioCtx();
         analyzerRef.current = audioContextRef.current.createAnalyser();
         analyzerRef.current.fftSize = 256;
       }

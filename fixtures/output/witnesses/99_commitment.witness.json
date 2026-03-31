@@ -1,0 +1,8 @@
+{
+  "step": "99_commitment",
+  "timestamp": "20260327T233534Z",
+  "chain_hash": "21d364c677ba191e6c11b14edc9ccd0a84c7b2188c5fd2ab53dd96386e8fff67",
+  "witness_count": 5,
+  "pipeline": "retro-sync/h6-render",
+  "sop": "SOP-RETROSYNC-PUB-001"
+}

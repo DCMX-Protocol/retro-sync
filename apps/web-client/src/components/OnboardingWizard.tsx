@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Wallet, ShieldCheck, Music, Link2, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
+import { type LucideIcon, X, Wallet, ShieldCheck, Music, Link2, CheckCircle2, ArrowRight, ArrowLeft } from "lucide-react";
 import { type WalletState } from "@/types/wallet";
 
 interface Props {
@@ -10,7 +10,7 @@ interface Props {
 
 type Step = "wallet" | "ipi" | "kyc" | "confirm";
 
-const STEPS: { id: Step; label: string; icon: any }[] = [
+const STEPS: { id: Step; label: string; icon: LucideIcon }[] = [
   { id: "wallet", label: "Wallet", icon: Wallet },
   { id: "ipi", label: "IPI Number", icon: Music },
   { id: "kyc", label: "Verify IPI & Identity", icon: ShieldCheck },
@@ -47,13 +47,38 @@ const OnboardingWizard = ({ wallet, onClose }: Props) => {
     return true;
   };
 
-  const handleConfirm = () => {
-    console.log("IPI & Wallet Binding confirmed via KYC:", {
-      address: wallet.address,
-      walletType: wallet.walletType,
-      ipi: ipiNumber.replace(/\D/g, ""),
-    });
-    onClose();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [kycError, setKycError] = useState<string | null>(null);
+
+  const handleConfirm = async () => {
+    if (isSubmitting) return;
+    setIsSubmitting(true);
+    setKycError(null);
+
+    const uid = wallet.address.toLowerCase();
+    try {
+      const res = await fetch(`/api/kyc/${encodeURIComponent(uid)}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          legal_name: uid,
+          country_code: "US",
+          id_type: "IPI",
+          tax_form: "W9",
+          tin_hash: null,
+        }),
+      });
+      if (!res.ok && res.status !== 409) {
+        const text = await res.text().catch(() => "");
+        throw new Error(`KYC submission failed (${res.status}): ${text || res.statusText}`);
+      }
+      onClose();
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "KYC submission failed.";
+      setKycError(message);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -233,12 +258,22 @@ const OnboardingWizard = ({ wallet, onClose }: Props) => {
           )}
 
           {currentStep === "confirm" ? (
-            <button
-              onClick={handleConfirm}
-              className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:brightness-110 transition-all glow-primary"
-            >
-              <CheckCircle2 className="w-4 h-4" /> Finalize Binding
-            </button>
+            <div className="flex flex-col items-end gap-2">
+              {kycError && (
+                <p className="text-[11px] text-red-400 font-mono max-w-xs text-right">{kycError}</p>
+              )}
+              <button
+                onClick={handleConfirm}
+                disabled={isSubmitting}
+                className="flex items-center gap-2 px-6 py-2.5 rounded-lg bg-primary text-primary-foreground text-sm font-bold hover:brightness-110 transition-all glow-primary disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {isSubmitting ? (
+                  <><div className="w-4 h-4 border-2 border-primary-foreground/20 border-t-primary-foreground rounded-full animate-spin" /> Submitting...</>
+                ) : (
+                  <><CheckCircle2 className="w-4 h-4" /> Finalize Binding</>
+                )}
+              </button>
+            </div>
           ) : (
             <button
               onClick={() => {
