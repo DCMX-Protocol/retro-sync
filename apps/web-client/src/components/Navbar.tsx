@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import ConnectWallet from "./ConnectWallet";
-import { Terminal, Menu, X } from "lucide-react";
+import { Music, Menu, X } from "lucide-react";
 import { useState } from "react";
 
 const Navbar = () => {
@@ -16,8 +16,8 @@ const Navbar = () => {
     >
       <div className="container mx-auto px-6 h-16 flex items-center justify-between">
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="w-8 h-8 bg-primary/10 border border-primary/50 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
-            <Terminal className="w-4 h-4 text-primary" />
+          <div className="w-8 h-8 bg-primary/10 border border-primary/50 rounded-lg flex items-center justify-center group-hover:bg-primary/20 transition-colors">
+            <Music className="w-4 h-4 text-primary" />
           </div>
           <span className="font-bold text-lg tracking-tight text-foreground">
             Retro<span className="text-primary">Sync</span>
@@ -27,25 +27,25 @@ const Navbar = () => {
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-8">
           <a href="/#features" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
-            Capabilities
+            Features
           </a>
           <a href="/#pricing" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
-            Economics
+            Pricing
           </a>
           <Link to="/marketplace" className="text-muted-foreground hover:text-primary transition-colors text-sm font-medium">
-            Exchange
+            Browse Music
           </Link>
-          <Link to="/upload" className="bg-primary/10 border border-primary/40 px-4 py-1.5 text-primary hover:bg-primary/20 transition-all text-sm font-medium">
-            Secure Upload
+          <Link to="/upload" className="bg-primary/10 border border-primary/40 px-4 py-1.5 rounded-lg text-primary hover:bg-primary/20 transition-all text-sm font-medium">
+            Upload Song
           </Link>
         </div>
 
         <div className="flex items-center gap-3">
           <ConnectWallet />
-          {/* Mobile hamburger */}
           <button
             className="md:hidden p-2 text-muted-foreground hover:text-foreground transition-colors"
             onClick={() => setMobileOpen(!mobileOpen)}
+            aria-label={mobileOpen ? "Close menu" : "Open menu"}
           >
             {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
@@ -60,16 +60,16 @@ const Navbar = () => {
           animate={{ opacity: 1, y: 0 }}
         >
           <a href="/#features" className="block text-muted-foreground hover:text-primary transition-colors text-sm font-medium" onClick={() => setMobileOpen(false)}>
-            Capabilities
+            Features
           </a>
           <a href="/#pricing" className="block text-muted-foreground hover:text-primary transition-colors text-sm font-medium" onClick={() => setMobileOpen(false)}>
-            Economics
+            Pricing
           </a>
           <Link to="/marketplace" className="block text-muted-foreground hover:text-primary transition-colors text-sm font-medium" onClick={() => setMobileOpen(false)}>
-            Exchange
+            Browse Music
           </Link>
-          <Link to="/upload" className="block bg-primary/10 border border-primary/40 px-4 py-2 text-primary text-sm font-medium text-center" onClick={() => setMobileOpen(false)}>
-            Secure Upload
+          <Link to="/upload" className="block bg-primary/10 border border-primary/40 px-4 py-2 rounded-lg text-primary text-sm font-medium text-center" onClick={() => setMobileOpen(false)}>
+            Upload Song
           </Link>
         </motion.div>
       )}

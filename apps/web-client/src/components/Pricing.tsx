@@ -5,33 +5,33 @@ import { Button } from "@/components/ui/button";
 
 const plans = [
   {
-    name: "Artist",
+    name: "For Artists",
     price: "$0",
     period: "",
-    description: "Made by an artist, for artists. We never charge you.",
+    description: "Made by an artist, for artists. Always free.",
     features: [
-      "Unlimited song uploads",
+      "Upload unlimited songs",
       "Keep 100% of your rights",
       "Release on 150+ platforms",
-      "Real-time royalty tracking",
-      "Mathematically proven payouts",
+      "See your earnings in real time",
+      "Payments verified by math, not trust",
     ],
-    cta: "Start Releasing",
+    cta: "Start Releasing — It's Free",
     highlighted: true,
   },
   {
-    name: "Protocol",
-    price: "Nodes",
-    period: "",
-    description: "How the infrastructure is sustained",
+    name: "How We Stay Running",
+    price: "2.5%",
+    period: "of payouts",
+    description: "A tiny fee on earnings keeps the lights on",
     features: [
-      "Global file seeding",
-      "2.5% transaction fee on payouts",
-      "No monthly subscriptions",
+      "Your music stored globally",
+      "No monthly fees, ever",
       "No per-release charges",
-      "Enterprise-grade security",
+      "No surprise costs",
+      "Bank-level security",
     ],
-    cta: "View Node Stats",
+    cta: "Learn More",
     highlighted: false,
   },
 ];
@@ -53,19 +53,19 @@ const Pricing = () => {
           viewport={{ once: true }}
         >
           <span className="text-xs font-mono text-primary/70 tracking-widest uppercase mb-4 block">
-            Economics
+            Pricing
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            Our <span className="text-gradient-primary">Revenue Model</span>
+            See How Much <span className="text-gradient-primary">You Save</span>
           </h2>
           <p className="text-muted-foreground text-base">
-            We don't charge artists. We only win when you do.
+            Drag the slider to see what you'd keep with RetroSync vs. a traditional distributor.
           </p>
         </motion.div>
 
-        {/* Revenue Calculator — full-width editorial card */}
+        {/* Revenue Calculator */}
         <motion.div
-          className="max-w-5xl mx-auto mb-20 p-6 md:p-10 border border-primary/20 bg-primary/[0.02] relative overflow-hidden"
+          className="max-w-5xl mx-auto mb-20 p-6 md:p-10 border border-primary/20 bg-primary/[0.02] relative overflow-hidden rounded-2xl"
           initial={{ opacity: 0, scale: 0.98 }}
           whileInView={{ opacity: 1, scale: 1 }}
           viewport={{ once: true }}
@@ -78,13 +78,13 @@ const Pricing = () => {
             <div>
               <div className="flex items-center gap-2 mb-6">
                 <TrendingUp className="w-5 h-5 text-primary" />
-                <h3 className="text-lg font-bold">Revenue Calculator</h3>
+                <h3 className="text-lg font-bold">Savings Calculator</h3>
               </div>
 
               <div className="space-y-6">
                 <div>
                   <div className="flex justify-between mb-2">
-                    <label className="text-sm font-medium text-foreground">Annual Streams</label>
+                    <label className="text-sm font-medium text-foreground">Your Annual Streams</label>
                     <span className="text-primary font-mono font-bold text-sm">{streams.toLocaleString()}</span>
                   </div>
                   <input
@@ -94,23 +94,27 @@ const Pricing = () => {
                     step="10000"
                     value={streams}
                     onChange={(e) => setStreams(parseInt(e.target.value))}
-                    className="w-full h-1.5 bg-secondary rounded-none appearance-none cursor-pointer accent-primary"
+                    className="w-full h-1.5 bg-secondary rounded-full appearance-none cursor-pointer accent-primary"
                   />
+                  <div className="flex justify-between text-[10px] text-muted-foreground mt-1">
+                    <span>10K streams</span>
+                    <span>1M streams</span>
+                  </div>
                 </div>
 
-                <div className="p-3 bg-secondary/50 border border-border flex items-start gap-3">
+                <div className="p-3 bg-secondary/50 border border-border rounded-lg flex items-start gap-3">
                   <Info className="w-4 h-4 text-muted-foreground mt-0.5 shrink-0" />
                   <p className="text-xs text-muted-foreground leading-relaxed">
-                    Based on $0.004/stream average. Traditional platforms take ~15% + annual fees.
+                    Based on $0.004 per stream (industry average). Traditional distributors typically take ~15% + annual fees.
                   </p>
                 </div>
               </div>
             </div>
 
-            <div className="bg-card p-6 border border-border">
+            <div className="bg-card p-6 border border-border rounded-xl">
               <div className="space-y-4">
                 <div className="flex justify-between items-center text-sm">
-                  <span className="text-muted-foreground">Total Revenue</span>
+                  <span className="text-muted-foreground">Your Total Revenue</span>
                   <span className="text-foreground font-mono">${revenue.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm">
@@ -118,11 +122,11 @@ const Pricing = () => {
                   <span className="text-destructive font-mono">-${legacyFees.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                 </div>
                 <div className="flex justify-between items-center text-sm border-b border-border pb-4">
-                  <span className="text-muted-foreground">Retrosync Fee (2.5%)</span>
+                  <span className="text-muted-foreground">RetroSync Fee</span>
                   <span className="text-primary font-mono">-${retroFees.toLocaleString(undefined, { minimumFractionDigits: 2 })}</span>
                 </div>
                 <div className="pt-2">
-                  <div className="text-[10px] uppercase font-medium text-muted-foreground mb-1 tracking-wider">Annual Savings</div>
+                  <div className="text-xs text-muted-foreground mb-1">You save every year</div>
                   <div className="text-2xl md:text-3xl font-bold text-primary font-mono">
                     +${savings.toLocaleString(undefined, { minimumFractionDigits: 2 })}
                   </div>
@@ -137,7 +141,7 @@ const Pricing = () => {
           {plans.map((plan, i) => (
             <motion.div
               key={plan.name}
-              className={`p-6 md:p-8 flex flex-col ${
+              className={`p-6 md:p-8 flex flex-col rounded-xl ${
                 plan.highlighted
                   ? "border-2 border-primary/50 bg-primary/[0.03] glow-primary"
                   : "border border-border bg-card"
@@ -150,7 +154,7 @@ const Pricing = () => {
               <h3 className="text-xl font-bold">{plan.name}</h3>
               <div className="mt-3 mb-1">
                 <span className="text-3xl font-bold">{plan.price}</span>
-                {plan.period && <span className="text-muted-foreground text-sm">{plan.period}</span>}
+                {plan.period && <span className="text-muted-foreground text-sm ml-1">{plan.period}</span>}
               </div>
               <p className="text-sm text-muted-foreground mb-6">{plan.description}</p>
 
@@ -165,7 +169,7 @@ const Pricing = () => {
 
               <Button
                 variant={plan.highlighted ? "default" : "outline"}
-                className={`w-full py-6 font-bold ${plan.highlighted ? "glow-primary" : ""}`}
+                className={`w-full py-6 font-bold rounded-lg ${plan.highlighted ? "glow-primary" : ""}`}
               >
                 {plan.cta}
               </Button>

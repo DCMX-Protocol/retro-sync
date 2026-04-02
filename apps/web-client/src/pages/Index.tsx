@@ -19,20 +19,20 @@ const Index = () => {
           <div className="grid lg:grid-cols-12 gap-12 items-start">
             <div className="lg:col-span-5">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-4">
-                Driven by an{" "}
-                <span className="text-gradient-primary">Artist's Journey</span>
+                Built by an{" "}
+                <span className="text-gradient-primary">Artist, for Artists</span>
               </h2>
               <a href="/docs/whitepaper.md" className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline mt-2">
-                Read the Whitepaper →
+                Read Our Story →
               </a>
             </div>
             <div className="lg:col-span-7 lg:col-start-6">
               <div className="space-y-5 text-base text-muted-foreground leading-relaxed">
                 <p>
-                  At RetroSync, our mission is deeply personal, born from a five-year journey navigating the music industry from an artist's perspective. As a professional artist and a dedicated mother, I've experienced firsthand the frustration of unreceived or lost payments — a reality that stifles creativity and makes sustainable careers incredibly challenging.
+                  RetroSync was born from a simple frustration: as an independent artist and mother, I watched royalty checks get lost, delayed, or mysteriously shrink. The music industry's payment system is broken — and artists are the ones who pay the price.
                 </p>
                 <p>
-                  Fueled by this passion for fairness and a deep understanding of artists' needs, RetroSync was conceived. We are building a transparent, artist-centric platform designed to empower creators. Our goal is to ensure artists are compensated fairly and equitably, putting control back into their hands.
+                  So we built something better. RetroSync puts you in control of your music and your money. No gatekeepers, no hidden fees, no waiting months to get paid. Just upload, release, and earn — the way it should be.
                 </p>
               </div>
             </div>

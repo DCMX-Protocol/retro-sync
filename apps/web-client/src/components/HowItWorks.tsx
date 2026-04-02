@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
-import { Upload, Cpu, Globe, CheckCircle } from "lucide-react";
+import { Upload, CheckCircle, Globe, Banknote } from "lucide-react";
 
 const steps = [
-  { icon: Upload, title: "Upload Metadata", description: "Submit song details anonymously — no legal names needed." },
-  { icon: Cpu, title: "Verify Ownership", description: "Automatic digital provenance record for your music." },
-  { icon: Globe, title: "Distribute Globally", description: "Instantly delivered to 150+ stores worldwide." },
-  { icon: CheckCircle, title: "Get Paid Instantly", description: "Earnings available immediately, no waiting." },
+  { icon: Upload, title: "Upload Your Song", description: "Drag and drop your track — we handle the rest. No forms to fill out." },
+  { icon: CheckCircle, title: "We Protect It", description: "Your music is automatically registered and protected worldwide." },
+  { icon: Globe, title: "It Goes Everywhere", description: "Spotify, Apple Music, TikTok, YouTube — all 150+ stores, instantly." },
+  { icon: Banknote, title: "You Get Paid", description: "Money goes straight to your wallet. No delays, no minimums." },
 ];
 
 const HowItWorks = () => {
@@ -19,19 +19,18 @@ const HowItWorks = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            How It <span className="text-gradient-primary">Works</span>
+            Simple as <span className="text-gradient-primary">1-2-3-4</span>
           </h2>
           <p className="text-muted-foreground text-base">
-            Every part of distribution automated so you stay creative.
+            No tech knowledge needed. Upload, release, earn.
           </p>
         </motion.div>
 
-        {/* Staggered two-column layout */}
         <div className="grid sm:grid-cols-2 gap-6 lg:gap-8 max-w-4xl mx-auto">
           {steps.map((step, i) => (
             <motion.div
               key={step.title}
-              className={`p-6 md:p-8 bg-background border border-border hover:border-primary/30 transition-all group ${
+              className={`p-6 md:p-8 bg-background border border-border rounded-xl hover:border-primary/30 transition-all group ${
                 i % 2 !== 0 ? "sm:mt-12" : ""
               }`}
               initial={{ opacity: 0, y: 20 }}
@@ -40,11 +39,11 @@ const HowItWorks = () => {
               transition={{ delay: i * 0.1 }}
             >
               <div className="flex items-start gap-4">
-                <div className="w-12 h-12 shrink-0 bg-secondary border border-border flex items-center justify-center group-hover:border-primary/50 transition-colors">
+                <div className="w-12 h-12 shrink-0 bg-primary/10 border border-primary/30 rounded-xl flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                   <step.icon className="w-5 h-5 text-primary" />
                 </div>
                 <div>
-                  <div className="text-xs font-mono text-muted-foreground mb-1">Step {i + 1}</div>
+                  <div className="text-xs font-mono text-primary/70 mb-1">Step {i + 1}</div>
                   <h3 className="text-lg font-bold mb-2 tracking-tight">{step.title}</h3>
                   <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
                 </div>
