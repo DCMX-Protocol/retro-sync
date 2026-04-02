@@ -20,7 +20,7 @@ const Index = () => {
             <div className="lg:col-span-5">
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-tight mb-4">
                 Built by an{" "}
-                <span className="text-gradient-primary">Artist, for Artists</span>
+                <span className="text-gradient-primary">Independent Artist</span>
               </h2>
               <a href="/docs/whitepaper.md" className="inline-flex items-center gap-2 text-primary font-medium text-sm hover:underline mt-2">
                 Read Our Story →
@@ -29,10 +29,10 @@ const Index = () => {
             <div className="lg:col-span-7 lg:col-start-6">
               <div className="space-y-5 text-base text-muted-foreground leading-relaxed">
                 <p>
-                  RetroSync was born from a simple frustration: as an independent artist and mother, I watched royalty checks get lost, delayed, or mysteriously shrink. The music industry's payment system is broken — and artists are the ones who pay the price.
+                  RetroSync started because I experienced the problem firsthand. As an independent artist and mother, I watched royalty statements arrive months late, with numbers that never quite added up. I talked to other indie musicians — the story was always the same. Opaque systems, slow payments, and fees that chip away at already-thin margins.
                 </p>
                 <p>
-                  So we built something better. RetroSync puts you in control of your music and your money. No gatekeepers, no hidden fees, no waiting months to get paid. Just upload, release, and earn — the way it should be.
+                  We're building RetroSync to offer an alternative. A distribution platform where the fee structure is simple (2.5% on cashout — that's it), where payments are recorded on-chain so you can verify them yourself, and where you keep ownership of your masters and your data. We're not pretending the music industry is easy — but we think the tools can be fairer.
                 </p>
               </div>
             </div>

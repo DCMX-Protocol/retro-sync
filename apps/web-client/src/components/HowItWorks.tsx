@@ -2,10 +2,10 @@ import { motion } from "framer-motion";
 import { Upload, CheckCircle, Globe, Banknote } from "lucide-react";
 
 const steps = [
-  { icon: Upload, title: "Upload Your Song", description: "Drag and drop your track — we handle the rest. No forms to fill out." },
-  { icon: CheckCircle, title: "We Protect It", description: "Your music is automatically registered and protected worldwide." },
-  { icon: Globe, title: "It Goes Everywhere", description: "Spotify, Apple Music, TikTok, YouTube — all 150+ stores, instantly." },
-  { icon: Banknote, title: "You Get Paid", description: "Money goes straight to your wallet. No delays, no minimums." },
+  { icon: Upload, title: "Upload Your Music", description: "Drop your tracks, add metadata, and submit. We handle format validation and platform requirements." },
+  { icon: CheckCircle, title: "Quality & Rights Check", description: "Automated checks ensure your audio meets platform standards. Your ownership is registered and protected." },
+  { icon: Globe, title: "Distributed Worldwide", description: "Your music goes to Spotify, Apple Music, TikTok, YouTube, and 150+ platforms via industry-standard DDEX feeds." },
+  { icon: Banknote, title: "Earn & Cash Out", description: "Track your earnings in real time. When you withdraw, a 2.5% fee is applied — 90% goes to network nodes, 10% to platform operations." },
 ];
 
 const HowItWorks = () => {
@@ -19,10 +19,10 @@ const HowItWorks = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            Simple as <span className="text-gradient-primary">1-2-3-4</span>
+            How <span className="text-gradient-primary">Distribution</span> Works
           </h2>
           <p className="text-muted-foreground text-base">
-            No tech knowledge needed. Upload, release, earn.
+            Four steps from your studio to every major streaming platform.
           </p>
         </motion.div>
 

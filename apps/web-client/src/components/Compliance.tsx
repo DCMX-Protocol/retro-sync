@@ -20,8 +20,8 @@ const Compliance = () => {
             Your Music,{" "}
             <span className="text-gradient-primary">Everywhere</span>
           </h2>
-          <p className="text-muted-foreground max-w-md mx-auto text-base">
-            We deliver your songs to every major platform — so your fans can find you wherever they listen.
+          <p className="text-muted-foreground max-w-md mx-auto text-base leading-relaxed">
+            We deliver to every major streaming platform through standard industry feeds — the same infrastructure used by established distributors.
           </p>
         </motion.div>
 
@@ -53,9 +53,9 @@ const Compliance = () => {
           transition={{ delay: 0.2 }}
         >
           {[
-            { label: "Your Rights Protected", desc: "We register and defend your copyright worldwide — automatically" },
-            { label: "Your Data Is Yours", desc: "Download or delete everything anytime. No questions asked." },
-            { label: "Secure Payments", desc: "Verified payments straight to your wallet. Always." },
+            { label: "Rights Registration", desc: "Your music is registered with content ID systems to help protect against unauthorized use." },
+            { label: "Your Data, Your Choice", desc: "Export or delete your data anytime. We don't lock you in." },
+            { label: "On-Chain Payments", desc: "Earnings are recorded on the BTTC network for transparency. You can verify any transaction." },
           ].map((item) => (
             <div key={item.label} className="p-5 border border-border bg-background rounded-xl text-center">
               <div className="text-accent font-bold text-sm mb-2">{item.label}</div>
