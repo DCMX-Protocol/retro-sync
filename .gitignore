@@ -50,3 +50,6 @@ __pycache__/
 result
 result-*
 
+
+.gemini/
+gha-creds-*.json

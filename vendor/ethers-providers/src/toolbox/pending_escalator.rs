@@ -3,7 +3,7 @@
 use ethers_core::types::{Bytes, TransactionReceipt, H256};
 use futures_timer::Delay;
 use futures_util::{stream::FuturesUnordered, StreamExt};
-use instant::{Duration, Instant};
+use web_time::{Duration, Instant};
 use pin_project::pin_project;
 use std::{future::Future, pin::Pin, task::Poll};
 

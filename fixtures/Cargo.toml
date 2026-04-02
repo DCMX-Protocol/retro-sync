@@ -17,7 +17,7 @@ stego        = { path = "../libs/stego", features = ["png", "svg"] }
 png          = "0.17"
 toml         = "0.8"
 ark-bn254    = { workspace = true }
-erdfa-publish = { path = "../nix/erdfa-publish" }
+# erdfa-publish = { path = "../nix/erdfa-publish" }
 
 [[example]]
 name = "nft71_erdfa"

@@ -6,7 +6,7 @@ use ethers_core::types::{Transaction, TransactionReceipt, TxHash, U64};
 use futures_core::stream::Stream;
 use futures_timer::Delay;
 use futures_util::stream::StreamExt;
-use instant::Duration;
+use web_time::Duration;
 use pin_project::pin_project;
 use std::{
     fmt,

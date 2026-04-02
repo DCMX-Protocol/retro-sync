@@ -4,13 +4,12 @@ use bytes::{Buf, BytesMut};
 use ethers_core::types::U256;
 use futures_channel::mpsc;
 use futures_util::stream::StreamExt;
-use hashers::fx_hash::FxHasher64;
+use rustc_hash::FxHashMap;
 use serde::{de::DeserializeOwned, Serialize};
 use serde_json::{value::RawValue, Deserializer};
 use std::{
     cell::RefCell,
     convert::Infallible,
-    hash::BuildHasherDefault,
     io,
     path::Path,
     sync::{
@@ -28,8 +27,6 @@ use tokio::{
 
 use super::common::{JsonRpcError, Request, Response};
 use crate::{errors::ProviderError, JsonRpcClient, PubsubClient};
-
-type FxHashMap<K, V> = std::collections::HashMap<K, V, BuildHasherDefault<FxHasher64>>;
 
 type Pending = oneshot::Sender<Result<Box<RawValue>, JsonRpcError>>;
 type Subscription = mpsc::UnboundedSender<Box<RawValue>>;

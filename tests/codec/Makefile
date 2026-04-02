@@ -1,8 +1,8 @@
 SHELL := bash
 NIX   := nix-shell -p imagemagick ffmpeg python3 --run
 
-SVG   ?= /var/www/solana.solfunmeme.com/retro-sync/scratch/shamash_bach.svg
-OUT   ?= /var/www/solana.solfunmeme.com/retro-sync/scratch/codec-test
+SVG   ?= scratch/shamash_bach.svg
+OUT   ?= scratch/codec-test
 REF   := $(OUT)/ref.png
 
 .PHONY: all render transcode extract compare clean

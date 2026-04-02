@@ -137,7 +137,7 @@ pub fn split_payload(payload: &[u8], n: usize) -> Vec<Vec<u8>> {
 
 /// Reassemble payload from tile chunks (concatenate, trim trailing zeros).
 pub fn join_payload(chunks: &[Vec<u8>]) -> Vec<u8> {
-    let mut out: Vec<u8> = chunks.iter().flat_map(|c| c.iter().copied()).collect();
+    let out: Vec<u8> = chunks.iter().flat_map(|c| c.iter().copied()).collect();
     // Don't trim — NFT7 header tells us exact segment lengths
     out
 }
@@ -173,6 +173,7 @@ pub fn svg_to_rgb(svg_data: &[u8], w: u32, h: u32) -> Vec<u8> {
 
 // ── WASM bindings ─────────────────────────────────────────────────
 
+#[cfg(feature = "wasm")]
 use sha2::{Digest, Sha256};
 
 #[cfg(feature = "wasm")]
@@ -199,7 +200,8 @@ pub fn reconstruct_payload(all_bytes: &[u8]) -> String {
                 let hash = hex::encode(Sha256::digest(&s.data));
                 format!("{{\"name\":\"{}\",\"size\":{},\"sha256\":\"{hash}\"}}", s.name, s.data.len())
             }).collect();
-            format!("{{\"segments\":[{}],\"payload_sha256\":\"{payload_hash}\"}}",
+            format!("{{\"segments\":[
+{}],\"payload_sha256\":\"{payload_hash}\"}}",
                 items.join(","))
         }
     }

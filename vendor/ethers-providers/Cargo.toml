@@ -89,8 +89,8 @@ default-features = false
 [dependencies.futures-util]
 version = "0.3.28"
 
-[dependencies.hashers]
-version = "1.0"
+[dependencies.rustc-hash]
+version = "2.1"
 
 [dependencies.hex]
 version = "1.6"
@@ -100,8 +100,8 @@ package = "const-hex"
 [dependencies.http]
 version = "0.2"
 
-[dependencies.instant]
-version = "0.1.12"
+[dependencies.web-time]
+version = "1.1"
 
 [dependencies.jsonwebtoken]
 version = "10"

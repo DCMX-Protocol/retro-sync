@@ -87,6 +87,7 @@ impl AudioScale {
 /// `Full` — the old `Preview` tier is removed.  NFT gates the *manifest*, not
 /// the data.  `Degraded` and `Steganographic` tiers are retained for future
 /// p2p stream quality signalling.
+#[allow(dead_code)]
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug)]
 pub enum ShardQuality {
     Full,                   // full public shard — always returned

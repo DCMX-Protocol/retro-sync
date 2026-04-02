@@ -6,6 +6,7 @@ fuzz          = { runs = 2000 }
 gas_reports   = ["RoyaltyDistributor", "ZKVerifier", "MockBTT", "MasterPattern"]
 optimizer     = true
 optimizer_runs = 200
+via_ir        = true
 gas_price     = 1000000000   # 1 Gwei — overrides inflated BTTC testnet RPC default
 
 [rpc_endpoints]

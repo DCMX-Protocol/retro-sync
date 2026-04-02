@@ -55,7 +55,7 @@ fn mimc_hash_native(left: Fr, right: Fr) -> Fr {
 
 /// MiMC hash as R1CS gadget.
 fn mimc_hash_circuit(
-    cs: ConstraintSystemRef<Fr>,
+    _cs: ConstraintSystemRef<Fr>,
     left: &FpVar<Fr>,
     right: &FpVar<Fr>,
 ) -> Result<FpVar<Fr>, SynthesisError> {
@@ -133,7 +133,6 @@ impl ConstraintSynthesizer<Fr> for NFT71Circuit {
         eigen_var.enforce_equal(&eigen_computed)?;
 
         // === Constraint 4+5: each shard is non-zero and in the Merkle tree ===
-        let zero = FpVar::constant(Fr::zero());
         for i in 0..SHARD_COUNT {
             let leaf = FpVar::new_witness(ark_relations::ns!(cs, "shard"), || {
                 Ok(w.shard_hashes[i])
