@@ -4,33 +4,33 @@ import { DollarSign, Eye, Globe, Headphones, Shield, Zap } from "lucide-react";
 const features = [
   {
     icon: DollarSign,
-    title: "Get Paid Fairly",
-    description: "Every payout is verified with math — not promises. You see exactly where your money comes from.",
+    title: "Transparent Payouts",
+    description: "The traditional model makes it hard to know where your money goes. We show you every transaction, verified on-chain — so you can see exactly what you earned and why.",
   },
   {
     icon: Eye,
-    title: "Your Privacy Matters",
-    description: "No real names required. Your identity stays protected while you release music worldwide.",
+    title: "Privacy by Default",
+    description: "Many platforms require extensive personal information just to distribute music. We designed ours so you can release under a pseudonym if you choose.",
   },
   {
     icon: Globe,
-    title: "No Middlemen",
-    description: "Payments go straight from listeners to you. No label taking a cut, no gatekeepers.",
+    title: "Direct Distribution",
+    description: "Your music goes to Spotify, Apple Music, TikTok, and 150+ platforms through industry-standard DDEX integration — the same pipeline major labels use.",
   },
   {
     icon: Headphones,
-    title: "Studio-Quality Checks",
-    description: "We automatically check your audio quality so your music sounds great everywhere.",
+    title: "Quality Standards",
+    description: "We check your audio against platform requirements before submission, helping avoid rejections and delays that cost independent artists time.",
   },
   {
     icon: Shield,
-    title: "Always Available",
-    description: "Your music is stored across a global network. It can't be taken down or censored.",
+    title: "Decentralized Storage",
+    description: "Your files are distributed across a peer-to-peer network. This approach aims to reduce single points of failure compared to centralized hosting.",
   },
   {
     icon: Zap,
-    title: "Lightning-Fast Payments",
-    description: "Get your earnings right away — no waiting 60-90 days like traditional distributors.",
+    title: "Faster Payment Cycles",
+    description: "Traditional distributors often hold earnings for 60–90 days. Our model is designed to shorten that timeline significantly, though actual speed depends on platform reporting.",
   },
 ];
 
@@ -46,13 +46,13 @@ const Features = () => {
           viewport={{ once: true }}
         >
           <span className="text-xs font-mono text-primary/70 tracking-widest uppercase mb-4 block">
-            Why Artists Love Us
+            What We're Building
           </span>
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight mb-4">
-            Built <span className="text-gradient-primary">For You.</span>
+            A Better Deal <span className="text-gradient-primary">For Artists.</span>
           </h2>
           <p className="text-muted-foreground max-w-md text-base leading-relaxed">
-            Everything you need to release music and get paid — nothing you don't.
+            Independent musicians deserve tools that work for them, not against them. Here's what we're doing differently.
           </p>
         </motion.div>
 

@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import { Check, X, Zap, Shield, Clock, DollarSign, Eye, Music, Heart } from "lucide-react";
 
 const comparisonData = [
-  { feature: "Cost", legacy: "$20–$100 per year", retro: "Free forever", icon: DollarSign },
-  { feature: "Your Privacy", legacy: "Requires personal info", retro: "Stay anonymous", icon: Eye },
-  { feature: "How Fast You're Paid", legacy: "2–3 months", retro: "Instantly", icon: Clock },
-  { feature: "Payment Accuracy", legacy: "Trust them", retro: "Mathematically proven", icon: Shield },
-  { feature: "Audio Quality Check", legacy: "Basic or none", retro: "Professional-grade", icon: Music },
-  { feature: "Your Data", legacy: "They control it", retro: "You control it", icon: Heart },
-  { feature: "Can Be Taken Down?", legacy: "Yes", retro: "Never", icon: Zap },
+  { feature: "Upfront Cost", legacy: "$20–$100/year + per-release fees", retro: "Free — pay 2.5% on cashout only", icon: DollarSign },
+  { feature: "Privacy", legacy: "Full legal identity required", retro: "Pseudonymous option available", icon: Eye },
+  { feature: "Payment Timeline", legacy: "Typically 60–90 days", retro: "Designed for faster settlement", icon: Clock },
+  { feature: "Payment Transparency", legacy: "Limited visibility into calculations", retro: "On-chain, auditable transactions", icon: Shield },
+  { feature: "Audio Validation", legacy: "Varies by platform", retro: "Automated quality checks pre-submission", icon: Music },
+  { feature: "Data Ownership", legacy: "Platform controls your analytics", retro: "You own and export your data", icon: Heart },
+  { feature: "File Hosting", legacy: "Centralized servers", retro: "Decentralized peer-to-peer network", icon: Zap },
 ];
 
 const Comparison = () => {
@@ -24,10 +24,10 @@ const Comparison = () => {
           viewport={{ once: true }}
         >
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 tracking-tight">
-            Why <span className="text-gradient-primary">Switch?</span>
+            How We <span className="text-gradient-primary">Compare</span>
           </h2>
-          <p className="text-muted-foreground max-w-lg text-base">
-            See how RetroSync compares to traditional distributors.
+          <p className="text-muted-foreground max-w-lg text-base leading-relaxed">
+            We're not the only option — but we think independent artists deserve to know how the models differ.
           </p>
         </motion.div>
 
@@ -35,7 +35,7 @@ const Comparison = () => {
           {/* Column headers — hidden on mobile */}
           <div className="hidden md:grid grid-cols-12 gap-px text-xs font-mono text-muted-foreground uppercase tracking-wider mb-4 px-5">
             <div className="col-span-4">Feature</div>
-            <div className="col-span-4">Traditional</div>
+            <div className="col-span-4">Traditional Distributors</div>
             <div className="col-span-4">RetroSync</div>
           </div>
 

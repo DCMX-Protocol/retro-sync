@@ -22,7 +22,7 @@ const Hero = () => {
               transition={{ duration: 0.4 }}
             >
               <span className="w-1.5 h-1.5 bg-primary rounded-full animate-pulse" />
-              <span className="text-xs font-mono text-primary/80 tracking-wide">Now Live — Start for Free</span>
+              <span className="text-xs font-mono text-primary/80 tracking-wide">Independent Music Distribution</span>
             </motion.div>
 
             <motion.h1
@@ -31,13 +31,13 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.1 }}
             >
-              Release Your
+              Distribute
               <br />
-              Music.
+              Your Music.
               <br />
-              <span className="text-gradient-primary">Keep Your</span>
+              <span className="text-gradient-primary">Own Your</span>
               <br />
-              <span className="text-gradient-primary">Money.</span>
+              <span className="text-gradient-primary">Earnings.</span>
             </motion.h1>
 
             <motion.p
@@ -46,8 +46,8 @@ const Hero = () => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Get your songs on Spotify, Apple Music, TikTok &amp; 150+ stores.
-              Get paid instantly — no middlemen, no hidden fees.
+              Get your music on Spotify, Apple Music, TikTok &amp; 150+ platforms.
+              No annual fees. No per-release charges. Just a small 2.5% on cashout.
             </motion.p>
 
             <motion.div
@@ -58,7 +58,7 @@ const Hero = () => {
             >
               <Link to="/upload">
                 <button className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground font-bold tracking-wide rounded-lg hover:bg-primary/90 transition-all flex items-center justify-center gap-2 text-base">
-                  Upload Your First Song <ArrowRight className="w-4 h-4" />
+                  Start Distributing <ArrowRight className="w-4 h-4" />
                 </button>
               </Link>
               <Link to="/marketplace">
@@ -77,10 +77,10 @@ const Hero = () => {
             transition={{ duration: 0.6, delay: 0.4 }}
           >
             {[
-              { value: "100% Yours", label: "You own everything", icon: Shield, offset: false },
-              { value: "Instant Pay", label: "No 90-day waits", icon: Zap, offset: true },
-              { value: "150+ Stores", label: "Worldwide reach", icon: Music, offset: false },
-              { value: "Free Forever", label: "No subscriptions", icon: Heart, offset: true },
+              { value: "Your Rights", label: "Keep 100% ownership", icon: Shield, offset: false },
+              { value: "Fast Payouts", label: "No 60–90 day waits", icon: Zap, offset: true },
+              { value: "150+ Stores", label: "Global distribution", icon: Music, offset: false },
+              { value: "No Upfront Cost", label: "Free to start", icon: Heart, offset: true },
             ].map((stat, i) => (
               <motion.div
                 key={stat.label}
