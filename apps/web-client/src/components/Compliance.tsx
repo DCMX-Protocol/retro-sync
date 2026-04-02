@@ -21,7 +21,7 @@ const Compliance = () => {
             <span className="text-gradient-primary">Everywhere</span>
           </h2>
           <p className="text-muted-foreground max-w-md mx-auto text-base">
-            Delivered to all the places your listeners already are.
+            We deliver your songs to every major platform — so your fans can find you wherever they listen.
           </p>
         </motion.div>
 
@@ -34,7 +34,7 @@ const Compliance = () => {
           {platforms.map((platform, i) => (
             <motion.span
               key={platform}
-              className="px-4 py-2 text-sm text-muted-foreground border border-border bg-background hover:text-primary hover:border-primary/30 transition-colors cursor-default"
+              className="px-4 py-2 text-sm text-muted-foreground border border-border bg-background rounded-lg hover:text-primary hover:border-primary/30 transition-colors cursor-default"
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
@@ -53,11 +53,11 @@ const Compliance = () => {
           transition={{ delay: 0.2 }}
         >
           {[
-            { label: "Rights Protected", desc: "We register and defend your copyright worldwide" },
-            { label: "Data Is Private", desc: "Full control — download or delete anytime" },
-            { label: "Secure Payouts", desc: "Identity-verified payments to your wallet" },
+            { label: "Your Rights Protected", desc: "We register and defend your copyright worldwide — automatically" },
+            { label: "Your Data Is Yours", desc: "Download or delete everything anytime. No questions asked." },
+            { label: "Secure Payments", desc: "Verified payments straight to your wallet. Always." },
           ].map((item) => (
-            <div key={item.label} className="p-5 border border-border bg-background text-center">
+            <div key={item.label} className="p-5 border border-border bg-background rounded-xl text-center">
               <div className="text-accent font-bold text-sm mb-2">{item.label}</div>
               <div className="text-xs text-muted-foreground leading-relaxed">{item.desc}</div>
             </div>

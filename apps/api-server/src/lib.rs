@@ -16,5 +16,6 @@ pub mod langsec;
 pub mod multisig_vault;
 pub mod music_reports;
 pub mod nft_manifest;
+pub mod noise;
 pub mod sftp;
 pub mod tron;
