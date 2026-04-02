@@ -36,6 +36,9 @@ quick-xml    = { workspace = true }
 xot          = { workspace = true }
 tower-http   = { workspace = true }
 thiserror    = { workspace = true }
+curve25519-dalek = { version = "4", features = ["alloc"] }
+rand         = "0.8"
+rand_chacha  = "0.3"
 
 [features]
 default = []
