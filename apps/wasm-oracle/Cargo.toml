@@ -1,0 +1,16 @@
+[package]
+name = "wasm-oracle"
+version = "0.1.0"
+edition = "2021"
+license = "AGPL-3.0-or-later"
+description = "Deterministic API3 dAPI processor: fetches BTT/USD samples, computes a 24h TWAP, and emits the public inputs that the on-chain Groth16 verifier (OracleZKVerifier) checks."
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+wasm-bindgen = "0.2"
+serde        = { version = "1", features = ["derive"] }
+serde-wasm-bindgen = "0.6"
+sha2         = "0.10"
+hex          = "0.4"
