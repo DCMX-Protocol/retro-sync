@@ -5,6 +5,7 @@ import Comparison from "@/components/Comparison";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import Compliance from "@/components/Compliance";
+import OracleFeed from "@/components/OracleFeed";
 import Footer from "@/components/Footer";
 
 const Index = () => {
@@ -44,6 +45,7 @@ const Index = () => {
       <div id="comparison"><Comparison /></div>
       <div id="how-it-works"><HowItWorks /></div>
       <div id="pricing"><Pricing /></div>
+      <OracleFeed />
       <div id="trust"><Compliance /></div>
       <Footer />
     </div>
