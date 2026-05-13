@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wallet, ChevronDown, ExternalLink, LogOut, Usb, Smartphone, Fox } from "lucide-react";
+import { Wallet, ChevronDown, ExternalLink, LogOut, Usb, Smartphone } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { CHAIN_INFO, type ChainId } from "@/types/wallet";
 import OnboardingWizard from "./OnboardingWizard";
