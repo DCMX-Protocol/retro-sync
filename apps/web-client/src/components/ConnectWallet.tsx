@@ -1,22 +1,24 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Wallet, ChevronDown, ExternalLink, LogOut, Usb, Smartphone } from "lucide-react";
+import { Wallet, ChevronDown, ExternalLink, LogOut, Usb, Smartphone, Fox } from "lucide-react";
 import { useWallet } from "@/hooks/useWallet";
 import { CHAIN_INFO, type ChainId } from "@/types/wallet";
 import OnboardingWizard from "./OnboardingWizard";
 
 const ConnectWallet = () => {
-  const { wallet, isConnecting, error, connectTronLink, connectWalletConnect, connectCoinbase, disconnect, shortenAddress, setError } = useWallet();
+  const { wallet, isConnecting, error, connectTronLink, connectWalletConnect, connectCoinbase, connectMetaMask, disconnect, shortenAddress } = useWallet();
   const [menuOpen, setMenuOpen] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
   const [selectedChain, setSelectedChain] = useState<ChainId>("bttc");
 
-  const handleConnect = async (type: "tronlink" | "walletconnect" | "coinbase") => {
+  const handleConnect = async (type: "tronlink" | "walletconnect" | "coinbase" | "metamask") => {
     setMenuOpen(false);
     if (type === "tronlink") {
       await connectTronLink(selectedChain);
     } else if (type === "coinbase") {
       await connectCoinbase(selectedChain);
+    } else if (type === "metamask") {
+      await connectMetaMask(selectedChain);
     } else {
       await connectWalletConnect(selectedChain);
     }
@@ -144,6 +146,19 @@ const ConnectWallet = () => {
 
             {/* Wallet options */}
             <div className="space-y-1.5">
+              <button
+                onClick={() => handleConnect("metamask")}
+                className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-secondary transition-colors active:scale-[0.98]"
+              >
+                <div className="w-9 h-9 rounded-lg bg-orange-500/10 flex items-center justify-center">
+                  <span className="text-base">🦊</span>
+                </div>
+                <div className="text-left">
+                  <div className="text-sm font-semibold">MetaMask</div>
+                  <div className="text-xs text-muted-foreground">Browser extension · BTTC + EVM</div>
+                </div>
+              </button>
+
               <button
                 onClick={() => handleConnect("tronlink")}
                 className="w-full flex items-center gap-3 px-3 py-3 rounded-lg hover:bg-secondary transition-colors active:scale-[0.98]"
