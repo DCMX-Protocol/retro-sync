@@ -28,7 +28,10 @@ const MAX_DEVIATION_BPS = 1_000n; // 10%
 const MAX_AGE_SECS = 3_600;
 
 async function sha256Hex(bytes: Uint8Array): Promise<`0x${string}`> {
-  const buf = await crypto.subtle.digest("SHA-256", bytes);
+  // Copy into a fresh ArrayBuffer to satisfy strict BufferSource typing.
+  const ab = new ArrayBuffer(bytes.byteLength);
+  new Uint8Array(ab).set(bytes);
+  const buf = await crypto.subtle.digest("SHA-256", ab);
   const hex = Array.from(new Uint8Array(buf))
     .map((b) => b.toString(16).padStart(2, "0"))
     .join("");
