@@ -170,6 +170,65 @@ export function useWallet() {
     setError("WalletConnect support is coming soon. Please use TronLink for now.");
   }, []);
 
+  const connectMetaMask = useCallback(async (chain: ChainId) => {
+    setIsConnecting(true);
+    setError("");
+    try {
+      if (!window.ethereum) {
+        throw new Error("MetaMask is not installed. Get it from metamask.io");
+      }
+      // Request accounts
+      const accounts = (await window.ethereum.request({
+        method: "eth_requestAccounts",
+      })) as string[];
+      const address = accounts?.[0];
+      if (!address) throw new Error("MetaMask returned no account.");
+
+      // Switch / add BTTC mainnet (chainId 0xc7 = 199) when user picked bttc.
+      if (chain === "bttc") {
+        try {
+          await window.ethereum.request({
+            method: "wallet_switchEthereumChain",
+            params: [{ chainId: "0xc7" }],
+          });
+        } catch (switchErr: unknown) {
+          // 4902 = chain not added — add it.
+          const code = (switchErr as { code?: number })?.code;
+          if (code === 4902) {
+            await window.ethereum.request({
+              method: "wallet_addEthereumChain",
+              params: [{
+                chainId: "0xc7",
+                chainName: "BitTorrent Chain",
+                nativeCurrency: { name: "BTT", symbol: "BTT", decimals: 18 },
+                rpcUrls: ["https://rpc.bittorrentchain.io"],
+                blockExplorerUrls: ["https://bttcscan.com"],
+              }],
+            });
+          } else {
+            throw switchErr;
+          }
+        }
+      }
+
+      setWallet({ connected: true, address, chain, walletType: "tronlink" });
+
+      setIsAuthenticating(true);
+      try {
+        await authenticateWithServer(address, "evm");
+      } catch (authErr) {
+        console.warn("Backend auth failed (API calls may be limited):", authErr);
+      } finally {
+        setIsAuthenticating(false);
+      }
+    } catch (err: unknown) {
+      const message = err instanceof Error ? err.message : "Failed to connect MetaMask.";
+      setError(message);
+    } finally {
+      setIsConnecting(false);
+    }
+  }, []);
+
   const disconnect = useCallback(() => {
     setWallet(INITIAL_STATE);
     setError("");
@@ -196,6 +255,7 @@ export function useWallet() {
     connectTronLink,
     connectWalletConnect,
     connectCoinbase,
+    connectMetaMask,
     disconnect,
     shortenAddress,
     setError,
